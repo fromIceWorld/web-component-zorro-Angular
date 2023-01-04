@@ -1,0 +1,29 @@
+.container {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0000004d;
+}
+.content {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+}
+.dialog-header {
+  height: 20px;
+  padding: 10px;
+}
+.dialog-header > img {
+  height: 14px;
+  float: right;
+  cursor: pointer;
+}

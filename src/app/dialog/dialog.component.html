@@ -1,0 +1,25 @@
+<!-- <div class="container" *ngIf="display">
+  <div class="content">
+    <div class="dialog-header">
+      <span class="dialog-header-title">{{ title }}</span>
+      <img (click)="close($event)" src="../../assets/img/close.svg" />
+    </div>
+    <div class="dialog-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div> -->
+<nz-modal
+  [(nzVisible)]="display"
+  nzTitle="The first Modal"
+  (nzOnCancel)="hiden()"
+  (nzOnOk)="hiden()"
+  #model
+>
+  <ng-container *nzModalContent>
+    <p>Content one</p>
+    <p>Content two</p>
+    <p>Content three</p>
+    <ng-content></ng-content>
+  </ng-container>
+</nz-modal>

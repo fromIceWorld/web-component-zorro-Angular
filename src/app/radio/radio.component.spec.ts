@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigTabComponent } from './config-tab.component';
+import { RadioComponent } from './radio.component';
 
-describe('ConfigTabComponent', () => {
-  let component: ConfigTabComponent;
-  let fixture: ComponentFixture<ConfigTabComponent>;
+describe('RadioComponent', () => {
+  let component: RadioComponent;
+  let fixture: ComponentFixture<RadioComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfigTabComponent ]
+      declarations: [ RadioComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfigTabComponent);
+    fixture = TestBed.createComponent(RadioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,7 +8,7 @@ import { transformValue } from 'src/common';
 export class TextComponent implements OnInit {
   static index = 0;
   static tagNamePrefix: string = 'my-text';
-  text: string = '';
+  text: string = '姓名';
   // 导出渲染数据
   /**
    *
@@ -34,9 +34,8 @@ export class TextComponent implements OnInit {
                   ${init}
               }
           }
-          MyText${index}.ɵcmp.factory = () => { console.log(${index}); return new MyText${index}()};
+          MyText${index}.ɵcmp.factory = () => { return new MyText${index}()};
           customElements.define('${tagName}',createCustomElement(MyText${index}, {  injector: injector,}));
-          document.body.append(document.createElement('${tagName}'))
           `,
     };
   }

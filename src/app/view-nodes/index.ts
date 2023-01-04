@@ -1,11 +1,20 @@
-export * from './button';
-export * from './container/index';
-export * from './dialog/index';
-export * from './form/base-form';
-export * from './input';
-export * from './layout/container';
+import { registerButton } from './button';
+import {} from './container/index';
+import { registerDialog } from './dialog/index';
+import { registrForm } from './form/base-form';
+import { registerInput } from './input';
+import { registerContainer } from './layout/container';
+import { registerRadio } from './radio';
+import { registerText } from './text';
 export * from './node/base';
-export * from './radio';
-export * from './scaleX';
-export * from './scaleY';
-export * from './text';
+export { registerComponent };
+
+function registerComponent() {
+  registerButton(window);
+  registerDialog(window);
+  registrForm(window);
+  registerInput(window);
+  registerContainer(window);
+  registerRadio(window);
+  registerText(window);
+}

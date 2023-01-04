@@ -1,9 +1,18 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+  PlatformRef,
+} from '@angular/core';
 import { transformValue } from 'src/common';
+window['ChangeDetectorRef'] = ChangeDetectorRef;
+
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.css'],
+  providers: [{ provide: PlatformRef, deps: [Injector] }],
 })
 export class ButtonComponent implements OnInit {
   static index = 0;
@@ -43,18 +52,22 @@ export class ButtonComponent implements OnInit {
                    ${init}
                }
            }
-           MyButton${index}.ɵcmp.factory = () => { console.log(${index}); return new MyButton${index}()};
+           MyButton${index}.ɵcmp.factory = () => { return new MyButton${index}()};
            customElements.define('${tagName}',createCustomElement(MyButton${index}, {  injector: injector,}));
-           document.body.append(document.createElement('${tagName}'))
            `,
     };
   }
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef) {
+    console.log('this ChangeDetectorRef', cd);
+  }
 
   ngOnInit(): void {}
   // 手动检查
   check() {
-    this.cd.detectChanges();
+    setTimeout(() => {
+      console.log('button check');
+    }, 1000);
+    // this.cd.detectChanges();
   }
   public loadingChange() {
     this.loading = !this.loading;
