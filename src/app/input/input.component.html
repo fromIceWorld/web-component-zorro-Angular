@@ -1,1 +1,19 @@
-<input nz-input [placeholder]="placeholder" [(ngModel)]="value" />
+<nz-input-group [nzSuffix]="inputClearTpl" [ngStyle]="borderColorShdow()">
+  <input
+    type="text"
+    nz-input
+    [placeholder]="placeholder"
+    [formControl]="value"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+  /> </nz-input-group
+><ng-template #inputClearTpl
+  ><i
+    nz-icon
+    class="ant-input-clear-icon"
+    nzTheme="fill"
+    nzType="close-circle"
+    *ngIf="value.value"
+    (click)="clear()"
+  ></i
+></ng-template>

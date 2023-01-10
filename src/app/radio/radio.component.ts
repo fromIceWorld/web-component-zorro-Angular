@@ -27,6 +27,7 @@ export class RadioComponent implements OnInit {
     const index = RadioComponent.index++,
       tagName = `${RadioComponent.tagNamePrefix}-${index}`;
     const { options, formcontrol } = html;
+    console.log(options);
     let items = options.options.map((item) => {
       return {
         label: item,
@@ -39,11 +40,12 @@ export class RadioComponent implements OnInit {
       js: `class MyRadio${index} extends ${className}{
             constructor(){
                 super();
-                this.options = ${JSON.stringify(items)}
+                this.options = ${JSON.stringify(items)};
+                this.value = '${options.value}';
             }
         }
         MyRadio${index}.ɵcmp.factory = () => { return new MyRadio${index}()};
-        customElements.define('${tagName}',createCustomElement(MyRadio${index}, {  injector: injector,}));
+        customElements.define('${tagName}',createCustomElement(MyRadio${index}, {  injector: injector}));
         `,
     };
   }

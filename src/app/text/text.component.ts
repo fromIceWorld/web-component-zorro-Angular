@@ -9,6 +9,19 @@ export class TextComponent implements OnInit {
   static index = 0;
   static tagNamePrefix: string = 'my-text';
   text: string = '姓名';
+  isSHow: boolean = true;
+  showChange() {
+    this.isSHow = !this.isSHow;
+    this.cd.detectChanges();
+  }
+  show() {
+    this.isSHow = true;
+    this.cd.detectChanges();
+  }
+  hide() {
+    this.isSHow = false;
+    this.cd.detectChanges();
+  }
   // 导出渲染数据
   /**
    *

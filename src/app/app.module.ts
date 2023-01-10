@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -46,6 +46,7 @@ window['ButtonComponent'] = ButtonComponent;
     NzSwitchModule,
     HttpClientModule,
     NzModalModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [],

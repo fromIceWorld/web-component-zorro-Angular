@@ -11,6 +11,7 @@ import { TextService } from '../text.service';
 })
 export class DialogComponent implements OnInit {
   @ViewChild('model') model;
+  @ViewChild('content') content;
   static index = 0;
   static tagNamePrefix: string = 'my-dialog-model';
   title: string = '对话框';
@@ -48,7 +49,7 @@ export class DialogComponent implements OnInit {
     this.classStr = html.getAttribute('class');
     this.left = html.style.left;
     this.top = html.style.top;
-
+    console.log(this.content);
     // this.model.modal.open();
   }
   public hiden() {

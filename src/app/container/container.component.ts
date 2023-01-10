@@ -16,13 +16,13 @@ export class ContainerComponent implements OnInit {
     const { style } = css;
     const flexDirection = style['flex-direction'];
     return {
-      html: `<${tagName} style="display:flex;${
+      html: `<div style="display:flex;${
         flexDirection
           ? flexDirection === 'row'
             ? 'flex-direction:row'
             : 'flex-direction:column'
           : ''
-      }"></${tagName}>`,
+      }"></div>`,
       js: ``,
     };
   }

@@ -28,7 +28,7 @@ class INPUT_CONFIG extends NODE_CONFIG {
     },
     regexp: {
       type: 'string',
-      value: '^[1-9]{1,10}$',
+      value: '/^[1-9]{1,10}$/',
     },
   };
   css = {
