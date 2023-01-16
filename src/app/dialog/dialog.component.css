@@ -10,7 +10,6 @@
 .content {
   position: fixed;
   width: 400px;
-  height: 200px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -29,7 +28,7 @@
   cursor: pointer;
 }
 .dialog-body {
-  padding: 24px;
+  padding: 12px 24px;
 }
 .dialog-foot {
   display: flex;

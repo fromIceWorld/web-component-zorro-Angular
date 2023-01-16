@@ -1,4 +1,8 @@
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpHandler,
+} from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,12 +21,13 @@ import { DialogComponent } from './dialog/dialog.component';
 import { FormComponent } from './form/form.component';
 import { InputComponent } from './input/input.component';
 import { RadioComponent } from './radio/radio.component';
+import { TestService } from './test.service';
 import { TextComponent } from './text/text.component';
 import { registerComponent } from './view-nodes';
 // 暴露出源组件class 创建web component的API
 window['createCustomElement'] = createCustomElement;
-
-window['ButtonComponent'] = ButtonComponent;
+window['HttpClient'] = HttpClient;
+window['HttpHandler'] = HttpHandler;
 
 @NgModule({
   declarations: [
@@ -48,7 +53,7 @@ window['ButtonComponent'] = ButtonComponent;
     NzModalModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [HttpClient, TestService],
   bootstrap: [],
   schemas: [],
   entryComponents: [
@@ -62,13 +67,29 @@ window['ButtonComponent'] = ButtonComponent;
   ],
 })
 export class AppModule {
-  constructor(private injector: Injector) {
+  injector;
+  constructor(private parentInjector: Injector, private http: HttpClient) {
+    this.injector = Injector.create({
+      providers: [
+        { provide: TestService, deps: [] },
+        { provide: 'test', useValue: 123, deps: [] },
+        { provide: 'http', useValue: this.http, deps: [] },
+      ],
+      parent: this.parentInjector,
+    });
     window['injector'] = this.injector; // 暴露出依赖
+    console.log(
+      this.http,
+      this.injector.get(TestService),
+      this.injector.get('test')
+    );
   }
   ngDoBootstrap() {
     // 注册组件到全局
     registerComponent();
+    console.log(this.injector);
     // 按钮
+    window['ButtonComponent'] = ButtonComponent;
     const buttonEle = createCustomElement(ButtonComponent, {
       injector: this.injector,
     });

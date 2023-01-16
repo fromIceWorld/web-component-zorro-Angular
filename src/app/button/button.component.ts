@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-  PlatformRef,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { transformValue } from 'src/common';
 window['ChangeDetectorRef'] = ChangeDetectorRef;
 
@@ -12,7 +6,7 @@ window['ChangeDetectorRef'] = ChangeDetectorRef;
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.css'],
-  providers: [{ provide: PlatformRef, deps: [Injector] }],
+  providers: [],
 })
 export class ButtonComponent implements OnInit {
   static index = 0;
@@ -60,14 +54,25 @@ export class ButtonComponent implements OnInit {
   constructor(private cd: ChangeDetectorRef) {
     console.log('this ChangeDetectorRef', cd);
   }
-
+  onClick() {
+    this.loading = true;
+  }
   ngOnInit(): void {}
   // 手动检查
   check() {
-    setTimeout(() => {
-      console.log('button check');
-    }, 1000);
-    // this.cd.detectChanges();
+    this.cd.detectChanges();
+  }
+  normal() {
+    this.loading = false;
+    this.check();
+  }
+  setLoading() {
+    this.loading = true;
+    this.check();
+  }
+  setDisabled() {
+    this.disabled = true;
+    this.check();
   }
   public loadingChange() {
     this.loading = !this.loading;

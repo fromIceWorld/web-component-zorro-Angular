@@ -21,7 +21,10 @@ export class RadioComponent implements OnInit {
       disabled: false,
     },
   ];
-  constructor() {}
+  // form 子组件 校验
+  isValid() {
+    return true;
+  }
   static extends(option) {
     const { html, css, className } = option;
     const index = RadioComponent.index++,

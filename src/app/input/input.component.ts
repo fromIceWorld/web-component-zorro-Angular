@@ -21,6 +21,23 @@ export class InputComponent implements OnInit {
   isFocus: boolean = false;
   Validators = Validators;
   placeholder: string = '请输入姓名';
+  isValid() {
+    return this.value.valid;
+  }
+  onFocus() {
+    this.isFocus = true;
+    this.cd.detectChanges();
+  }
+  onBlur() {
+    this.isFocus = false;
+    this.cd.detectChanges();
+  }
+  clear() {
+    this.value.patchValue('');
+    this.cd.detectChanges();
+    console.log(this.value.valid);
+  }
+  constructor(private cd: ChangeDetectorRef) {}
   borderColorShdow() {
     let obj = {
       'border-color': '#d9d9d9',
@@ -44,20 +61,6 @@ export class InputComponent implements OnInit {
     }
     return obj;
   }
-  onFocus() {
-    this.isFocus = true;
-    this.cd.detectChanges();
-  }
-  onBlur() {
-    this.isFocus = false;
-    this.cd.detectChanges();
-  }
-  clear() {
-    this.value.patchValue('');
-    this.cd.detectChanges();
-    console.log(this.value.valid);
-  }
-  constructor(private cd: ChangeDetectorRef) {}
   static extends(option) {
     const { html, css, className } = option;
     const index = InputComponent.index++,
