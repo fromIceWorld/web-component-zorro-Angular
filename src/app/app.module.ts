@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -14,6 +14,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { ButtonComponent } from './button/button.component';
 import { ContainerComponent } from './container/container.component';
@@ -21,9 +22,11 @@ import { DialogComponent } from './dialog/dialog.component';
 import { FormComponent } from './form/form.component';
 import { InputComponent } from './input/input.component';
 import { RadioComponent } from './radio/radio.component';
+import { TableComponent } from './table/table.component';
 import { TestService } from './test.service';
 import { TextComponent } from './text/text.component';
 import { registerComponent } from './view-nodes';
+
 // 暴露出源组件class 创建web component的API
 window['createCustomElement'] = createCustomElement;
 window['HttpClient'] = HttpClient;
@@ -38,6 +41,7 @@ window['HttpHandler'] = HttpHandler;
     RadioComponent,
     TextComponent,
     FormComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +56,7 @@ window['HttpHandler'] = HttpHandler;
     HttpClientModule,
     NzModalModule,
     ReactiveFormsModule,
+    NzTableModule,
   ],
   providers: [HttpClient, TestService],
   bootstrap: [],
@@ -64,16 +69,22 @@ window['HttpHandler'] = HttpHandler;
     RadioComponent,
     TextComponent,
     FormComponent,
+    TableComponent,
   ],
 })
 export class AppModule {
   injector;
-  constructor(private parentInjector: Injector, private http: HttpClient) {
+  constructor(
+    private parentInjector: Injector,
+    private http: HttpClient,
+    private formBuilder: FormBuilder
+  ) {
     this.injector = Injector.create({
       providers: [
         { provide: TestService, deps: [] },
         { provide: 'test', useValue: 123, deps: [] },
         { provide: 'http', useValue: this.http, deps: [] },
+        { provide: 'formBuilder', useValue: this.formBuilder, deps: [] },
       ],
       parent: this.parentInjector,
     });
@@ -130,5 +141,11 @@ export class AppModule {
       injector: this.injector,
     });
     customElements.define('my-form', formEl);
+    // form
+    window['TableComponent'] = TableComponent;
+    const tableEl = createCustomElement(TableComponent, {
+      injector: this.injector,
+    });
+    customElements.define('my-table', tableEl);
   }
 }

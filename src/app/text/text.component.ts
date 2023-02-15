@@ -30,7 +30,7 @@ export class TextComponent implements OnInit {
    *      html, js
    * }
    */
-  static extends(option): { html: string; js: string } {
+  static extends(option): { tagName: string; html: string; js: string } {
     const index = TextComponent.index++,
       tagName = `${TextComponent.tagNamePrefix}-${index}`;
     const { html: config, css, className } = option;
@@ -40,6 +40,7 @@ export class TextComponent implements OnInit {
       })
       .join('\n');
     return {
+      tagName: `${tagName}`,
       html: `<${tagName}></${tagName}>`,
       js: `class MyText${index} extends ${className}{
               constructor(){

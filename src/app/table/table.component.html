@@ -1,0 +1,70 @@
+<nz-table
+  #dynamicTable
+  [nzScroll]="{ x: scrollX, y: scrollY }"
+  [nzData]="listOfData"
+  [nzTableLayout]="tableLayout"
+  [nzBordered]="bordered"
+  [nzSimple]="simple"
+  [nzLoading]="loading"
+  [nzPaginationPosition]="position"
+  [nzShowSizeChanger]="sizeChanger"
+  [nzFrontPagination]="pagination"
+  [nzShowPagination]="pagination"
+  [nzFooter]="footer ? 'Here is Footer' : null"
+  [nzTitle]="title ? 'Here is Title' : null"
+  [nzSize]="size"
+  [style]="{ width: headerConfig() + 'px' }"
+  (nzCurrentPageDataChange)="currentPageDataChange($event)"
+>
+  <thead>
+    <tr *ngIf="header">
+      <th nzWidth="40px" *ngIf="expandable" [nzLeft]="fixedColumn"></th>
+      <th
+        *ngIf="checkbox"
+        nzWidth="60px"
+        [(nzChecked)]="allChecked"
+        [nzLeft]="fixedColumn"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="checkAll($event)"
+      ></th>
+      <th
+        *ngFor="let item of headers"
+        [nzLeft]="fixedColumn"
+        [nzWidth]="item.label.split(':')[1] + 'px'"
+      >
+        {{ item.label.split(":")[0] }}
+      </th>
+      <!-- <th>Age</th>
+      <th>Address</th>
+      <th [nzRight]="fixedColumn">Action</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let data of dynamicTable.data">
+      <tr>
+        <td
+          [nzLeft]="fixedColumn"
+          *ngIf="expandable"
+          [(nzExpand)]="data.expand"
+        ></td>
+        <td
+          [nzLeft]="fixedColumn"
+          *ngIf="checkbox"
+          [(nzChecked)]="data.checked"
+          (nzCheckedChange)="refreshStatus()"
+        ></td>
+        <td [nzLeft]="fixedColumn">{{ data.name }}</td>
+        <td>{{ data.age }}</td>
+        <td [nzEllipsis]="ellipsis">{{ data.address }}</td>
+        <td [nzRight]="fixedColumn" [nzEllipsis]="ellipsis">
+          <a href="#">Delete</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a href="#">More action</a>
+        </td>
+      </tr>
+      <tr *ngIf="expandable" [nzExpand]="data.expand">
+        <span> {{ data.description }}</span>
+      </tr>
+    </ng-container>
+  </tbody>
+</nz-table>

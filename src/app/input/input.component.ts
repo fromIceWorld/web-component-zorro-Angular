@@ -69,12 +69,12 @@ export class InputComponent implements OnInit {
     let config = {
       html: `<${tagName}
                     type="text"
-                    placeholder="${placeholder.value}"
                     formcontrol="${formcontrol.value}"
                ></${tagName}>`,
       js: `class MyInput${index} extends ${className}{
             constructor(){
                 super();
+                this.placeholder="${placeholder.value}"
                 this.value.reset('${value.value}',{
                   updateOn:'${updateOn.value}',
                 });
