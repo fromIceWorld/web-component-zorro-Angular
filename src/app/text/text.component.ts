@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { transformValue } from 'src/common';
+import { method } from 'src/decorators';
 @Component({
   selector: 'app-text',
   templateUrl: './text.component.html',
@@ -10,6 +11,7 @@ export class TextComponent implements OnInit {
   static tagNamePrefix: string = 'my-text';
   text: string = '姓名';
   isSHow: boolean = true;
+  @method()
   showChange() {
     this.isSHow = !this.isSHow;
     this.cd.detectChanges();

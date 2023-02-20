@@ -51,12 +51,8 @@ export class ButtonComponent implements OnInit {
            `,
     };
   }
-  constructor(private cd: ChangeDetectorRef) {
-    console.log('this ChangeDetectorRef', cd);
-  }
-  onClick() {
-    this.loading = true;
-  }
+  constructor(private cd: ChangeDetectorRef) {}
+
   ngOnInit(): void {}
   // 手动检查
   check() {

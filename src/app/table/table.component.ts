@@ -74,6 +74,7 @@ export class TableComponent implements OnInit {
   ellipsis = false;
   simple = false;
   size = 'small';
+  paginationType = 'default';
   tableScroll = 'unset';
   tableLayout = 'auto';
   position = 'bottom';
