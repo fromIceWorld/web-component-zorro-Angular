@@ -72,7 +72,7 @@ export class DialogComponent implements OnInit {
     const { style, classes } = css,
       flexDirection = style['flex-direction'];
     return {
-      html: `<${tagName} style="display:flex;${
+      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance" style="display:flex;${
         flexDirection
           ? flexDirection === 'row'
             ? 'flex-direction:row'

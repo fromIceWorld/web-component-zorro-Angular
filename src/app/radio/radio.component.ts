@@ -39,7 +39,7 @@ export class RadioComponent implements OnInit {
       };
     });
     return {
-      html: `<${tagName} formcontrol='${formcontrol.value}'></${tagName}>`,
+      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance" formcontrol='${formcontrol.value}'></${tagName}>`,
       js: `class MyRadio${index} extends ${className}{
             constructor(){
                 super();

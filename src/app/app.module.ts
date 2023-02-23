@@ -22,6 +22,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import { FormComponent } from './form/form.component';
 import { InputComponent } from './input/input.component';
 import { RadioComponent } from './radio/radio.component';
+import { RequestComponent } from './request/request.component';
 import { TableComponent } from './table/table.component';
 import { TestService } from './test.service';
 import { TextComponent } from './text/text.component';
@@ -42,6 +43,7 @@ window['HttpHandler'] = HttpHandler;
     TextComponent,
     FormComponent,
     TableComponent,
+    RequestComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +72,7 @@ window['HttpHandler'] = HttpHandler;
     TextComponent,
     FormComponent,
     TableComponent,
+    RequestComponent,
   ],
 })
 export class AppModule {
@@ -147,5 +150,11 @@ export class AppModule {
       injector: this.injector,
     });
     customElements.define('my-table', tableEl);
+    // api
+    window['APIComponent'] = RequestComponent;
+    const APIEl = createCustomElement(RequestComponent, {
+      injector: this.injector,
+    });
+    customElements.define('my-api', APIEl);
   }
 }

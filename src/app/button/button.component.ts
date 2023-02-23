@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { transformValue } from 'src/common';
-window['ChangeDetectorRef'] = ChangeDetectorRef;
 
 @Component({
   selector: 'app-button',
@@ -39,7 +38,7 @@ export class ButtonComponent implements OnInit {
       })
       .join('\n');
     return {
-      html: `<${tagName}></${tagName}>`,
+      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyButton${index} extends ${className}{
                constructor(){
                    super();

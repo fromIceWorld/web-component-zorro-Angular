@@ -66,7 +66,7 @@ export class FormComponent implements OnInit {
     const { html: config, css, className } = option,
       { formgroup, api } = config;
     return {
-      html: `<${tagName}></${tagName}>`,
+      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyForm${index} extends ${className}{
                constructor(){
                    super();

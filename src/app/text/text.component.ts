@@ -43,7 +43,7 @@ export class TextComponent implements OnInit {
       .join('\n');
     return {
       tagName: `${tagName}`,
-      html: `<${tagName}></${tagName}>`,
+      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyText${index} extends ${className}{
               constructor(){
                   super();
