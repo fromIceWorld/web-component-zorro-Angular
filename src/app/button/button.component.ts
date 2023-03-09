@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { transformValue } from 'src/common';
-
+import { config } from 'src/decorators/config';
+import { BUTTON_CONFIG } from './button-config';
+@config(BUTTON_CONFIG)
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',

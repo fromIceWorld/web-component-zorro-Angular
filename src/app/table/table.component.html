@@ -53,14 +53,9 @@
           [(nzChecked)]="data.checked"
           (nzCheckedChange)="refreshStatus()"
         ></td>
-        <td [nzLeft]="fixedColumn">{{ data.name }}</td>
-        <td>{{ data.age }}</td>
-        <td [nzEllipsis]="ellipsis">{{ data.address }}</td>
-        <!-- <td [nzRight]="fixedColumn" [nzEllipsis]="ellipsis">
-          <a href="#">Delete</a>
-          <nz-divider nzType="vertical"></nz-divider>
-          <a href="#">More action</a>
-        </td> -->
+        <td nzEllipsis *ngFor="let header of headers; index as i">
+          {{ data[header.label.split(":")[0]] }}
+        </td>
       </tr>
       <tr *ngIf="expandable" [nzExpand]="data.expand">
         <span> {{ data.description }}</span>

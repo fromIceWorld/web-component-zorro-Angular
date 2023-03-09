@@ -1,7 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { config } from 'src/decorators/config';
 import { TextService } from '../text.service';
-
+import { DIALOG_CONFIG } from './dialog-config';
+@config(DIALOG_CONFIG)
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -72,13 +74,7 @@ export class DialogComponent implements OnInit {
     const { style, classes } = css,
       flexDirection = style['flex-direction'];
     return {
-      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance" style="display:flex;${
-        flexDirection
-          ? flexDirection === 'row'
-            ? 'flex-direction:row'
-            : 'flex-direction:column'
-          : ''
-      }"></${tagName}>`,
+      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance" style="display:flex;'flex-direction:${flexDirection}"></${tagName}>`,
       js: `class MyDialogModel${index} extends ${className}{
              constructor(){
                 super();

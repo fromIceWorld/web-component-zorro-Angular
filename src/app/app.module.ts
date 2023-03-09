@@ -26,8 +26,6 @@ import { RequestComponent } from './request/request.component';
 import { TableComponent } from './table/table.component';
 import { TestService } from './test.service';
 import { TextComponent } from './text/text.component';
-import { registerComponent } from './view-nodes';
-
 // 暴露出源组件class 创建web component的API
 window['createCustomElement'] = createCustomElement;
 window['HttpClient'] = HttpClient;
@@ -100,7 +98,6 @@ export class AppModule {
   }
   ngDoBootstrap() {
     // 注册组件到全局
-    registerComponent();
     console.log(this.injector);
     // 按钮
     window['ButtonComponent'] = ButtonComponent;
@@ -151,6 +148,7 @@ export class AppModule {
     });
     customElements.define('my-table', tableEl);
     // api
+    window['test'] = 'test';
     window['APIComponent'] = RequestComponent;
     const APIEl = createCustomElement(RequestComponent, {
       injector: this.injector,

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
+import { config } from 'src/decorators/config';
+import { CONTAINER_CONFIG } from './container-config';
+@config(CONTAINER_CONFIG)
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
@@ -15,14 +17,34 @@ export class ContainerComponent implements OnInit {
       tagName = `${ContainerComponent.tagNamePrefix}-${index}`;
     const { style } = css;
     const flexDirection = style['flex-direction'];
+    let styleStr = 'display:flex;';
+    styleStr += `flex-direction:${flexDirection};`;
+    for (let [key, value] of Object.entries(css)) {
+      if (key == 'style') {
+        continue;
+      }
+      if (
+        css['border'] &&
+        css['border'].value &&
+        ['border-width', 'border-style', 'border-color'].includes(key)
+      ) {
+        // @ts-ignore
+        styleStr += `${key}:${value.value}${value.postfix || ''};`;
+      }
+      if (
+        [
+          'padding-top',
+          'padding-right',
+          'padding-bottom',
+          'padding-left',
+        ].includes(key)
+      ) {
+        // @ts-ignore
+        styleStr += `${key}:${value.value}${value.postfix || ''};`;
+      }
+    }
     return {
-      html: `<div style="display:flex;${
-        flexDirection
-          ? flexDirection === 'row'
-            ? 'flex-direction:row'
-            : 'flex-direction:column'
-          : ''
-      }"></div>`,
+      html: `<div style="${styleStr}"></div>`,
       js: ``,
     };
   }

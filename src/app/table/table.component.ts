@@ -6,7 +6,9 @@ import {
   NzTableSize,
 } from 'ng-zorro-antd/table';
 import { transformValue } from 'src/common';
-
+import { method } from 'src/decorators';
+import { config } from 'src/decorators/config';
+import { TABLE_CONFIG } from './table-config';
 interface ItemData {
   name: string;
   age: number | string;
@@ -37,6 +39,7 @@ interface Setting {
   position: NzTablePaginationPosition;
 }
 
+@config(TABLE_CONFIG)
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -78,11 +81,7 @@ export class TableComponent implements OnInit {
   tableScroll = 'unset';
   tableLayout = 'auto';
   position = 'bottom';
-  // 配置项
-  // 暴露的方法
-  setList(list) {
-    this.listOfData = list;
-  }
+  @method()
   setLoading() {
     this.loading = true;
     this.check();
@@ -149,11 +148,19 @@ export class TableComponent implements OnInit {
       .join('\n');
     return {
       tagName: `${tagName}`,
-      html: `<${tagName}></${tagName}>`,
+      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyTable${index} extends ${className}{
              constructor(){
                  super();
                  ${init}
+             }
+             // 配置项
+             get list() {
+               return this.listOfData;
+             }
+             set list(data) {
+               this.listOfData = data;
+               this.check();
              }
          }
          MyTable${index}.ɵcmp.factory = () => { return new MyTable${index}()};

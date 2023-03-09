@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { transformValue } from 'src/common';
-
+import { config } from 'src/decorators/config';
+import { API_CONFIG } from './api-config';
+@config(API_CONFIG)
 @Component({
   selector: 'app-request',
   templateUrl: './request.component.html',
@@ -20,10 +22,22 @@ export class RequestComponent {
   message;
   constructor(private http: HttpClient) {}
   request() {
+    //  获取接口上附加的 params
+    let params = {}, //@ts-ignore
+      paramsSource = this.request.params;
+    paramsSource.forEach((item) => {
+      const [ins, keys] = item;
+      keys.forEach((key) => {
+        if (ins[key] instanceof Error) {
+        }
+        Object.assign(params, ins[key]);
+      });
+    });
+    console.log(paramsSource, params);
     this.loading.emit();
     this.http
       .get(this.api, {
-        params: {},
+        params,
       })
       .subscribe(
         (res: any) => {

@@ -41,20 +41,16 @@ export class FormComponent implements OnInit {
         values.push(control);
       }
     });
-    console.log(valids, values);
     this.http.get(this.api).subscribe(
       (res: any) => {
         const { code, data } = res;
         if (code === 200) {
-          console.log('200', this['when200']);
           this['when200'].emit(data);
         } else if (code === 500) {
-          console.log('500', this['when500']);
           this['when500'].emit(data);
         }
       },
       () => {
-        console.log('error', this['when500']);
         this['when500'].emit('error');
       }
     );

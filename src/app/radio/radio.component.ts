@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { config } from 'src/decorators/config';
 
+import { RADIO_CONFIG } from './radio-config';
+@config(RADIO_CONFIG)
 @Component({
   selector: 'app-radio',
   templateUrl: './radio.component.html',
@@ -8,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class RadioComponent implements OnInit {
   static index = 0;
   static tagNamePrefix: string = 'my-radio';
-  value = '';
+  control = '';
   options = [
     {
       label: '男',
@@ -30,7 +33,6 @@ export class RadioComponent implements OnInit {
     const index = RadioComponent.index++,
       tagName = `${RadioComponent.tagNamePrefix}-${index}`;
     const { options, formcontrol } = html;
-    console.log(options);
     let items = options.options.map((item) => {
       return {
         label: item,
@@ -39,12 +41,18 @@ export class RadioComponent implements OnInit {
       };
     });
     return {
-      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance" formcontrol='${formcontrol.value}'></${tagName}>`,
+      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance" ></${tagName}>`,
       js: `class MyRadio${index} extends ${className}{
             constructor(){
                 super();
                 this.options = ${JSON.stringify(items)};
-                this.value = '${options.value}';
+                this.control = '${options.value}';
+            }
+            get value() {
+              return {${formcontrol.value}:this.control};
+            }
+            set value(target) {
+              this.control = target;
             }
         }
         MyRadio${index}.ɵcmp.factory = () => { return new MyRadio${index}()};
