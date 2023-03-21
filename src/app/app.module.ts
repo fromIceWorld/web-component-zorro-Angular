@@ -79,22 +79,19 @@ export class AppModule {
     private parentInjector: Injector,
     private http: HttpClient,
     private formBuilder: FormBuilder
-  ) {
+  ) // private cd: ChangeDetectorRef
+  {
     this.injector = Injector.create({
       providers: [
         { provide: TestService, deps: [] },
-        { provide: 'test', useValue: 123, deps: [] },
         { provide: 'http', useValue: this.http, deps: [] },
+        // { provide: 'cd', useValue: this.cd, deps: [] },
         { provide: 'formBuilder', useValue: this.formBuilder, deps: [] },
       ],
       parent: this.parentInjector,
     });
     window['injector'] = this.injector; // 暴露出依赖
-    console.log(
-      this.http,
-      this.injector.get(TestService),
-      this.injector.get('test')
-    );
+    console.log(this.http, this.injector.get(TestService));
   }
   ngDoBootstrap() {
     // 注册组件到全局

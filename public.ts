@@ -1,5 +1,8 @@
 // 用于将组件发布到数据库系统中。
 
+/**
+ * view 节点的范围 [1:只在视图区, 2:只在关系区, 3:即在视图区也在关系区]
+ */
 const components = [
     {
       id: 'text',
@@ -26,7 +29,7 @@ const components = [
       type: 'combo',
       icon: 'border-outer',
       title: '布局容器',
-      view: 3,
+      view: 1,
       family: 'layout',
       des: '基础的布局组件',
       component: 'ContainerComponent',
@@ -90,7 +93,7 @@ const filesName = [
   'main.js',
   'polyfills.js',
   'runtime.js',
-  'styles.css',
+  'styles.js',
   'vendor.js',
 ];
 let options = {

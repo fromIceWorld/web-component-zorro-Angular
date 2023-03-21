@@ -1,4 +1,3 @@
-# ng-zorro
+#web component 工厂;
 
-Angular + ng-zorro 编译为 web component
-
+依赖库：['@Angular10', '@ng-zorro-antd']

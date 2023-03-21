@@ -4,10 +4,19 @@ const CONTAINER_CONFIG = {
   css: {
     style: {
       display: 'flex',
+      'flex-direction': '',
     },
     border: {
       type: 'boolean',
       value: false,
+    },
+    width: {
+      type: 'string',
+      value: '100%',
+    },
+    height: {
+      type: 'string',
+      value: '',
     },
     'border-width': {
       type: 'number',

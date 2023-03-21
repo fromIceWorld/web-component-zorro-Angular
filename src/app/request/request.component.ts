@@ -24,7 +24,7 @@ export class RequestComponent {
   request() {
     //  获取接口上附加的 params
     let params = {}, //@ts-ignore
-      paramsSource = this.request.params;
+      paramsSource = this.request.params || [];
     paramsSource.forEach((item) => {
       const [ins, keys] = item;
       keys.forEach((key) => {

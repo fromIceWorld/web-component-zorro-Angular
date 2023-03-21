@@ -15,7 +15,7 @@ export class ContainerComponent implements OnInit {
     const { html, css } = option;
     const index = ContainerComponent.index++,
       tagName = `${ContainerComponent.tagNamePrefix}-${index}`;
-    const { style } = css;
+    const { style, width, height } = css;
     const flexDirection = style['flex-direction'];
     let styleStr = 'display:flex;';
     styleStr += `flex-direction:${flexDirection};`;
@@ -42,6 +42,13 @@ export class ContainerComponent implements OnInit {
         // @ts-ignore
         styleStr += `${key}:${value.value}${value.postfix || ''};`;
       }
+    }
+    // 添加width,height
+    if (width.value) {
+      styleStr += `width:${width.value};`;
+    }
+    if (height.value) {
+      styleStr += `height:${height.value};`;
     }
     return {
       html: `<div style="${styleStr}"></div>`,
