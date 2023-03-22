@@ -40,7 +40,7 @@ export class ButtonComponent implements OnInit {
       })
       .join('\n');
     return {
-      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance"></${tagName}>`,
+      html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyButton${index} extends ${className}{
                constructor(){
                    super();

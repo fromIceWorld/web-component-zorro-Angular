@@ -86,15 +86,15 @@ const components = [
       component: 'APIComponent',
     },
   ],
-  fileName = 'con';
+  file = 'dist/';
 const http = require('http'),
   request = require('request');
 const filesName = [
-  'main.js',
-  'polyfills.js',
-  'runtime.js',
-  'styles.js',
-  'vendor.js',
+  { name: 'main.js', decorator: { defer: true } },
+  { name: 'polyfills.js', decorator: { defer: true } },
+  { name: 'runtime.js', decorator: { defer: true } },
+  { name: 'styles.js', decorator: { defer: true } },
+  { name: 'vendor.js', decorator: { defer: true } },
 ];
 let options = {
   url: 'http://127.0.0.1:3000/upload',
@@ -108,10 +108,11 @@ let options = {
 let files = [],
   area = 'base';
 filesName.forEach((fileName) => {
-  let content = require('fs').readFileSync('dist/' + fileName);
+  let name = typeof fileName == 'string' ? fileName : fileName.name;
+  let content = require('fs').readFileSync(file + name);
   let buffer = Buffer.from(content);
   files.push({
-    fileName,
+    name,
     content: buffer.toString(),
   });
 });

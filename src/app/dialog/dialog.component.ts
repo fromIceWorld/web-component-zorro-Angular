@@ -74,7 +74,9 @@ export class DialogComponent implements OnInit {
     const { style, classes } = css,
       flexDirection = style['flex-direction'];
     return {
-      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance" style="display:flex;'flex-direction:${flexDirection}"></${tagName}>`,
+      html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" 
+                         _methods="_ngElementStrategy.componentRef.instance"
+                         style="display:flex;'flex-direction:${flexDirection}"></${tagName}>`,
       js: `class MyDialogModel${index} extends ${className}{
              constructor(){
                 super();

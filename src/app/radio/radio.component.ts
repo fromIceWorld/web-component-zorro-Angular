@@ -41,7 +41,7 @@ export class RadioComponent implements OnInit {
       };
     });
     return {
-      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance" ></${tagName}>`,
+      html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyRadio${index} extends ${className}{
             constructor(){
                 super();

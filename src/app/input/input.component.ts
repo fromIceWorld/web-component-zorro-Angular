@@ -68,7 +68,7 @@ export class InputComponent implements OnInit {
       tagName = `${InputComponent.tagNamePrefix}-${index}`;
     const { placeholder, formcontrol, value, updateOn, regexp } = html;
     let config = {
-      html: `<${tagName} pre="_ngElementStrategy.componentRef.instance"
+      html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"
                     type="text" 
                ></${tagName}>`,
       js: `class MyInput${index} extends ${className}{
