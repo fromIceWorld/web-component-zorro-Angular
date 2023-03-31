@@ -8,7 +8,9 @@ const components = [
       id: 'text',
       type: 'node',
       icon: 'font-size',
-      title: '文本',
+      title: `文本:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
       view: 3,
       family: 'base',
       des: '基础的text文本组件',
@@ -18,7 +20,9 @@ const components = [
       id: 'button',
       type: 'node',
       icon: 'tool',
-      title: '按钮',
+      title: `按钮:
+                 Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
       view: 3,
       family: 'base',
       des: '基础的按钮组件',
@@ -28,7 +32,9 @@ const components = [
       id: 'container',
       type: 'combo',
       icon: 'border-outer',
-      title: '布局容器',
+      title: `布局容器:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
       view: 1,
       family: 'layout',
       des: '基础的布局组件',
@@ -37,7 +43,9 @@ const components = [
     {
       id: 'input',
       type: 'node',
-      title: '输入框',
+      title: `输入框:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
       icon: 'edit',
       view: 3,
       family: 'form',
@@ -47,7 +55,9 @@ const components = [
     {
       id: 'radio',
       type: 'node',
-      title: '单选框',
+      title: `单选框:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
       icon: 'aim',
       view: 3,
       family: 'form',
@@ -58,7 +68,9 @@ const components = [
       id: 'table',
       type: 'node',
       icon: 'ordered-list',
-      title: 'table',
+      title: `表格:
+                 Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
       view: 3,
       family: 'table',
       des: '基础的table组件',
@@ -67,8 +79,10 @@ const components = [
     {
       id: 'dialog_model',
       type: 'combo',
+      color: '#dd0031',
       icon: 'switcher',
-      title: 'dialog_model',
+      title: `弹窗:
+                Angular@10+ng-zorro-antd`,
       view: 3,
       family: 'dialog',
       des: '基础的弹窗组件',
@@ -78,7 +92,9 @@ const components = [
       id: 'api',
       type: 'node',
       icon: 'radar-chart',
-      title: 'api',
+      title: `接口:
+                Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
       node: 'api',
       view: 3,
       family: 'api',
