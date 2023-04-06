@@ -91,8 +91,7 @@ const TABLE_CONFIG = {
     },
     headers: {
       type: 'list',
-      options: ['Name:100', 'Age:100', 'Address:200'],
-      width: [100, 100, 200],
+      options: ['Name:100', 'Age:100', 'Address'],
       value: 'Name',
     },
     row: {

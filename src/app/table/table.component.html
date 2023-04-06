@@ -13,7 +13,7 @@
   [nzFooter]="footer ? 'Here is Footer' : null"
   [nzTitle]="title ? 'Here is Title' : null"
   [nzSize]="size"
-  [style]="{ width: headerConfig() + 'px' }"
+  [style]="headerConfig()"
   (nzCurrentPageDataChange)="currentPageDataChange($event)"
 >
   <thead>
@@ -30,7 +30,7 @@
       <th
         *ngFor="let item of headers"
         [nzLeft]="fixedColumn"
-        [nzWidth]="item.label.split(':')[1] + 'px'"
+        [nzWidth]="itemWidth(item.label.split(':')[1])"
       >
         {{ item.label.split(":")[0] }}
       </th>

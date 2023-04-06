@@ -59,7 +59,7 @@ export class TableComponent implements OnInit {
   // 数据项
   headers = [
     { label: 'age:100', value: 'age:100' },
-    { label: 'name:200', value: 'name:200' },
+    { label: 'name', value: 'name' },
   ];
   // 数据项
   // 配置项
@@ -91,12 +91,26 @@ export class TableComponent implements OnInit {
     this.displayData = $event;
     this.refreshStatus();
   }
-  headerConfig() {
-    return (
+  headerWidth() {
+    let widthSum =
       this.headers.reduce((pre, cur) => {
-        return pre + Number(cur.label.split(':')[1]);
-      }, 0) + (this.checkbox ? 60 : 0)
+        let width = Number(cur.label.split(':')[1]) || -Infinity;
+        return pre + width;
+      }, 0) + (this.checkbox ? 60 : 0);
+    return widthSum;
+  }
+  // 配置table宽度，如果有明确的width，table有固定宽度，否的话就自适应
+  headerConfig() {
+    let widthSum = this.headerWidth();
+    let widthAttribute = widthSum > 0 ? widthSum + 'px' : '100%';
+    // 有固定宽度，table就是一个 inline-block
+    return (
+      `width:${widthAttribute};` + (widthSum > 0 ? 'display:inline-block' : '')
     );
+  }
+  // 每一列的宽度
+  itemWidth(width) {
+    return width ? width + 'px' : 'unset';
   }
   refreshStatus(): void {
     const validData = this.displayData.filter((value) => !value.disabled);

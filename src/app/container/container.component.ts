@@ -17,8 +17,11 @@ export class ContainerComponent implements OnInit {
       tagName = `${ContainerComponent.tagNamePrefix}-${index}`;
     const { style, width, height } = css;
     const flexDirection = style['flex-direction'];
-    let styleStr = 'display:flex;';
-    styleStr += `flex-direction:${flexDirection};`;
+    let styleStr = '';
+    if (flexDirection) {
+      styleStr = 'display:flex;';
+      styleStr += `flex-direction:${flexDirection};`;
+    }
     for (let [key, value] of Object.entries(css)) {
       if (key == 'style') {
         continue;
@@ -51,7 +54,7 @@ export class ContainerComponent implements OnInit {
       styleStr += `height:${height.value};`;
     }
     return {
-      html: `<div style="${styleStr}"></div>`,
+      html: `<div ${styleStr ? 'style="' + styleStr + '"' : ''}></div>`,
       js: ``,
     };
   }
