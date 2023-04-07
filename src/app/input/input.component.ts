@@ -15,7 +15,6 @@ import { INPUT_CONFIG } from './input-config';
   styleUrls: ['./input.component.css'],
 })
 export class InputComponent implements OnInit {
-  static index = 0;
   static tagNamePrefix: string = 'my-input';
   @Output('validateTrue') validateTrue = new EventEmitter();
   @Output('validateFalse') validateFalse = new EventEmitter();
@@ -43,6 +42,7 @@ export class InputComponent implements OnInit {
     let obj = {
       'border-color': '#d9d9d9',
       'box-shadow': 'none',
+      width: '240px',
     };
     if (this.control.touched) {
       if (this.isFocus) {
@@ -64,7 +64,8 @@ export class InputComponent implements OnInit {
   }
   static extends(option) {
     const { html, css, className } = option;
-    const index = InputComponent.index++,
+    // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
+    const index = String(Math.random()).substring(2),
       tagName = `${InputComponent.tagNamePrefix}-${index}`;
     const { placeholder, formcontrol, value, updateOn, regexp } = html;
     let config = {

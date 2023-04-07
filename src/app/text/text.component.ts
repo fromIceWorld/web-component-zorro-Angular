@@ -10,7 +10,6 @@ import { TEXT_CONFIG } from './text-config';
   styleUrls: ['./text.component.css'],
 })
 export class TextComponent implements OnInit {
-  static index = 0;
   static tagNamePrefix: string = 'my-text';
   text: string = '姓名';
   isSHow: boolean = true;
@@ -36,7 +35,8 @@ export class TextComponent implements OnInit {
    * }
    */
   static extends(option): { tagName: string; html: string; js: string } {
-    const index = TextComponent.index++,
+    // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
+    const index = String(Math.random()).substring(2),
       tagName = `${TextComponent.tagNamePrefix}-${index}`;
     const { html: config, css, className } = option;
     let styleStr = '';

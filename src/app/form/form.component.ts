@@ -15,7 +15,6 @@ import { FormControl } from '@angular/forms';
   providers: [],
 })
 export class FormComponent implements OnInit {
-  static index = 0;
   static tagNamePrefix: string = 'my-form';
   @ViewChild('container') container;
   @Output() when200 = new EventEmitter();
@@ -57,7 +56,8 @@ export class FormComponent implements OnInit {
   }
   ngOnInit(): void {}
   static extends(option): { html: string; js: string } {
-    const index = FormComponent.index++,
+    // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
+    const index = String(Math.random()).substring(2),
       tagName = `${FormComponent.tagNamePrefix}-${index}`;
     const { html: config, css, className } = option,
       { formgroup, api } = config;

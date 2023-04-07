@@ -9,7 +9,6 @@ import { RADIO_CONFIG } from './radio-config';
   styleUrls: ['./radio.component.css'],
 })
 export class RadioComponent implements OnInit {
-  static index = 0;
   static tagNamePrefix: string = 'my-radio';
   control = '';
   options = [
@@ -30,7 +29,8 @@ export class RadioComponent implements OnInit {
   }
   static extends(option) {
     const { html, css, className } = option;
-    const index = RadioComponent.index++,
+    // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
+    const index = String(Math.random()).substring(2),
       tagName = `${RadioComponent.tagNamePrefix}-${index}`;
     const { options, formcontrol } = html;
     let items = options.options.map((item) => {

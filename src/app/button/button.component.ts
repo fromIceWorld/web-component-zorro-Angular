@@ -10,7 +10,6 @@ import { BUTTON_CONFIG } from './button-config';
   providers: [],
 })
 export class ButtonComponent implements OnInit {
-  static index = 0;
   static tagNamePrefix: string = 'my-button';
   disabled: boolean = false;
   ghost: boolean = false;
@@ -31,7 +30,8 @@ export class ButtonComponent implements OnInit {
    * }
    */
   static extends(option): { html: string; js: string } {
-    const index = ButtonComponent.index++,
+    // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
+    const index = String(Math.random()).substring(2),
       tagName = `${ButtonComponent.tagNamePrefix}-${index}`;
     const { html: config, css, className } = option;
     const init = Object.keys(config)

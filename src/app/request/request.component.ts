@@ -10,7 +10,6 @@ import { API_CONFIG } from './api-config';
   styleUrls: ['./request.component.css'],
 })
 export class RequestComponent {
-  static index = 0;
   static tagNamePrefix: string = 'my-api';
   @Output() loading = new EventEmitter();
   @Output() error = new EventEmitter();
@@ -57,7 +56,8 @@ export class RequestComponent {
       );
   }
   static extends(option): { html: string; js: string } {
-    const index = RequestComponent.index++,
+    // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
+    const index = String(Math.random()).substring(2),
       tagName = `${RequestComponent.tagNamePrefix}-${index}`;
     const { html: config, css, className } = option;
     const init = Object.keys(config)

@@ -46,7 +46,6 @@ interface Setting {
   styleUrls: ['./table.component.css'],
 })
 export class TableComponent implements OnInit {
-  static index = 0;
   static tagNamePrefix: string = 'my-table';
   listOfData: ItemData[] = [];
   displayData: ItemData[] = [];
@@ -152,7 +151,8 @@ export class TableComponent implements OnInit {
     option,
     preTagName?: string
   ): { tagName: string; html: string; js: string } {
-    const index = TableComponent.index++,
+    // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
+    const index = String(Math.random()).substring(2),
       tagName = `${TableComponent.tagNamePrefix}-${index}`;
     const { html: config, css, className } = option;
     const init = Object.keys(config)

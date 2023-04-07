@@ -14,7 +14,6 @@ import { DIALOG_CONFIG } from './dialog-config';
 export class DialogComponent implements OnInit {
   @ViewChild('model') model;
   @ViewChild('content') content;
-  static index = 0;
   static tagNamePrefix: string = 'my-dialog-model';
   title: string = '对话框';
   display: boolean = false;
@@ -68,7 +67,8 @@ export class DialogComponent implements OnInit {
   }
   static extends(option) {
     const { html, css, className } = option;
-    const index = DialogComponent.index++,
+    // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
+    const index = String(Math.random()).substring(2),
       tagName = `${DialogComponent.tagNamePrefix}-${index}`;
     const { title } = html;
     const { style, classes } = css,

@@ -78,9 +78,8 @@ export class AppModule {
   constructor(
     private parentInjector: Injector,
     private http: HttpClient,
-    private formBuilder: FormBuilder
-  ) // private cd: ChangeDetectorRef
-  {
+    private formBuilder: FormBuilder // private cd: ChangeDetectorRef
+  ) {
     this.injector = Injector.create({
       providers: [
         { provide: TestService, deps: [] },
@@ -93,6 +92,13 @@ export class AppModule {
     window['injector'] = this.injector; // 暴露出依赖
     console.log(this.http, this.injector.get(TestService));
   }
+  registerEl(tagName, cla) {
+    if (customElements.get(tagName)) {
+      console.warn('企图注册相同名称的标签:', tagName);
+    } else {
+      customElements.define(tagName, cla);
+    }
+  }
   ngDoBootstrap() {
     // 注册组件到全局
     console.log(this.injector);
@@ -101,55 +107,56 @@ export class AppModule {
     const buttonEle = createCustomElement(ButtonComponent, {
       injector: this.injector,
     });
-    customElements.define('my-button', buttonEle);
+    this.registerEl('my-button', buttonEle);
     // 文本
     window['TextComponent'] = TextComponent;
     const textEle = createCustomElement(TextComponent, {
       injector: this.injector,
     });
-    customElements.define('my-text', textEle);
+    this.registerEl('my-text', textEle);
     // layout
     window['ContainerComponent'] = ContainerComponent;
     const containerEle = createCustomElement(ContainerComponent, {
       injector: this.injector,
     });
-    customElements.define('my-container', containerEle);
+    this.registerEl('my-container', containerEle);
+
     // dialog
     window['DialogComponent'] = DialogComponent;
     const dialogEl = createCustomElement(DialogComponent, {
       injector: this.injector,
     });
-    customElements.define('my-dialog', dialogEl);
+    this.registerEl('my-dialog', dialogEl);
     // radio
     window['RadioComponent'] = RadioComponent;
     const radioEl = createCustomElement(RadioComponent, {
       injector: this.injector,
     });
-    customElements.define('my-radio', radioEl);
+    this.registerEl('my-radio', radioEl);
     // input
     window['InputComponent'] = InputComponent;
     const inputEl = createCustomElement(InputComponent, {
       injector: this.injector,
     });
-    customElements.define('my-input', inputEl);
+    this.registerEl('my-input', inputEl);
     // form
     window['FormComponent'] = FormComponent;
     const formEl = createCustomElement(FormComponent, {
       injector: this.injector,
     });
-    customElements.define('my-form', formEl);
+    this.registerEl('my-form', formEl);
     // form
     window['TableComponent'] = TableComponent;
     const tableEl = createCustomElement(TableComponent, {
       injector: this.injector,
     });
-    customElements.define('my-table', tableEl);
+    this.registerEl('my-table', tableEl);
     // api
     window['test'] = 'test';
     window['APIComponent'] = RequestComponent;
     const APIEl = createCustomElement(RequestComponent, {
       injector: this.injector,
     });
-    customElements.define('my-api', APIEl);
+    this.registerEl('my-api', APIEl);
   }
 }
