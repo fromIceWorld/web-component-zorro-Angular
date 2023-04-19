@@ -18,7 +18,9 @@ export class RequestComponent {
   api = '/suger/records';
   method = 'get';
   data;
+  list;
   message;
+  total = 0;
   constructor(private http: HttpClient) {}
   request() {
     //  获取接口上附加的 params
@@ -41,7 +43,10 @@ export class RequestComponent {
       .subscribe(
         (res: any) => {
           const { code, data, message } = res;
+          const { list, total } = data;
           this.data = data;
+          this.list = list;
+          this.total = total;
           this.message = message;
           if (code === 200) {
             this.success200.emit();

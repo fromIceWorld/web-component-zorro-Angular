@@ -77,9 +77,15 @@ export class InputComponent implements OnInit {
                 super();
                 this.placeholder="${placeholder.value}"
                 this.control.reset('${value.value}',{
-                  updateOn:'${updateOn.value}',
+                  updateOn:'${updateOn.value}'
                 });
-                this.control.setValidators([this.Validators.pattern(${regexp.value}),this.Validators.required]);
+                ${
+                  updateOn.value
+                    ? 'this.control.setValidators([this.Validators.pattern(' +
+                      regexp.value +
+                      '),this.Validators.required]);'
+                    : ''
+                }
                 this.control.updateValueAndValidity();
                 this.control.statusChanges.subscribe((res)=>{
                   if(res === 'VALID'){

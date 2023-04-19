@@ -20,6 +20,7 @@ import { ButtonComponent } from './button/button.component';
 import { ContainerComponent } from './container/container.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { FormComponent } from './form/form.component';
+import { IconComponent } from './icon/icon.component';
 import { InputComponent } from './input/input.component';
 import { RadioComponent } from './radio/radio.component';
 import { RequestComponent } from './request/request.component';
@@ -42,6 +43,7 @@ window['HttpHandler'] = HttpHandler;
     FormComponent,
     TableComponent,
     RequestComponent,
+    IconComponent,
   ],
   imports: [
     BrowserModule,
@@ -145,7 +147,7 @@ export class AppModule {
       injector: this.injector,
     });
     this.registerEl('my-form', formEl);
-    // form
+    // table
     window['TableComponent'] = TableComponent;
     const tableEl = createCustomElement(TableComponent, {
       injector: this.injector,
@@ -158,5 +160,11 @@ export class AppModule {
       injector: this.injector,
     });
     this.registerEl('my-api', APIEl);
+    // icon
+    window['IconComponent'] = IconComponent;
+    const IconEl = createCustomElement(IconComponent, {
+      injector: this.injector,
+    });
+    this.registerEl('my-icon', IconEl);
   }
 }

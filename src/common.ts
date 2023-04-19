@@ -1,6 +1,6 @@
 function transformValue(obj) {
   const { type, options, value } = obj;
-  if (type === 'string' || type === 'array') {
+  if (type === 'string' || type === 'array' || type === 'icon') {
     return `'${value}'`;
   } else if (type === 'boolean') {
     return `${value}`;

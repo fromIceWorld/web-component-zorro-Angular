@@ -29,7 +29,7 @@ const API_CONFIG = {
       { label: 'success500', value: 'success500' },
     ],
     methods: [{ label: 'request', value: 'request' }],
-    data: ['data', 'message'],
+    data: ['list', 'total', 'message'],
     params: [],
   },
 };

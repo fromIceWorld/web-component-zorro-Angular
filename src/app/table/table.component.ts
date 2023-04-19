@@ -166,14 +166,14 @@ export class TableComponent implements OnInit {
       js: `class MyTable${index} extends ${className}{
              constructor(){
                  super();
-                 ${init}
+                 ${init};
              }
              // 配置项
              get list() {
                return this.listOfData;
              }
              set list(data) {
-               this.listOfData = data;
+               this.listOfData = data || [];
                this.check();
              }
          }

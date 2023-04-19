@@ -17,6 +17,18 @@ const components = [
       component: 'TextComponent',
     },
     {
+      id: 'icon',
+      type: 'node',
+      icon: 'sketch',
+      title: `图标:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 3,
+      family: 'base',
+      des: '基础的icon组件',
+      component: 'IconComponent',
+    },
+    {
       id: 'button',
       type: 'node',
       icon: 'tool',
@@ -132,10 +144,20 @@ filesName.forEach((fileName) => {
     content: buffer.toString(),
   });
 });
+// 引入 图标js文件
+let iconJS = Buffer.from(
+  require('fs').readFileSync('./iconfont/iconfont.js')
+).toString();
+console.log(iconJS);
+files.push({
+  name: 'iconfont.js',
+  content: iconJS,
+});
+
 let componentsConfig = components.map((item) => {
   return {
     ...item,
-    filesName,
+    filesName: [...filesName, { name: 'iconfont.js', decorator: {} }],
     area,
   };
 });

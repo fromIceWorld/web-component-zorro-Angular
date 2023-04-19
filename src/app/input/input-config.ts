@@ -14,14 +14,14 @@ const INPUT_CONFIG = {
       value: '',
     },
     updateOn: {
-      type: 'string',
+      type: 'array',
       options: [
-        {
-          label: 'change',
-          value: 'change',
-        },
+        { label: '不检查', value: '' },
+        { label: 'change', value: 'change' },
+        { label: 'blur', value: 'circle' },
+        { label: 'submit', value: 'round' },
       ],
-      value: 'change',
+      value: '',
     },
     regexp: {
       type: 'string',
