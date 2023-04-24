@@ -7,6 +7,7 @@ import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -20,13 +21,17 @@ import { ButtonComponent } from './button/button.component';
 import { ContainerComponent } from './container/container.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { FormComponent } from './form/form.component';
+import { HookComponent } from './hook/hook.component';
 import { IconComponent } from './icon/icon.component';
+import { ImageComponent } from './image/image.component';
 import { InputComponent } from './input/input.component';
 import { RadioComponent } from './radio/radio.component';
 import { RequestComponent } from './request/request.component';
+import { SelectComponent } from './select/select.component';
 import { TableComponent } from './table/table.component';
 import { TestService } from './test.service';
 import { TextComponent } from './text/text.component';
+
 // 暴露出源组件class 创建web component的API
 window['createCustomElement'] = createCustomElement;
 window['HttpClient'] = HttpClient;
@@ -44,6 +49,9 @@ window['HttpHandler'] = HttpHandler;
     TableComponent,
     RequestComponent,
     IconComponent,
+    SelectComponent,
+    ImageComponent,
+    HookComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +67,7 @@ window['HttpHandler'] = HttpHandler;
     NzModalModule,
     ReactiveFormsModule,
     NzTableModule,
+    BrowserAnimationsModule,
   ],
   providers: [HttpClient, TestService],
   bootstrap: [],
@@ -95,12 +104,29 @@ export class AppModule {
     console.log(this.http, this.injector.get(TestService));
   }
   registerEl(tagName, cla) {
+    // 解决 extends 的组件无依赖问题
+    const oldIframe = document.querySelector('iframe');
+    let iframe;
+    if (!oldIframe) {
+      iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+    } else {
+      iframe = oldIframe;
+    }
+    let com = document.createElement(tagName);
+    iframe.append(com);
+    if (!oldIframe) {
+      document.body.append(iframe);
+    }
     if (customElements.get(tagName)) {
       console.warn('企图注册相同名称的标签:', tagName);
     } else {
+      //定义组件
       customElements.define(tagName, cla);
     }
   }
+  // TODO:依赖注入只会注入到源组件上，在extends的组件上无依赖注入能力。
+  // 因此如果想要有依赖注入能力，需要手动将源组件的依赖在实例化子组件时注入到源组件super中。
   ngDoBootstrap() {
     // 注册组件到全局
     console.log(this.injector);
@@ -154,8 +180,7 @@ export class AppModule {
     });
     this.registerEl('my-table', tableEl);
     // api
-    window['test'] = 'test';
-    window['APIComponent'] = RequestComponent;
+    window['RequestComponent'] = RequestComponent;
     const APIEl = createCustomElement(RequestComponent, {
       injector: this.injector,
     });
@@ -166,5 +191,23 @@ export class AppModule {
       injector: this.injector,
     });
     this.registerEl('my-icon', IconEl);
+    // select
+    window['SelectComponent'] = SelectComponent;
+    const SelectEl = createCustomElement(SelectComponent, {
+      injector: this.injector,
+    });
+    this.registerEl('my-select', SelectEl);
+    // IMAGE
+    window['ImageComponent'] = ImageComponent;
+    const ImageEl = createCustomElement(ImageComponent, {
+      injector: this.injector,
+    });
+    this.registerEl('my-image', ImageEl);
+    // hook
+    window['HookComponent'] = HookComponent;
+    const HookEl = createCustomElement(HookComponent, {
+      injector: this.injector,
+    });
+    this.registerEl('my-hook', HookEl);
   }
 }

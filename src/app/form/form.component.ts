@@ -16,13 +16,16 @@ import { FormControl } from '@angular/forms';
 })
 export class FormComponent implements OnInit {
   static tagNamePrefix: string = 'my-form';
+  static httpCopy;
   @ViewChild('container') container;
   @Output() when200 = new EventEmitter();
   @Output() when500 = new EventEmitter();
   formgroup = 'name';
   api =
     'https://www.fastmock.site/mock/14c2723aefa052a75b2a6feeed0cf387/suger/records';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    FormComponent.httpCopy = http;
+  }
   submit() {
     // 获取form的有效子节点
     let native = this.container.nativeElement,
@@ -65,7 +68,7 @@ export class FormComponent implements OnInit {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyForm${index} extends ${className}{
                constructor(){
-                   super();
+                   super(FormComponent.httpCopy);
                    this.formgroup = '${formgroup.value}';
                    this.api = '${api.value}';
                }

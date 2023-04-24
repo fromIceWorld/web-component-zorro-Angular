@@ -11,7 +11,7 @@ import { ICON_CONFIG } from './icon-config';
 })
 export class IconComponent implements OnInit {
   static tagNamePrefix: string = 'my-icon';
-  fontSize = '16px';
+  fontSize = '32px';
   color = 'black';
   icon = '#icon-tubiao';
   constructor() {}

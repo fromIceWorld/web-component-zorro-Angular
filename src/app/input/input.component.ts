@@ -93,7 +93,8 @@ export class InputComponent implements OnInit {
                   }else{
                     this.validateFalse.emit();
                   }
-                })
+                });
+                this.dep();
              }
              get value() {
                return {${formcontrol.value}:this.control.value};
@@ -101,6 +102,11 @@ export class InputComponent implements OnInit {
              set value(target) {
                this.control.setValue(target);
              }
+            dep(){
+             setTimeout(()=>{
+               this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
+             });
+            }
         };
         MyInput${index}.ɵcmp.factory = () => { return new MyInput${index}()};
         customElements.define('${tagName}',createCustomElement(MyInput${index}, {  injector: injector,}));

@@ -1,5 +1,5 @@
 const API_CONFIG = {
-  className: 'APIComponent', // 暴露出的组件class名称【组件可以注册到window上，并把配置同时暴露】
+  className: 'RequestComponent', // 暴露出的组件class名称【组件可以注册到window上，并把配置同时暴露】
   html: {
     method: {
       type: 'array',
@@ -23,6 +23,7 @@ const API_CONFIG = {
   },
   component: {
     event: [
+      { label: 'init', value: 'init' },
       { label: 'loading', value: 'loading' },
       { label: 'error', value: 'error' },
       { label: 'success200', value: 'success200' },

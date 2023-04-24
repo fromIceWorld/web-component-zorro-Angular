@@ -34,10 +34,11 @@ export class RadioComponent implements OnInit {
       tagName = `${RadioComponent.tagNamePrefix}-${index}`;
     const { options, formcontrol } = html;
     let items = options.options.map((item) => {
+      let [label, value] = item.split(':');
       return {
-        label: item,
-        value: item,
-        checked: item === options.value,
+        label: label,
+        value: value || label,
+        checked: (value || label) === options.value,
       };
     });
     return {

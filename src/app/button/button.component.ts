@@ -45,7 +45,13 @@ export class ButtonComponent implements OnInit {
                constructor(){
                    super();
                    ${init}
-               }
+                   this.dep();
+                }
+                dep(){
+                  setTimeout(()=>{
+                    this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
+                  });
+                }
            }
            MyButton${index}.ɵcmp.factory = () => { return new MyButton${index}()};
            customElements.define('${tagName}',createCustomElement(MyButton${index}, {  injector: injector,}));

@@ -1,0 +1,16 @@
+<nz-select
+  [(ngModel)]="selected"
+  (nzScrollToBottom)="loadMore()"
+  [nzPlaceHolder]="placeholder"
+  nzAllowClear
+  [nzDropdownRender]="renderTemplate"
+>
+  <nz-option
+    *ngFor="let o of options"
+    [nzValue]="o.value"
+    [nzLabel]="o.label"
+  ></nz-option>
+</nz-select>
+<ng-template #renderTemplate>
+  <nz-spin *ngIf="isLoading"></nz-spin>
+</ng-template>

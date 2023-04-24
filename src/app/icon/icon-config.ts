@@ -3,7 +3,7 @@ const ICON_CONFIG = {
   html: {
     fontSize: {
       type: 'string',
-      value: '16px',
+      value: '32px',
     },
     icon: {
       type: 'icon',

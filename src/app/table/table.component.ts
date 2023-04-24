@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import {
   NzTableLayout,
   NzTablePaginationPosition,
@@ -130,10 +129,7 @@ export class TableComponent implements OnInit {
     this.refreshStatus();
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
   check() {
@@ -167,6 +163,12 @@ export class TableComponent implements OnInit {
              constructor(){
                  super();
                  ${init};
+                 this.dep();
+             }
+             dep(){
+              setTimeout(()=>{
+                this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
+              });
              }
              // 配置项
              get list() {

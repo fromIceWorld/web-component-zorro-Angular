@@ -30,9 +30,6 @@ export class DialogComponent implements OnInit {
   close(e) {
     this.hiden();
   }
-  ngDoCheck() {
-    console.log('ngDoCheck');
-  }
   private changeState(target: boolean) {
     this.display = !!target;
     this.cd.detectChanges();

@@ -11,6 +11,7 @@ import { API_CONFIG } from './api-config';
 })
 export class RequestComponent {
   static tagNamePrefix: string = 'my-api';
+  static httpCopy;
   @Output() loading = new EventEmitter();
   @Output() error = new EventEmitter();
   @Output() success200 = new EventEmitter();
@@ -21,11 +22,15 @@ export class RequestComponent {
   list;
   message;
   total = 0;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    RequestComponent.httpCopy = http;
+  }
   request() {
     //  获取接口上附加的 params
     let params = {}, //@ts-ignore
       paramsSource = this.request.params || [];
+    console.log('request-----', paramsSource);
+    window['requestTest'] = paramsSource;
     paramsSource.forEach((item) => {
       const [ins, keys] = item;
       keys.forEach((key) => {
@@ -43,11 +48,11 @@ export class RequestComponent {
       .subscribe(
         (res: any) => {
           const { code, data, message } = res;
-          const { list, total } = data;
-          this.data = data;
-          this.list = list;
-          this.total = total;
           this.message = message;
+          // api返回值是动态可配置的，以各种情况下的组件返回值。
+          Object.keys(data || {}).forEach((key) => {
+            this[key] = data[key];
+          });
           if (code === 200) {
             this.success200.emit();
           } else if (code === 500) {
@@ -74,7 +79,7 @@ export class RequestComponent {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyAPI${index} extends ${className}{
                constructor(){
-                   super();
+                   super(RequestComponent.httpCopy);
                    ${init}
                }
            }

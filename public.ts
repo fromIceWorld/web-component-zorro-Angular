@@ -41,6 +41,18 @@ const components = [
       component: 'ButtonComponent',
     },
     {
+      id: 'image',
+      type: 'node',
+      icon: 'picture',
+      title: `图片:
+                 Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 3,
+      family: 'base',
+      des: '图片组件',
+      component: 'ImageComponent',
+    },
+    {
       id: 'container',
       type: 'combo',
       icon: 'border-outer',
@@ -77,6 +89,18 @@ const components = [
       component: 'RadioComponent',
     },
     {
+      id: 'select',
+      type: 'node',
+      title: `选择列:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      icon: 'down',
+      view: 3,
+      family: 'form',
+      des: '基础的下拉选择组件',
+      component: 'SelectComponent',
+    },
+    {
       id: 'table',
       type: 'node',
       icon: 'ordered-list',
@@ -111,7 +135,20 @@ const components = [
       view: 3,
       family: 'api',
       des: '基础的http组件',
-      component: 'APIComponent',
+      component: 'RequestComponent',
+    },
+    {
+      id: 'hook',
+      type: 'node',
+      icon: 'field-time',
+      title: `hook:
+                Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      node: 'hook',
+      view: 3,
+      family: 'hook',
+      des: '页面hook',
+      component: 'HookComponent',
     },
   ],
   file = 'dist/';
