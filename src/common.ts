@@ -12,6 +12,8 @@ function transformValue(obj) {
       };
     });
     return JSON.stringify(arr);
+  } else if (type == 'json') {
+    return value;
   }
 }
 export { transformValue };

@@ -1,0 +1,10 @@
+<span style="padding: 2px 0">
+  <nz-tag
+    *ngFor="let tag of tags"
+    [nzMode]="mode"
+    [nzChecked]="tag.checked"
+    [nzColor]="tag.color"
+    (nzCheckedChange)="checkChange(tag)"
+    >{{ tag.value }}</nz-tag
+  >
+</span>

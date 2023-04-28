@@ -20,7 +20,7 @@ export class HookComponent implements OnInit {
     let time = setInterval(() => {
       this.connectedCallback.emit();
       this.count--;
-      if (this.count == 0) {
+      if (this.count <= 0) {
         clearInterval(time);
       }
     }, this.interval);
@@ -43,6 +43,8 @@ export class HookComponent implements OnInit {
                    ${init};
                    if (this.delay) {
                       setTimeout(() => {
+                        this.count--;
+                        this.connectedCallback.emit();
                         this.runAndEmit();
                       }, this.delay);
                     } else {

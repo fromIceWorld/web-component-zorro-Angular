@@ -12,6 +12,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -25,10 +26,12 @@ import { HookComponent } from './hook/hook.component';
 import { IconComponent } from './icon/icon.component';
 import { ImageComponent } from './image/image.component';
 import { InputComponent } from './input/input.component';
+import { PaginationComponent } from './pagination/pagination.component';
 import { RadioComponent } from './radio/radio.component';
 import { RequestComponent } from './request/request.component';
 import { SelectComponent } from './select/select.component';
 import { TableComponent } from './table/table.component';
+import { TagComponent } from './tag/tag.component';
 import { TestService } from './test.service';
 import { TextComponent } from './text/text.component';
 
@@ -52,6 +55,8 @@ window['HttpHandler'] = HttpHandler;
     SelectComponent,
     ImageComponent,
     HookComponent,
+    PaginationComponent,
+    TagComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +73,7 @@ window['HttpHandler'] = HttpHandler;
     ReactiveFormsModule,
     NzTableModule,
     BrowserAnimationsModule,
+    NzPaginationModule,
   ],
   providers: [HttpClient, TestService],
   bootstrap: [],
@@ -209,5 +215,17 @@ export class AppModule {
       injector: this.injector,
     });
     this.registerEl('my-hook', HookEl);
+    // Pagination
+    window['PaginationComponent'] = PaginationComponent;
+    const PaginationEl = createCustomElement(PaginationComponent, {
+      injector: this.injector,
+    });
+    this.registerEl('my-pagination', PaginationEl);
+    // tags
+    window['TagComponent'] = TagComponent;
+    const TagEl = createCustomElement(TagComponent, {
+      injector: this.injector,
+    });
+    this.registerEl('my-tag', TagEl);
   }
 }

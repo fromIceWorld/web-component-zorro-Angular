@@ -1,0 +1,11 @@
+<nz-pagination
+  [nzPageIndex]="pageIndex"
+  [nzTotal]="totalCount"
+  [nzPageSize]="pageSize"
+  [nzPageSizeOptions]="[10, 20, 30, 40]"
+  [nzShowQuickJumper]="nzShowQuickJumper"
+  [nzShowSizeChanger]="nzShowSizeChanger"
+  (nzPageIndexChange)="pageIndexChange()"
+  (nzPageSizeChange)="pageSizeChange()"
+  style="display: inline-block"
+></nz-pagination>

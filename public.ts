@@ -103,7 +103,7 @@ const components = [
     {
       id: 'table',
       type: 'node',
-      icon: 'ordered-list',
+      icon: 'table',
       title: `表格:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -111,6 +111,30 @@ const components = [
       family: 'table',
       des: '基础的table组件',
       component: 'TableComponent',
+    },
+    {
+      id: 'pagination',
+      type: 'node',
+      icon: 'delivered-procedure',
+      title: `分页:
+                 Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 3,
+      family: 'table',
+      des: '基础的分页组件',
+      component: 'PaginationComponent',
+    },
+    {
+      id: 'tag',
+      type: 'node',
+      icon: 'tags',
+      title: `标签:
+                 Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 3,
+      family: 'tag',
+      des: '基础的标签组件',
+      component: 'TagComponent',
     },
     {
       id: 'dialog_model',
