@@ -9,7 +9,6 @@
 }
 .content {
   position: fixed;
-  width: 400px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -35,10 +34,16 @@
   justify-content: flex-end;
   padding: 10px;
   border-top: 1px solid #f0f0f0;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
+  position: unset;
 }
 .dialog-foot button {
   margin-right: 10px;
+}
+.close-btn {
+  position: absolute;
+  right: 14px;
+  top: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
 }

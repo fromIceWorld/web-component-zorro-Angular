@@ -10,11 +10,10 @@
   [nzShowSizeChanger]="sizeChanger"
   [nzFrontPagination]="pagination"
   [nzShowPagination]="pagination"
-  [nzFooter]="footer ? 'Here is Footer' : null"
-  [nzTitle]="title ? 'Here is Title' : null"
+  [nzFooter]="footer ? footerValue : null"
+  [nzTitle]="title ? titleValue : null"
   [nzSize]="size"
   [style]="headerConfig()"
-  (nzCurrentPageDataChange)="currentPageDataChange($event)"
 >
   <thead>
     <tr *ngIf="header">
@@ -22,7 +21,7 @@
       <th
         *ngIf="checkbox"
         nzWidth="60px"
-        [(nzChecked)]="allChecked"
+        [(nzChecked)]="checked"
         [nzLeft]="fixedColumn"
         [nzIndeterminate]="indeterminate"
         (nzCheckedChange)="checkAll($event)"
@@ -30,10 +29,11 @@
       <th
         *ngFor="let item of headers"
         [nzLeft]="fixedColumn"
-        [nzWidth]="itemWidth(item.label.split(':')[1])"
+        [nzWidth]="itemWidth(item.width)"
       >
-        {{ item.label.split(":")[0] }}
+        {{ item.label }}
       </th>
+      <th *ngIf="viewBtn || editBtn || deleteBtn" [nzWidth]="'100px'">操作</th>
       <!-- <th>Age</th>
       <th>Address</th>
       <th [nzRight]="fixedColumn">Action</th> -->
@@ -45,19 +45,46 @@
         <td
           [nzLeft]="fixedColumn"
           *ngIf="expandable"
-          [(nzExpand)]="data.expand"
+          [nzExpand]="expandSet.has(data.id)"
+          (nzExpandChange)="onExpandChange(data.id, $event)"
         ></td>
         <td
           [nzLeft]="fixedColumn"
           *ngIf="checkbox"
-          [(nzChecked)]="data.checked"
-          (nzCheckedChange)="refreshStatus()"
+          [nzChecked]="setOfCheckedId.has(data.id)"
+          (nzCheckedChange)="onItemChecked(data.id, $event)"
         ></td>
         <td nzEllipsis *ngFor="let header of headers; index as i">
-          {{ data[header.label.split(":")[0]] }}
+          {{ data[header.key] }}
+        </td>
+        <td *ngIf="viewBtn || editBtn || deleteBtn" class="table-operate">
+          <a *ngIf="viewBtn">
+            <span
+              nz-icon
+              nzType="eye"
+              nzTheme="outline"
+              (click)="seeRow(data)"
+            ></span>
+          </a>
+          <a *ngIf="editBtn">
+            <span
+              nz-icon
+              nzType="edit"
+              nzTheme="outline"
+              (click)="editRow(data)"
+            ></span>
+          </a>
+          <a *ngIf="deleteBtn">
+            <span
+              nz-icon
+              nzType="delete"
+              nzTheme="outline"
+              (click)="deleteRow(data)"
+            ></span>
+          </a>
         </td>
       </tr>
-      <tr *ngIf="expandable" [nzExpand]="data.expand">
+      <tr *ngIf="expandable" [nzExpand]="expandSet.has(data.id)">
         <span> {{ data.description }}</span>
       </tr>
     </ng-container>

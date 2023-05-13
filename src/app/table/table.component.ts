@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   NzTableLayout,
   NzTablePaginationPosition,
@@ -46,9 +52,19 @@ interface Setting {
 })
 export class TableComponent implements OnInit {
   static tagNamePrefix: string = 'my-table';
+  @Output('view') view = new EventEmitter();
+  @Output('edit') edit = new EventEmitter();
+  @Output('delete') delete = new EventEmitter();
+  expandSet = new Set<number>();
+  onExpandChange(id: number, checked: boolean): void {
+    if (checked) {
+      this.expandSet.add(id);
+    } else {
+      this.expandSet.delete(id);
+    }
+  }
   listOfData: ItemData[] = [];
-  displayData: ItemData[] = [];
-  allChecked = false;
+  item = {};
   indeterminate = false;
   fixedColumn = false;
   scrollX: string | null = null;
@@ -56,8 +72,8 @@ export class TableComponent implements OnInit {
   settingValue!: Setting;
   // 数据项
   headers = [
-    { label: 'age:100', value: 'age:100' },
-    { label: 'name', value: 'name' },
+    { label: '年龄', key: 'age', width: '100' },
+    { label: '姓名', key: 'name', width: '100' },
   ];
   // 数据项
   // 配置项
@@ -74,27 +90,45 @@ export class TableComponent implements OnInit {
   noResult = false;
   ellipsis = false;
   simple = false;
+  viewBtn = false;
+  editBtn = false;
+  deleteBtn = false;
   size = 'small';
   paginationType = 'default';
   tableScroll = 'unset';
   tableLayout = 'auto';
   position = 'bottom';
+  titleValue = 'Here is Title';
+  footerValue = 'Here is Footer';
+  setOfCheckedId = new Set<number>();
+  listOfCurrentPageData: readonly ItemData[] = [];
+  checked = false;
   @method()
   setLoading() {
     this.loading = true;
     this.check();
   }
   // 暴露的方法
-  currentPageDataChange($event: ItemData[]): void {
-    this.displayData = $event;
+
+  updateCheckedSet(id: number, checked: boolean): void {
+    if (checked) {
+      this.setOfCheckedId.add(id);
+    } else {
+      this.setOfCheckedId.delete(id);
+    }
+  }
+  onItemChecked(id: number, checked: boolean): void {
+    this.updateCheckedSet(id, checked);
     this.refreshStatus();
   }
   headerWidth() {
     let widthSum =
       this.headers.reduce((pre, cur) => {
-        let width = Number(cur.label.split(':')[1]) || -Infinity;
+        let width = Number(cur.width) || -Infinity;
         return pre + width;
-      }, 0) + (this.checkbox ? 60 : 0);
+      }, 0) +
+      (this.checkbox ? 60 : 0) +
+      (this.viewBtn || this.editBtn || this.deleteBtn ? 100 : 0);
     return widthSum;
   }
   // 配置table宽度，如果有明确的width，table有固定宽度，否的话就自适应
@@ -108,27 +142,36 @@ export class TableComponent implements OnInit {
   }
   // 每一列的宽度
   itemWidth(width) {
-    return width ? width + 'px' : 'unset';
+    return isNaN(Number(width)) ? 'unset' : width + 'px';
   }
   refreshStatus(): void {
-    const validData = this.displayData.filter((value) => !value.disabled);
-    const allChecked =
-      validData.length > 0 &&
-      validData.every((value) => value.checked === true);
-    const allUnChecked = validData.every((value) => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = !allChecked && !allUnChecked;
+    const checked = this.listOfData.length == this.setOfCheckedId.size;
+    this.checked = checked;
+    this.indeterminate = !checked;
   }
   // 勾选全部
   checkAll(value: boolean): void {
-    this.displayData.forEach((data) => {
-      if (!data.disabled) {
-        data.checked = value;
-      }
-    });
+    if (value) {
+      this.setOfCheckedId = new Set(
+        this.listOfData.map((item: any) => item.id)
+      );
+    } else {
+      this.setOfCheckedId.clear();
+    }
     this.refreshStatus();
   }
-
+  seeRow(row) {
+    this.item = row;
+    this.view.emit();
+  }
+  editRow(row) {
+    this.item = row;
+    this.edit.emit();
+  }
+  deleteRow(row) {
+    this.item = row;
+    this.delete.emit();
+  }
   constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
@@ -177,6 +220,12 @@ export class TableComponent implements OnInit {
              set list(data) {
                this.listOfData = data || [];
                this.check();
+             }
+             get selected() {
+              return {selected:Array.from(this.setOfCheckedId)};
+             }
+             get id() {
+              return {id:this.item && this.item.id};
              }
          }
          MyTable${index}.ɵcmp.factory = () => { return new MyTable${index}()};

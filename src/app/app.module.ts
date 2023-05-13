@@ -8,6 +8,7 @@ import { createCustomElement } from '@angular/elements';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IconDefinition } from '@ant-design/icons-angular';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -35,6 +36,15 @@ import { TagComponent } from './tag/tag.component';
 import { TestService } from './test.service';
 import { TextComponent } from './text/text.component';
 
+// 引入全部的图标，不推荐 ❌
+import * as AllIcons from '@ant-design/icons-angular/icons';
+
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
+  (key) => antDesignIcons[key]
+);
 // 暴露出源组件class 创建web component的API
 window['createCustomElement'] = createCustomElement;
 window['HttpClient'] = HttpClient;
@@ -65,7 +75,7 @@ window['HttpHandler'] = HttpHandler;
     NzRadioModule,
     NzSelectModule,
     NzInputModule,
-    NzIconModule,
+    NzIconModule.forRoot(icons),
     NzTagModule,
     NzSwitchModule,
     HttpClientModule,

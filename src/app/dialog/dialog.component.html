@@ -2,7 +2,7 @@
   <div class="content">
     <div class="dialog-header">
       <span class="dialog-header-title">{{ title }}</span>
-      <img (click)="close($event)" src="../../assets/img/close.svg" />
+      <span (click)="close($event)" class="close-btn">x</span>
     </div>
     <div class="dialog-body" #content>
       <ng-content></ng-content>

@@ -10,24 +10,39 @@ const DIALOG_CONFIG = {
     style: {
       display: 'flex',
     },
-    'padding-top': {
+    // 'padding-top': {
+    //   type: 'number',
+    //   value: 10,
+    //   postfix: 'px',
+    // },
+    // 'padding-right': {
+    //   type: 'number',
+    //   value: 10,
+    //   postfix: 'px',
+    // },
+    // 'padding-bottom': {
+    //   type: 'number',
+    //   value: 10,
+    //   postfix: 'px',
+    // },
+    // 'padding-left': {
+    //   type: 'number',
+    //   value: 10,
+    //   postfix: 'px',
+    // },
+    // 'border-width': {
+    //   type: 'number',
+    //   value: 1,
+    //   postfix: 'px',
+    // },
+    width: {
       type: 'number',
-      value: 10,
+      value: 100,
       postfix: 'px',
     },
-    'padding-right': {
+    height: {
       type: 'number',
-      value: 10,
-      postfix: 'px',
-    },
-    'padding-bottom': {
-      type: 'number',
-      value: 10,
-      postfix: 'px',
-    },
-    'padding-left': {
-      type: 'number',
-      value: 10,
+      value: 100,
       postfix: 'px',
     },
   },

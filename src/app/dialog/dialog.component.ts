@@ -14,19 +14,13 @@ import { DIALOG_CONFIG } from './dialog-config';
 export class DialogComponent implements OnInit {
   @ViewChild('model') model;
   @ViewChild('content') content;
-  static tagNamePrefix: string = 'my-dialog-model';
+  static tagNamePrefix: string = 'my-dialog';
   title: string = '对话框';
   display: boolean = false;
   classStr;
   left;
   top;
-  constructor(
-    private ser: TextService,
-    private cd: ChangeDetectorRef,
-    private ms: NzModalService
-  ) {
-    console.log(NzModalService, 'service', this.ser, this.ms);
-  }
+  constructor(private cd: ChangeDetectorRef) {}
   close(e) {
     this.hiden();
   }
@@ -52,15 +46,6 @@ export class DialogComponent implements OnInit {
   }
   public hiden() {
     this.changeState(false);
-    // this.model.viewContainerRef.remove();
-    // let expendArea = document.querySelectorAll('.cdk-overlay-container'),
-    //   html = document.querySelector('html'),
-    //   classStr = html.getAttribute('class');
-    // html.setAttribute('class', classStr.replace('cdk-global-scrollblock', ''));
-    // html.style.setProperty('left', this.left);
-    // html.style.setProperty('top', this.top);
-    // expendArea.forEach((e) => (e.innerHTML = ''));
-    this.model.modal.openModals[0]._finishDialogClose();
   }
   static extends(option) {
     const { html, css, className } = option;
@@ -78,7 +63,13 @@ export class DialogComponent implements OnInit {
              constructor(){
                 super();
                 this.title = '${title.value}';
+                this.dep();
              }
+             dep(){
+              setTimeout(()=>{
+                this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
+              });
+            }
            }
            MyDialogModel${index}.ɵcmp.factory = () => { return new MyDialogModel${index}()};
            customElements.define('${tagName}',createCustomElement(MyDialogModel${index},{injector}));

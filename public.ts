@@ -137,8 +137,9 @@ const components = [
       component: 'TagComponent',
     },
     {
-      id: 'dialog_model',
+      id: 'dialog',
       type: 'combo',
+      node: 'rect', // 当前节点在视图上对应的图形
       color: '#dd0031',
       icon: 'switcher',
       title: `弹窗:

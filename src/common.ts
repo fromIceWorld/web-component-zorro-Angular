@@ -14,6 +14,8 @@ function transformValue(obj) {
     return JSON.stringify(arr);
   } else if (type == 'json') {
     return value;
+  } else if (type == 'headers') {
+    return JSON.stringify(options);
   }
 }
 export { transformValue };

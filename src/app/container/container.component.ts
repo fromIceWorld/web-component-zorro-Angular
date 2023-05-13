@@ -16,11 +16,10 @@ export class ContainerComponent implements OnInit {
     const index = String(Math.random()).substring(2),
       tagName = `${ContainerComponent.tagNamePrefix}-${index}`;
     const { style, width, height } = css;
-    const flexDirection = style['flex-direction'];
+    const displayVal = style['display'];
     let styleStr = '';
-    if (flexDirection) {
-      styleStr = 'display:flex;';
-      styleStr += `flex-direction:${flexDirection};`;
+    if (displayVal) {
+      styleStr = `display:${displayVal};`;
     }
     for (let [key, value] of Object.entries(css)) {
       if (key == 'style') {
@@ -47,9 +46,9 @@ export class ContainerComponent implements OnInit {
       }
     }
     // 添加width,height
-    if (width.value) {
-      styleStr += `width:${width.value};`;
-    }
+    // if (width.value) {
+    //   styleStr += `width:${width.value};`;
+    // }
     if (height.value) {
       styleStr += `height:${height.value};`;
     }

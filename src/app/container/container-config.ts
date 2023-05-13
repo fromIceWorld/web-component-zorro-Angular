@@ -3,17 +3,16 @@ const CONTAINER_CONFIG = {
   html: {},
   css: {
     style: {
-      display: 'flex',
-      'flex-direction': '',
+      display: 'block',
     },
     border: {
       type: 'boolean',
       value: false,
     },
-    width: {
-      type: 'string',
-      value: '100%',
-    },
+    // width: {
+    //   type: 'string',
+    //   value: '100%',
+    // },
     height: {
       type: 'string',
       value: '',
