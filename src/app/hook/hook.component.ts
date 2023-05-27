@@ -17,6 +17,8 @@ export class HookComponent implements OnInit {
   constructor() {}
   ngOnInit(): void {}
   runAndEmit() {
+    let initInterval = this.interval;
+    this.interval = 0;
     let time = setInterval(() => {
       this.connectedCallback.emit();
       this.count--;
@@ -24,6 +26,7 @@ export class HookComponent implements OnInit {
         clearInterval(time);
       }
     }, this.interval);
+    this.interval = initInterval;
   }
   static extends(option): { html: string; js: string } {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。

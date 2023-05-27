@@ -37,12 +37,12 @@ const DIALOG_CONFIG = {
     // },
     width: {
       type: 'number',
-      value: 100,
+      value: 800,
       postfix: 'px',
     },
     height: {
       type: 'number',
-      value: 100,
+      value: 400,
       postfix: 'px',
     },
   },

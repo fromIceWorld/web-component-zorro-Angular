@@ -17,14 +17,18 @@
   box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
 }
 .dialog-header {
-  height: 40px;
-  padding: 10px;
+  height: 60px;
+  padding: 16px 24px;
   border-bottom: 1px solid rgb(240, 240, 240);
 }
 .dialog-header > img {
   height: 14px;
   float: right;
   cursor: pointer;
+}
+.dialog-header-title {
+  font-weight: 500;
+  font-size: 16px;
 }
 .dialog-body {
   padding: 12px 24px;
@@ -40,10 +44,13 @@
   margin-right: 10px;
 }
 .close-btn {
-  position: absolute;
-  right: 14px;
-  top: 6px;
-  font-size: 16px;
+  float: right;
+  position: relative;
+  left: 8px;
+  bottom: 4px;
+  font-size: 23px;
+  line-height: 30px;
+  padding: 0px 10px 5px 10px;
   font-weight: 500;
   cursor: pointer;
 }

@@ -18,6 +18,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { ButtonComponent } from './button/button.component';
 import { ContainerComponent } from './container/container.component';
@@ -38,6 +39,7 @@ import { TextComponent } from './text/text.component';
 
 // 引入全部的图标，不推荐 ❌
 import * as AllIcons from '@ant-design/icons-angular/icons';
+import { TabsComponent } from './tabs/tabs.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -67,6 +69,7 @@ window['HttpHandler'] = HttpHandler;
     HookComponent,
     PaginationComponent,
     TagComponent,
+    TabsComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +87,7 @@ window['HttpHandler'] = HttpHandler;
     NzTableModule,
     BrowserAnimationsModule,
     NzPaginationModule,
+    NzTabsModule,
   ],
   providers: [HttpClient, TestService],
   bootstrap: [],
@@ -237,5 +241,11 @@ export class AppModule {
       injector: this.injector,
     });
     this.registerEl('my-tag', TagEl);
+    // tabs
+    // window['TabsComponent'] = TabsComponent;
+    // const TabsEl = createCustomElement(TabsComponent, {
+    //   injector: this.injector,
+    // });
+    // this.registerEl('my-tabs', TabsEl);
   }
 }

@@ -11,7 +11,7 @@ import { TEXT_CONFIG } from './text-config';
 })
 export class TextComponent implements OnInit {
   static tagNamePrefix: string = 'my-text';
-  text: string = '姓名';
+  value: string = '姓名';
   isSHow: boolean = true;
   showChange() {
     this.isSHow = !this.isSHow;
@@ -20,6 +20,9 @@ export class TextComponent implements OnInit {
   @method()
   show() {
     this.isSHow = true;
+    this.cd.detectChanges();
+  }
+  check() {
     this.cd.detectChanges();
   }
   hide() {
@@ -64,6 +67,10 @@ export class TextComponent implements OnInit {
                 setTimeout(()=>{
                   this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
                 });
+              }
+              set text(value){
+                this.value = value;
+                this.check();
               }
           }
           MyText${index}.ɵcmp.factory = () => { return new MyText${index}()};

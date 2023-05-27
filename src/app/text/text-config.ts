@@ -1,7 +1,7 @@
 const TEXT_CONFIG = {
   className: 'TextComponent',
   html: {
-    text: {
+    value: {
       type: 'string',
       value: '姓名',
     },

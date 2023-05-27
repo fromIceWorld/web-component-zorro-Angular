@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port=4300 --progress",
-    "build": "ng build --prod=true --outputHashing=none --stats-json",
+    "build": "ng build --prod=true --outputHashing=none --extractCss=true --stats-json",
     "dll": "webpack --config webpack.dll.js",
     "analysis": "./node_modules/.bin/webpack-bundle-analyzer dist/stats.json",
     "test": "ng test",

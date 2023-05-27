@@ -1,0 +1,15 @@
+<nz-tabset [nzSelectedIndex]="index" (nzSelectChange)="change($event)">
+  <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab.label">
+    <ng-container [ngTemplateOutlet]="liveTemplate"></ng-container>
+  </nz-tab>
+</nz-tabset>
+
+<ng-template #tmp> <ng-content select="[slot=tab0]"></ng-content></ng-template>
+<ng-template #tmp> <ng-content select="[slot=tab1]"></ng-content></ng-template>
+<ng-template #tmp> <ng-content select="[slot=tab2]"></ng-content></ng-template>
+<ng-template #tmp> <ng-content select="[slot=tab3]"></ng-content></ng-template>
+<ng-template #tmp> <ng-content select="[slot=tab4]"></ng-content></ng-template>
+<!-- <ng-template #tmp> <ng-content></ng-content></ng-template> -->
+<!-- <ng-template *ngFor="let tab of tabs" #tmp>
+  <ng-content [select]="selectCompute(tab)"></ng-content
+></ng-template> -->

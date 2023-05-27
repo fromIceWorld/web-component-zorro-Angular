@@ -11,7 +11,7 @@ const components = [
       title: `文本:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      view: 3,
+      view: 0,
       family: 'base',
       des: '基础的text文本组件',
       component: 'TextComponent',
@@ -23,7 +23,7 @@ const components = [
       title: `图标:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      view: 3,
+      view: 0,
       family: 'base',
       des: '基础的icon组件',
       component: 'IconComponent',
@@ -35,7 +35,7 @@ const components = [
       title: `按钮:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      view: 3,
+      view: 0,
       family: 'base',
       des: '基础的按钮组件',
       component: 'ButtonComponent',
@@ -47,7 +47,7 @@ const components = [
       title: `图片:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      view: 3,
+      view: 0,
       family: 'base',
       des: '图片组件',
       component: 'ImageComponent',
@@ -59,7 +59,7 @@ const components = [
       title: `布局容器:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      view: 1,
+      view: 0,
       family: 'layout',
       des: '基础的布局组件',
       component: 'ContainerComponent',
@@ -71,7 +71,7 @@ const components = [
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
       icon: 'edit',
-      view: 3,
+      view: 0,
       family: 'form',
       des: '基础的输入框组件',
       component: 'InputComponent',
@@ -83,7 +83,7 @@ const components = [
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
       icon: 'aim',
-      view: 3,
+      view: 0,
       family: 'form',
       des: '基础的单选框组件',
       component: 'RadioComponent',
@@ -95,7 +95,7 @@ const components = [
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
       icon: 'down',
-      view: 3,
+      view: 0,
       family: 'form',
       des: '基础的下拉选择组件',
       component: 'SelectComponent',
@@ -107,7 +107,7 @@ const components = [
       title: `表格:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      view: 3,
+      view: 0,
       family: 'table',
       des: '基础的table组件',
       component: 'TableComponent',
@@ -119,7 +119,7 @@ const components = [
       title: `分页:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      view: 3,
+      view: 0,
       family: 'table',
       des: '基础的分页组件',
       component: 'PaginationComponent',
@@ -131,7 +131,7 @@ const components = [
       title: `标签:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      view: 3,
+      view: 0,
       family: 'tag',
       des: '基础的标签组件',
       component: 'TagComponent',
@@ -139,12 +139,12 @@ const components = [
     {
       id: 'dialog',
       type: 'combo',
-      node: 'rect', // 当前节点在视图上对应的图形
+      node: 'dialog', // 当前节点在视图上对应的图形
       color: '#dd0031',
       icon: 'switcher',
       title: `弹窗:
                 Angular@10+ng-zorro-antd`,
-      view: 3,
+      view: 2,
       family: 'dialog',
       des: '基础的弹窗组件',
       component: 'DialogComponent',
@@ -183,8 +183,8 @@ const filesName = [
   { name: 'main.js', decorator: { defer: true } },
   { name: 'polyfills.js', decorator: { defer: true } },
   { name: 'runtime.js', decorator: { defer: true } },
-  { name: 'styles.js', decorator: { defer: true } },
   { name: 'vendor.js', decorator: { defer: true } },
+  'styles.css',
 ];
 let options = {
   url: 'http://127.0.0.1:3000/upload',
