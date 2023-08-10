@@ -1,11 +1,6 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { customWebComponent } from 'src/common';
 import { config } from 'src/decorators/config';
 import { INPUT_CONFIG } from './input-config';
 @config(INPUT_CONFIG)
@@ -14,7 +9,7 @@ import { INPUT_CONFIG } from './input-config';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css'],
 })
-export class InputComponent implements OnInit {
+export class InputComponent extends customWebComponent implements OnInit {
   static tagNamePrefix: string = 'my-input';
   @Output('validateTrue') validateTrue = new EventEmitter();
   @Output('validateFalse') validateFalse = new EventEmitter();
@@ -23,11 +18,11 @@ export class InputComponent implements OnInit {
   Validators = Validators;
   placeholder: string = '请输入姓名';
   isValid() {
+    this.cd.detectChanges();
     return this.control.valid;
   }
   onFocus() {
     this.isFocus = true;
-    this.cd.detectChanges();
   }
   onBlur() {
     this.isFocus = false;
@@ -37,7 +32,9 @@ export class InputComponent implements OnInit {
     this.control.patchValue('');
     this.cd.detectChanges();
   }
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor() {
+    super();
+  }
   borderColorShdow() {
     let obj = {
       'border-color': '#d9d9d9',
@@ -94,7 +91,6 @@ export class InputComponent implements OnInit {
                     this.validateFalse.emit();
                   }
                 });
-                this.dep();
              }
              get value() {
                return {${formcontrol.value}:this.control.value};
@@ -102,17 +98,22 @@ export class InputComponent implements OnInit {
              set value(target) {
                this.control.setValue(target);
              }
-            dep(){
-             setTimeout(()=>{
-               this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
-             });
-            }
+             get validateValue() {
+               return {
+                ${formcontrol.value}:this.control.value,
+                _valid:this.isValid()
+              };
+             }
         };
         MyInput${index}.ɵcmp.factory = () => { return new MyInput${index}()};
-        customElements.define('${tagName}',createCustomElement(MyInput${index}, {  injector: injector,}));
-        `,
+        (()=>{
+            let customEl = createCustomElement(MyInput${index}, {  injector: injector,});
+            customElements.define('${tagName}',customEl);
+        })();`,
     };
     return config;
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.applyData();
+  }
 }

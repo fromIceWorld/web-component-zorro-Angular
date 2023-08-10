@@ -58,15 +58,7 @@ const BUTTON_CONFIG = {
       value: 'search',
     },
   },
-  css: {
-    classes: '',
-    style: {
-      paddingTop: 0,
-      paddingRight: 0,
-      paddingBottom: 0,
-      paddingLeft: 0,
-    },
-  },
+  css: {},
   component: {
     event: [{ label: 'click', value: 'click' }],
     methods: [

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { config } from 'src/decorators/config';
 
+import { customWebComponent } from 'src/common';
 import { RADIO_CONFIG } from './radio-config';
 @config(RADIO_CONFIG)
 @Component({
@@ -8,7 +9,7 @@ import { RADIO_CONFIG } from './radio-config';
   templateUrl: './radio.component.html',
   styleUrls: ['./radio.component.css'],
 })
-export class RadioComponent implements OnInit {
+export class RadioComponent extends customWebComponent implements OnInit {
   static tagNamePrefix: string = 'my-radio';
   control = '';
   options = [
@@ -57,10 +58,22 @@ export class RadioComponent implements OnInit {
             }
         }
         MyRadio${index}.ɵcmp.factory = () => { return new MyRadio${index}()};
-        customElements.define('${tagName}',createCustomElement(MyRadio${index}, {  injector: injector}));
+        (()=>{
+          let customEl = createCustomElement(MyRadio${index}, {  injector: injector,});
+          // 添加用户自定义数据
+          Object.defineProperty(customEl.prototype,'option',{
+            get(){
+              return ${JSON.stringify(config)}
+            },
+            configurable: false,
+            enumerable: false
+          })
+          customElements.define('${tagName}',customEl);
+      })();
         `,
     };
   }
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.applyData();
+  }
 }

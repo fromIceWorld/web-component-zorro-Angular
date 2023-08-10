@@ -18,18 +18,17 @@ const TABS_CONFIG = {
     },
   },
   css: {
-    classes: '',
-    style: {},
     width: {
       type: 'number',
-      value: 800,
+      value: 0,
       postfix: 'px',
     },
     height: {
       type: 'number',
-      value: 400,
+      value: 0,
       postfix: 'px',
     },
+    style: {},
   },
   component: {
     event: [],

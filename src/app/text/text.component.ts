@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { transformValue } from 'src/common';
+import { Component, OnInit } from '@angular/core';
+import { customWebComponent, transformValue } from 'src/common';
 import { method } from 'src/decorators';
 import { config } from 'src/decorators/config';
 import { TEXT_CONFIG } from './text-config';
@@ -9,9 +9,11 @@ import { TEXT_CONFIG } from './text-config';
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.css'],
 })
-export class TextComponent implements OnInit {
+export class TextComponent extends customWebComponent implements OnInit {
   static tagNamePrefix: string = 'my-text';
   value: string = '姓名';
+  fontSize: string = '14px';
+  color: string = 'black';
   isSHow: boolean = true;
   showChange() {
     this.isSHow = !this.isSHow;
@@ -41,17 +43,16 @@ export class TextComponent implements OnInit {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${TextComponent.tagNamePrefix}-${index}`;
-    const { html: config, css, className } = option;
+    const { html, css, className } = option;
     let styleStr = '';
     for (let [key, value] of Object.entries(css)) {
       // @ts-ignore
       styleStr += `${key}:${value.value}${value.postfix || ''};`;
     }
-    const init = Object.keys(config)
-      .map((key) => {
-        return `this.${key} = ${transformValue(config[key])}`;
-      })
-      .join('\n');
+    let config = {};
+    Object.keys(html).map((key) => {
+      config[key] = transformValue(html[key]);
+    });
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance"
@@ -60,13 +61,6 @@ export class TextComponent implements OnInit {
       js: `class MyText${index} extends ${className}{
               constructor(){
                   super();
-                  ${init}
-                  this.dep();
-              }
-              dep(){
-                setTimeout(()=>{
-                  this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
-                });
               }
               set text(value){
                 this.value = value;
@@ -74,10 +68,23 @@ export class TextComponent implements OnInit {
               }
           }
           MyText${index}.ɵcmp.factory = () => { return new MyText${index}()};
-          customElements.define('${tagName}',createCustomElement(MyText${index}, {  injector: injector,}));
+          (()=>{
+            let customEl = createCustomElement(MyText${index}, {  injector: injector,});
+            // 添加用户自定义数据
+            Object.defineProperty(customEl.prototype,'option',{
+              get(){
+                return ${JSON.stringify(config)}
+              },
+              configurable: false,
+              enumerable: false
+            })
+            customElements.define('${tagName}',customEl);
+         })();
           `,
     };
   }
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor() {
+    super();
+  }
   ngOnInit(): void {}
 }

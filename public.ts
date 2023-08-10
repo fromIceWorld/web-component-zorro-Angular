@@ -52,18 +52,18 @@ const components = [
       des: '图片组件',
       component: 'ImageComponent',
     },
-    {
-      id: 'container',
-      type: 'combo',
-      icon: 'border-outer',
-      title: `布局容器:
-                  Angular@10+ng-zorro-antd`,
-      color: '#dd0031',
-      view: 0,
-      family: 'layout',
-      des: '基础的布局组件',
-      component: 'ContainerComponent',
-    },
+    // {
+    //   id: 'container',
+    //   type: 'combo',
+    //   icon: 'border-outer',
+    //   title: `布局容器:
+    //               Angular@10+ng-zorro-antd`,
+    //   color: '#dd0031',
+    //   view: 0,
+    //   family: 'layout',
+    //   des: '基础的布局组件',
+    //   component: 'ContainerComponent',
+    // },
     {
       id: 'input',
       type: 'node',
@@ -210,7 +210,6 @@ filesName.forEach((fileName) => {
 let iconJS = Buffer.from(
   require('fs').readFileSync('./iconfont/iconfont.js')
 ).toString();
-console.log(iconJS);
 files.push({
   name: 'iconfont.js',
   content: iconJS,
@@ -238,6 +237,8 @@ request(
   (err, res, body) => {
     if (res.statusCode === 200) {
       console.log(filesName, res.statusCode, '上传完成');
+    } else {
+      console.log(body);
     }
   }
 );

@@ -1,3 +1,6 @@
-<span *ngIf="isSHow" style="padding: 4px; display: inline-block">{{
-  value
-}}</span>
+<span
+  *ngIf="isSHow"
+  style="padding: 4px; display: inline-block"
+  [ngStyle]="{ color: color, 'font-size': fontSize }"
+  >{{ value }}</span
+>

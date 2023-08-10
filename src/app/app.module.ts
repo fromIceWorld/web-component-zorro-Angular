@@ -109,7 +109,7 @@ export class AppModule {
   constructor(
     private parentInjector: Injector,
     private http: HttpClient,
-    private formBuilder: FormBuilder // private cd: ChangeDetectorRef
+    private formBuilder: FormBuilder //
   ) {
     this.injector = Injector.create({
       providers: [
@@ -162,12 +162,12 @@ export class AppModule {
       injector: this.injector,
     });
     this.registerEl('my-text', textEle);
-    // layout
-    window['ContainerComponent'] = ContainerComponent;
-    const containerEle = createCustomElement(ContainerComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-container', containerEle);
+    // // layout
+    // window['ContainerComponent'] = ContainerComponent;
+    // const containerEle = createCustomElement(ContainerComponent, {
+    //   injector: this.injector,
+    // });
+    // this.registerEl('my-container', containerEle);
 
     // dialog
     window['DialogComponent'] = DialogComponent;

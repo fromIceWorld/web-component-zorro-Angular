@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { transformValue } from 'src/common';
+import { customWebComponent, transformValue } from 'src/common';
 import { config } from 'src/decorators/config';
 import { API_CONFIG } from './api-config';
 @config(API_CONFIG)
@@ -9,10 +9,11 @@ import { API_CONFIG } from './api-config';
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.css'],
 })
-export class RequestComponent {
+export class RequestComponent extends customWebComponent {
   static tagNamePrefix: string = 'my-api';
   static httpCopy;
   @Output() loading = new EventEmitter();
+  @Output() validateFalse = new EventEmitter();
   @Output() error = new EventEmitter();
   @Output() success200 = new EventEmitter();
   @Output() success500 = new EventEmitter();
@@ -23,14 +24,16 @@ export class RequestComponent {
   message;
   total = 0;
   constructor(private http: HttpClient) {
+    super();
     RequestComponent.httpCopy = http;
+  }
+  ngOnInit(): void {
+    this.applyData();
   }
   request() {
     //  获取接口上附加的 params
     let params = {}, //@ts-ignore
       paramsSource = this.request.params || [];
-    console.log('request-----', paramsSource);
-    window['requestTest'] = paramsSource;
     paramsSource.forEach((item) => {
       const [ins, keys] = item;
       keys.forEach((key) => {
@@ -39,7 +42,30 @@ export class RequestComponent {
         Object.assign(params, ins[key]);
       });
     });
-    console.log(paramsSource, params);
+    this.xmlHttp(params);
+  }
+  validatorAndRequest() {
+    //  获取接口上附加的 params, 及校验结果;
+    let params = {},
+      invalid = true, //@ts-ignore
+      paramsSource = this.validatorAndRequest.params || [];
+    paramsSource.forEach((item) => {
+      const [ins, keys] = item;
+      keys.forEach((key) => {
+        let p = ins[key];
+        // 如果_valid 存在，而且是false，证明有参数未通过校验
+        invalid = p['_valid'] === false;
+        delete p['_valid'];
+        Object.assign(params, p);
+      });
+    });
+    if (invalid) {
+      this.validateFalse.emit();
+      return;
+    }
+    this.xmlHttp(params);
+  }
+  xmlHttp(params) {
     this.loading.emit();
     this.http
       .get(this.api, {
@@ -69,22 +95,31 @@ export class RequestComponent {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${RequestComponent.tagNamePrefix}-${index}`;
-    const { html: config, css, className } = option;
-    const init = Object.keys(config)
-      .map((key) => {
-        return `this.${key} = ${transformValue(config[key])}`;
-      })
-      .join('\n');
+    const { html, css, className } = option;
+    let config = {};
+    Object.keys(html).map((key) => {
+      config[key] = transformValue(html[key]);
+    });
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyAPI${index} extends ${className}{
                constructor(){
                    super(RequestComponent.httpCopy);
-                   ${init}
                }
            }
            MyAPI${index}.ɵcmp.factory = () => { return new MyAPI${index}()};
-           customElements.define('${tagName}',createCustomElement(MyAPI${index}, {  injector: injector,}));
+           (()=>{
+              let customEl = createCustomElement(MyAPI${index}, {  injector: injector,});
+              // 添加用户自定义数据
+              Object.defineProperty(customEl.prototype,'option',{
+                get(){
+                  return ${JSON.stringify(config)}
+                },
+                configurable: false,
+                enumerable: false
+              })
+              customElements.define('${tagName}',customEl);
+          })();
            `,
     };
   }

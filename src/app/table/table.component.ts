@@ -1,16 +1,10 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   NzTableLayout,
   NzTablePaginationPosition,
   NzTableSize,
 } from 'ng-zorro-antd/table';
-import { transformValue } from 'src/common';
+import { customWebComponent, transformValue } from 'src/common';
 import { method } from 'src/decorators';
 import { config } from 'src/decorators/config';
 import { TABLE_CONFIG } from './table-config';
@@ -50,7 +44,7 @@ interface Setting {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
 })
-export class TableComponent implements OnInit {
+export class TableComponent extends customWebComponent implements OnInit {
   static tagNamePrefix: string = 'my-table';
   @Output('view') view = new EventEmitter();
   @Output('edit') edit = new EventEmitter();
@@ -131,15 +125,6 @@ export class TableComponent implements OnInit {
       (this.viewBtn || this.editBtn || this.deleteBtn ? 100 : 0);
     return widthSum;
   }
-  // 配置table宽度，如果有明确的width，table有固定宽度，否的话就自适应
-  headerConfig() {
-    let widthSum = this.headerWidth();
-    let widthAttribute = widthSum > 0 ? widthSum + 'px' : '100%';
-    // 有固定宽度，table就是一个 inline-block
-    return (
-      `width:${widthAttribute};` + (widthSum > 0 ? 'display:inline-block' : '')
-    );
-  }
   // 每一列的宽度
   itemWidth(width) {
     return isNaN(Number(width)) ? 'unset' : width + 'px';
@@ -172,9 +157,13 @@ export class TableComponent implements OnInit {
     this.item = row;
     this.delete.emit();
   }
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor() {
+    super();
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.applyData();
+  }
   check() {
     this.cd.detectChanges();
   }
@@ -193,25 +182,17 @@ export class TableComponent implements OnInit {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${TableComponent.tagNamePrefix}-${index}`;
-    const { html: config, css, className } = option;
-    const init = Object.keys(config)
-      .map((key) => {
-        return `this.${key} = ${transformValue(config[key])}`;
-      })
-      .join('\n');
+    const { html, css, className } = option;
+    let config = {};
+    Object.keys(html).map((key) => {
+      config[key] = transformValue(html[key]);
+    });
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyTable${index} extends ${className}{
              constructor(){
                  super();
-                 ${init};
-                 this.dep();
-             }
-             dep(){
-              setTimeout(()=>{
-                this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
-              });
              }
              // 配置项
              get list() {
@@ -229,7 +210,18 @@ export class TableComponent implements OnInit {
              }
          }
          MyTable${index}.ɵcmp.factory = () => { return new MyTable${index}()};
-         customElements.define('${tagName}',createCustomElement(MyTable${index}, {  injector: injector,}));
+         (()=>{
+            let customEl = createCustomElement(MyTable${index}, {  injector: injector,});
+            // 添加用户自定义数据
+            Object.defineProperty(customEl.prototype,'option',{
+              get(){
+                return ${JSON.stringify(config)}
+              },
+              configurable: false,
+              enumerable: false
+            })
+            customElements.define('${tagName}',customEl);
+        })();
          `,
     };
   }

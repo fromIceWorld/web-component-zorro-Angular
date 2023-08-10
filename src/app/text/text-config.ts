@@ -5,16 +5,26 @@ const TEXT_CONFIG = {
       type: 'string',
       value: '姓名',
     },
-  },
-  css: {
-    'font-size': {
-      type: 'number',
-      value: 14,
+    fontSize: {
+      type: 'string',
+      value: '14',
       postfix: 'px',
     },
     color: {
-      type: 'string',
+      type: 'color',
       value: 'black',
+    },
+  },
+  css: {
+    width: {
+      type: 'number',
+      value: 0,
+      postfix: 'px',
+    },
+    height: {
+      type: 'number',
+      value: 0,
+      postfix: 'px',
     },
   },
   component: {

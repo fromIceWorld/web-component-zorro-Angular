@@ -29,7 +29,16 @@ const INPUT_CONFIG = {
     },
   },
   css: {
-    classes: '',
+    width: {
+      type: 'number',
+      value: 0,
+      postfix: 'px',
+    },
+    height: {
+      type: 'number',
+      value: 0,
+      postfix: 'px',
+    },
     style: {},
   },
   component: {
@@ -45,7 +54,7 @@ const INPUT_CONFIG = {
       { label: 'validate', value: 'validate' },
       { label: 'clear', value: 'clear' },
     ],
-    data: ['value'],
+    data: ['value', 'validateValue'],
     params: ['value'],
   },
 };

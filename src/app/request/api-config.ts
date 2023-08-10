@@ -18,7 +18,16 @@ const API_CONFIG = {
     },
   },
   css: {
-    classes: '',
+    width: {
+      type: 'number',
+      value: 0,
+      postfix: 'px',
+    },
+    height: {
+      type: 'number',
+      value: 0,
+      postfix: 'px',
+    },
     style: {},
   },
   component: {
@@ -29,7 +38,10 @@ const API_CONFIG = {
       { label: 'success200', value: 'success200' },
       { label: 'success500', value: 'success500' },
     ],
-    methods: [{ label: 'request', value: 'request' }],
+    methods: [
+      { label: 'request', value: 'request' },
+      { label: 'validatorAndRequest', value: 'validatorAndRequest' },
+    ],
     data: ['list', 'total', 'message'],
     params: [],
   },

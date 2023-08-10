@@ -5,6 +5,16 @@ const DIALOG_CONFIG = {
       type: 'string',
       value: '对话框',
     },
+    width: {
+      type: 'number',
+      value: 800,
+      postfix: 'px',
+    },
+    height: {
+      type: 'number',
+      value: 400,
+      postfix: 'px',
+    },
   },
   css: {
     style: {
@@ -37,12 +47,12 @@ const DIALOG_CONFIG = {
     // },
     width: {
       type: 'number',
-      value: 800,
+      value: 0,
       postfix: 'px',
     },
     height: {
       type: 'number',
-      value: 400,
+      value: 0,
       postfix: 'px',
     },
   },

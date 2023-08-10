@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { customWebComponent } from 'src/common';
 import { config } from 'src/decorators/config';
 import { SELECT_CONFIG } from './select-config';
 
@@ -9,7 +10,7 @@ import { SELECT_CONFIG } from './select-config';
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.css'],
 })
-export class SelectComponent implements OnInit {
+export class SelectComponent extends customWebComponent implements OnInit {
   static tagNamePrefix: string = 'my-select';
   static copyHttp;
   method = 'get';
@@ -20,6 +21,7 @@ export class SelectComponent implements OnInit {
   isLoading = false;
   placeholder = '请选择';
   constructor(private http: HttpClient) {
+    super();
     //@ts-ignore
     SelectComponent.copyHttp = http;
   }
@@ -70,10 +72,23 @@ export class SelectComponent implements OnInit {
             }
         }
         MySelect${index}.ɵcmp.factory = () => { return new MySelect${index}()};
-        customElements.define('${tagName}',createCustomElement(MySelect${index}, {  injector: injector}));
+        (()=>{
+          let customEl = createCustomElement(MySelect${index}, {  injector: injector,});
+          // 添加用户自定义数据
+          Object.defineProperty(customEl.prototype,'option',{
+            get(){
+              return ${JSON.stringify(config)}
+            },
+            configurable: false,
+            enumerable: false
+          })
+          customElements.define('${tagName}',customEl);
+       })();
         `,
     };
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.applyData();
+  }
 }

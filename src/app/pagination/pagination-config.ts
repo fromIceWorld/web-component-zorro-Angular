@@ -22,7 +22,16 @@ const PAGINATION_CONFIG = {
     },
   },
   css: {
-    classes: '',
+    width: {
+      type: 'number',
+      value: 0,
+      postfix: 'px',
+    },
+    height: {
+      type: 'number',
+      value: 0,
+      postfix: 'px',
+    },
     style: {},
   },
   component: {

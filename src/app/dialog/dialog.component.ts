@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { customWebComponent, transformValue } from 'src/common';
 import { config } from 'src/decorators/config';
 import { TextService } from '../text.service';
 import { DIALOG_CONFIG } from './dialog-config';
+
 @config(DIALOG_CONFIG)
 @Component({
   selector: 'app-dialog',
@@ -11,7 +13,7 @@ import { DIALOG_CONFIG } from './dialog-config';
   providers: [TextService, NzModalService],
   viewProviders: [TextService],
 })
-export class DialogComponent implements OnInit {
+export class DialogComponent extends customWebComponent implements OnInit {
   @ViewChild('model') model;
   @ViewChild('content') content;
   static tagNamePrefix: string = 'my-dialog';
@@ -20,7 +22,9 @@ export class DialogComponent implements OnInit {
   classStr;
   left;
   top;
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor() {
+    super();
+  }
   close(e) {
     this.hiden();
   }
@@ -52,29 +56,35 @@ export class DialogComponent implements OnInit {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${DialogComponent.tagNamePrefix}-${index}`;
-    const { title } = html;
-    const { style, classes } = css,
-      flexDirection = style['flex-direction'];
+    let config = {};
+    Object.keys(html).map((key) => {
+      config[key] = transformValue(html[key]);
+    });
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" 
-                         _methods="_ngElementStrategy.componentRef.instance"
-                         style="display:flex;'flex-direction:${flexDirection}"></${tagName}>`,
+                         _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyDialogModel${index} extends ${className}{
              constructor(){
                 super();
-                this.title = '${title.value}';
-                this.dep();
              }
-             dep(){
-              setTimeout(()=>{
-                this.cd = this['__ngContext__'][13][0]._ngElementStrategy.componentRef.changeDetectorRef;
-              });
-            }
            }
            MyDialogModel${index}.ɵcmp.factory = () => { return new MyDialogModel${index}()};
-           customElements.define('${tagName}',createCustomElement(MyDialogModel${index},{injector}));
+           (()=>{
+              let customEl = createCustomElement(MyDialogModel${index}, {  injector: injector,});
+              // 添加用户自定义数据
+              Object.defineProperty(customEl.prototype,'option',{
+                get(){
+                  return ${JSON.stringify(config)}
+                },
+                configurable: false,
+                enumerable: false
+              })
+              customElements.define('${tagName}',customEl);
+          })();
                  `,
     };
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.applyData();
+  }
 }
