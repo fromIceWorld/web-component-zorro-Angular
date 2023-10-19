@@ -26,8 +26,7 @@
     "ng-zorro-antd": "^10.2.2",
     "request": "^2.88.2",
     "rxjs": "~6.6.0",
-    "tslib": "^2.0.0",
-    "zone.js": "~0.10.2"
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^10.0.0",

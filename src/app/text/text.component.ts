@@ -86,5 +86,7 @@ export class TextComponent extends customWebComponent implements OnInit {
   constructor() {
     super();
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.applyData();
+  }
 }
