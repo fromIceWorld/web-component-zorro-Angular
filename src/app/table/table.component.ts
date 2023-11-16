@@ -1,11 +1,14 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import {
   NzTableLayout,
   NzTablePaginationPosition,
   NzTableSize,
 } from 'ng-zorro-antd/table';
-import { customWebComponent, transformValue } from 'src/common';
-import { method } from 'src/decorators';
 import { config } from 'src/decorators/config';
 import { TABLE_CONFIG } from './table-config';
 interface ItemData {
@@ -44,7 +47,7 @@ interface Setting {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
 })
-export class TableComponent extends customWebComponent implements OnInit {
+export class TableComponent {
   static tagNamePrefix: string = 'my-table';
   @Output('view') view = new EventEmitter();
   @Output('edit') edit = new EventEmitter();
@@ -97,13 +100,11 @@ export class TableComponent extends customWebComponent implements OnInit {
   setOfCheckedId = new Set<number>();
   listOfCurrentPageData: readonly ItemData[] = [];
   checked = false;
-  @method()
+  constructor(private cd: ChangeDetectorRef) {}
   setLoading() {
     this.loading = true;
-    this.check();
   }
   // 暴露的方法
-
   updateCheckedSet(id: number, checked: boolean): void {
     if (checked) {
       this.setOfCheckedId.add(id);
@@ -157,16 +158,7 @@ export class TableComponent extends customWebComponent implements OnInit {
     this.item = row;
     this.delete.emit();
   }
-  constructor() {
-    super();
-  }
 
-  ngOnInit(): void {
-    this.applyData();
-  }
-  check() {
-    this.cd.detectChanges();
-  }
   // 导出渲染数据
   /**
    *
@@ -183,16 +175,54 @@ export class TableComponent extends customWebComponent implements OnInit {
     const index = String(Math.random()).substring(2),
       tagName = `${TableComponent.tagNamePrefix}-${index}`;
     const { html, css, className } = option;
-    let config = {};
-    Object.keys(html).map((key) => {
-      config[key] = transformValue(html[key]);
-    });
+    const {
+      title,
+      titleValue,
+      header,
+      footer,
+      footerValue,
+      expandable,
+      checkbox,
+      ellipsis,
+      size,
+      headers,
+      row,
+      listOfData,
+      viewBtn,
+      editBtn,
+      deleteBtn,
+    } = html;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyTable${index} extends ${className}{
              constructor(){
                  super();
+                 this.title = ${title.value};
+                 this.titleValue = '${titleValue.value}';
+                 this.header = ${header.value};
+                 this.footer = ${footer.value};
+                 this.footerValue = '${footerValue.value}';
+                 this.expandable = ${expandable.value};
+                 this.checkbox = ${checkbox.value};
+                 this.ellipsis = ${ellipsis.value};
+                 this.size = '${size.value}';
+                 this.headers = ${JSON.stringify(headers.options)};
+                 this.row = ${row.value};
+                 this.listOfData = ${listOfData.value};
+                 this.viewBtn = ${viewBtn.value};
+                 this.editBtn = ${editBtn.value};
+                 this.deleteBtn = ${deleteBtn.value};
+             }
+             // extends的class 无法依赖注入cd,只能自己查找
+             get cd(){
+               const dom = document.querySelector('${tagName}');
+               return dom._ngElementStrategy;
+            }
+             set cd(value){}
+             check(){
+               this.cd.detectChanges();
+               setTimeout(()=>this.cd.detectChanges())
              }
              // 配置项
              get list() {
@@ -208,18 +238,14 @@ export class TableComponent extends customWebComponent implements OnInit {
              get id() {
               return {id:this.item && this.item.id};
              }
+             setLoading() {
+              this.loading = true;
+              this.check();
+            }
          }
          MyTable${index}.ɵcmp.factory = () => { return new MyTable${index}()};
          (()=>{
             let customEl = createCustomElement(MyTable${index}, {  injector: injector,});
-            // 添加用户自定义数据
-            Object.defineProperty(customEl.prototype,'option',{
-              get(){
-                return ${JSON.stringify(config)}
-              },
-              configurable: false,
-              enumerable: false
-            })
             customElements.define('${tagName}',customEl);
         })();
          `,

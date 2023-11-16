@@ -58,9 +58,9 @@ const DIALOG_CONFIG = {
   },
   component: {
     event: [
-      { label: 'visible', value: 'visible' },
-      { label: 'hiden', value: 'hiden' },
-      { label: 'visibleChange', value: 'visibleChange' },
+      { label: 'onVisible', value: 'onVisible' },
+      { label: 'onHiden', value: 'onHiden' },
+      { label: 'onVisibleChange', value: 'onVisibleChange' },
     ],
     methods: [
       { label: 'visible', value: 'visible' },

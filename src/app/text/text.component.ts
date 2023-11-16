@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { customWebComponent, transformValue } from 'src/common';
-import { method } from 'src/decorators';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { TEXT_CONFIG } from './text-config';
 @config(TEXT_CONFIG)
@@ -9,27 +7,18 @@ import { TEXT_CONFIG } from './text-config';
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.css'],
 })
-export class TextComponent extends customWebComponent implements OnInit {
+export class TextComponent implements OnInit {
   static tagNamePrefix: string = 'my-text';
   value: string = '姓名';
   fontSize: string = '14px';
   color: string = 'black';
   isSHow: boolean = true;
-  showChange() {
-    this.isSHow = !this.isSHow;
-    this.cd.detectChanges();
-  }
-  @method()
+  constructor(private cd: ChangeDetectorRef) {}
   show() {
     this.isSHow = true;
-    this.cd.detectChanges();
-  }
-  check() {
-    this.cd.detectChanges();
   }
   hide() {
     this.isSHow = false;
-    this.cd.detectChanges();
   }
   // 导出渲染数据
   /**
@@ -49,44 +38,47 @@ export class TextComponent extends customWebComponent implements OnInit {
       // @ts-ignore
       styleStr += `${key}:${value.value}${value.postfix || ''};`;
     }
-    let config = {};
-    Object.keys(html).map((key) => {
-      config[key] = transformValue(html[key]);
-    });
+    const { value, fontSize, color } = html;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance"
                          _methods="_ngElementStrategy.componentRef.instance" 
                         style="${styleStr}"></${tagName}>`,
       js: `class MyText${index} extends ${className}{
-              constructor(){
+              constructor(undefined){
                   super();
+                  this.value = '${value.value}';
+                  this.fontSize = '${fontSize.value}${fontSize.postfix}';
+                  this.color = '${color.value}';
               }
+              // extends的class 无法依赖注入cd,只能自己查找
+              get cd(){
+                const dom = document.querySelector('${tagName}');
+                return dom._ngElementStrategy;
+              }
+              set cd(value){}
+              check(){
+                this.cd.detectChanges();
+                setTimeout(()=>this.cd.detectChanges())
+              }
+              // 暴露的接口，供外部调用修改组件
               set text(value){
                 this.value = value;
+                this.check();
+              }
+              showChange() {
+                this.isSHow = !this.isSHow;
                 this.check();
               }
           }
           MyText${index}.ɵcmp.factory = () => { return new MyText${index}()};
           (()=>{
             let customEl = createCustomElement(MyText${index}, {  injector: injector,});
-            // 添加用户自定义数据
-            Object.defineProperty(customEl.prototype,'option',{
-              get(){
-                return ${JSON.stringify(config)}
-              },
-              configurable: false,
-              enumerable: false
-            })
             customElements.define('${tagName}',customEl);
          })();
           `,
     };
   }
-  constructor() {
-    super();
-  }
-  ngOnInit(): void {
-    this.applyData();
-  }
+
+  ngOnInit(): void {}
 }

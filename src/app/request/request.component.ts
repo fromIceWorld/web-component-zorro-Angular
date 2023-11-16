@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { customWebComponent, transformValue } from 'src/common';
 import { config } from 'src/decorators/config';
 import { API_CONFIG } from './api-config';
 @config(API_CONFIG)
@@ -9,9 +8,8 @@ import { API_CONFIG } from './api-config';
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.css'],
 })
-export class RequestComponent extends customWebComponent {
+export class RequestComponent {
   static tagNamePrefix: string = 'my-api';
-  static httpCopy;
   @Output() loading = new EventEmitter();
   @Output() validateFalse = new EventEmitter();
   @Output() error = new EventEmitter();
@@ -23,13 +21,7 @@ export class RequestComponent extends customWebComponent {
   list;
   message;
   total = 0;
-  constructor(private http: HttpClient) {
-    super();
-    RequestComponent.httpCopy = http;
-  }
-  ngOnInit(): void {
-    this.applyData();
-  }
+  constructor(private http: HttpClient) {}
   request() {
     //  获取接口上附加的 params
     let params = {}, //@ts-ignore
@@ -96,28 +88,19 @@ export class RequestComponent extends customWebComponent {
     const index = String(Math.random()).substring(2),
       tagName = `${RequestComponent.tagNamePrefix}-${index}`;
     const { html, css, className } = option;
-    let config = {};
-    Object.keys(html).map((key) => {
-      config[key] = transformValue(html[key]);
-    });
+    const { method, api } = html;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyAPI${index} extends ${className}{
                constructor(){
-                   super(RequestComponent.httpCopy);
+                   super(injector.get('http'));
+                   this.method = '${method.value}';
+                   this.api = '${api.value}';
                }
            }
            MyAPI${index}.ɵcmp.factory = () => { return new MyAPI${index}()};
            (()=>{
               let customEl = createCustomElement(MyAPI${index}, {  injector: injector,});
-              // 添加用户自定义数据
-              Object.defineProperty(customEl.prototype,'option',{
-                get(){
-                  return ${JSON.stringify(config)}
-                },
-                configurable: false,
-                enumerable: false
-              })
               customElements.define('${tagName}',customEl);
           })();
            `,

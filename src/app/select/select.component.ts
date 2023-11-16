@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { customWebComponent } from 'src/common';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { SELECT_CONFIG } from './select-config';
 
@@ -9,31 +8,39 @@ import { SELECT_CONFIG } from './select-config';
   selector: 'app-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.css'],
-})
-export class SelectComponent extends customWebComponent implements OnInit {
+  providers: [],
+}) //@ts-ignore
+export class SelectComponent implements OnInit {
+  @ViewChild('select') select;
   static tagNamePrefix: string = 'my-select';
-  static copyHttp;
   method = 'get';
   api =
     'https://www.fastmock.site/mock/14c2723aefa052a75b2a6feeed0cf387/suger/list';
-  options: any[] = [];
-  selected = null;
+  options: any[] = [
+    { label: '男', value: '男' },
+    { label: '女', value: '女' },
+  ];
+  selected;
   isLoading = false;
   placeholder = '请选择';
-  constructor(private http: HttpClient) {
-    super();
+  getRandomNameList;
+  constructor(private cd: ChangeDetectorRef, private http: HttpClient) {
     //@ts-ignore
-    SelectComponent.copyHttp = http;
+    // this.http = SelectComponent.http;
+    // this.getRandomNameList = this.http.get(`${this.api}`);
+    // setTimeout(() => this.cd.detectChanges(), 1000);
+    // this.loadMore();
   }
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  getRandomNameList = this.http.get(`${this.api}`);
+  clear() {
+    this.selected = undefined;
+  }
   loadMore(): void {
     // 无api时，options就是枚举类，有api时就是懒加载。
     if (!this.api) {
       return;
     }
     this.isLoading = true;
-    this.getRandomNameList.subscribe((e: any) => {
+    this.http.get(`${this.api}`).subscribe((e: any) => {
       this.isLoading = false;
       this.options = [...this.options, ...e.data.list];
     });
@@ -56,13 +63,26 @@ export class SelectComponent extends customWebComponent implements OnInit {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MySelect${index} extends ${className}{
             constructor(){
-                super(SelectComponent.copyHttp);
+                super(undefined,injector.get('http'));
                 this.options = ${JSON.stringify(items)};
                 this.selected = '${options.value}';
                 this.api = '${api.value}';
                 this.placeholder = '${placeholder.value}';
-                console.log(this.http);
-                this.loadMore();
+                // this.loadMore();
+            }
+            // extends的class 无法依赖注入cd,只能自己查找
+            get cd(){
+              const dom = document.querySelector('${tagName}');
+              return dom._ngElementStrategy;
+            }
+            set cd(value){}
+            check(){
+              this.cd.detectChanges();
+              setTimeout(()=>this.cd.detectChanges())
+            }
+            clear(){
+              this.selected = undefined;
+              this.check();
             }
             get value() {
               return {${formcontrol.value}:this.selected};
@@ -73,22 +93,13 @@ export class SelectComponent extends customWebComponent implements OnInit {
         }
         MySelect${index}.ɵcmp.factory = () => { return new MySelect${index}()};
         (()=>{
-          let customEl = createCustomElement(MySelect${index}, {  injector: injector,});
-          // 添加用户自定义数据
-          Object.defineProperty(customEl.prototype,'option',{
-            get(){
-              return ${JSON.stringify(config)}
-            },
-            configurable: false,
-            enumerable: false
-          })
+          let customEl = createCustomElement(MySelect${index}, {  injector: injector});
           customElements.define('${tagName}',customEl);
        })();
         `,
     };
   }
-
   ngOnInit(): void {
-    this.applyData();
+    // this.applyData();
   }
 }

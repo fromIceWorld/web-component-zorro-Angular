@@ -1,5 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { customWebComponent, transformValue } from 'src/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { config } from 'src/decorators/config';
 import { PAGINATION_CONFIG } from './pagination-config';
 
@@ -9,7 +13,7 @@ import { PAGINATION_CONFIG } from './pagination-config';
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css'],
 })
-export class PaginationComponent extends customWebComponent implements OnInit {
+export class PaginationComponent {
   static tagNamePrefix: string = 'my-pagination';
   @Output('change') change = new EventEmitter();
   totalCount = 10;
@@ -26,14 +30,8 @@ export class PaginationComponent extends customWebComponent implements OnInit {
   init() {
     this.totalCount = 11;
     this.pageIndex = 1;
-    this.check();
   }
-  check() {
-    this.cd.detectChanges();
-  }
-  constructor() {
-    super();
-  }
+  constructor(private cd: ChangeDetectorRef) {}
   /**
    *
    * @param option 参数配置
@@ -46,16 +44,26 @@ export class PaginationComponent extends customWebComponent implements OnInit {
     const index = String(Math.random()).substring(2),
       tagName = `${PaginationComponent.tagNamePrefix}-${index}`;
     const { html, css, className } = option;
-    let config = {};
-    Object.keys(html).map((key) => {
-      config[key] = transformValue(html[key]);
-    });
+    const { pageSize, nzShowSizeChanger, nzShowQuickJumper } = html;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyPagination${index} extends ${className}{
               constructor(){
                   super();
+                  this.pageSize = '${pageSize.value}';
+                  this.nzShowSizeChanger = ${nzShowSizeChanger.value};
+                  this.nzShowQuickJumper = ${nzShowQuickJumper.value};
                }
+               // extends的class 无法依赖注入cd,只能自己查找
+                get cd(){
+                  const dom = document.querySelector('${tagName}');
+                  return dom._ngElementStrategy;
+                }
+                set cd(value){}
+                check(){
+                  this.cd.detectChanges();
+                  setTimeout(()=>this.cd.detectChanges())
+                }
                get value(){
                 return {
                   pageIndex:this.pageIndex,
@@ -82,8 +90,5 @@ export class PaginationComponent extends customWebComponent implements OnInit {
           })();
           `,
     };
-  }
-  ngOnInit(): void {
-    this.applyData();
   }
 }

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { customWebComponent, transformValue } from 'src/common';
+import { Component } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { BUTTON_CONFIG } from './button-config';
 
@@ -10,7 +9,7 @@ import { BUTTON_CONFIG } from './button-config';
   styleUrls: ['./button.component.css'],
   providers: [],
 })
-export class ButtonComponent extends customWebComponent implements OnInit {
+export class ButtonComponent {
   static tagNamePrefix: string = 'my-button';
   disabled: boolean = false;
   ghost: boolean = false;
@@ -22,6 +21,22 @@ export class ButtonComponent extends customWebComponent implements OnInit {
   danger: boolean = false;
   icon: string = 'search';
   name: string = 'Search';
+  constructor() {}
+  setNormal() {
+    this.loading = false;
+  }
+  setLoading() {
+    this.loading = true;
+  }
+  setDisabled() {
+    this.disabled = true;
+  }
+  public loadingChange() {
+    this.loading = !this.loading;
+  }
+  public disabledChange() {
+    this.disabled = !this.disabled;
+  }
   // 导出渲染数据
   /**
    *
@@ -35,66 +50,64 @@ export class ButtonComponent extends customWebComponent implements OnInit {
     const index = String(Math.random()).substring(2),
       tagName = `${ButtonComponent.tagNamePrefix}-${index}`;
     const { html, css, className } = option;
-    let config = {};
-    Object.keys(html).map((key) => {
-      config[key] = transformValue(html[key]);
-    });
+    const {
+      disabled,
+      ghost,
+      loading,
+      shape,
+      size,
+      type,
+      block,
+      danger,
+      icon,
+      name,
+    } = html;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyButton${index} extends ${className}{
                constructor(){
-                   super();
+                  super();
+                  this.disabled = '${disabled.value}';
+                  this.ghost = '${ghost.value}';
+                  this.loading = '${loading.value}';
+                  this.shape = '${shape.value}';
+                  this.size = '${size.value}';
+                  this.type = '${type.value}';
+                  this.block = '${block.value}';
+                  this.danger = '${danger.value}';
+                  this.icon = '${icon.value}';
+                  this.name = '${name.value}';
+                }
+                // extends的class 无法依赖注入cd,只能自己查找
+                get cd(){
+                  const dom = document.querySelector('${tagName}');
+                  return dom._ngElementStrategy;
+                }
+                set cd(value){}
+                check(){
+                  this.cd.detectChanges();
+                  setTimeout(()=>this.cd.detectChanges())
+                }
+                setLoading(){
+                  this.loading = true;
+                  this.check();
+                }
+                setNormal(){
+                  this.loading = false;
+                  this.disabled = false;
+                  this.check();
+                }
+                setDisabled(){
+                  this.disabled = true;
+                  this.check();
                 }
            }
            MyButton${index}.ɵcmp.factory = () => { return new MyButton${index}()};
            (()=>{
               let customEl = createCustomElement(MyButton${index}, {  injector: injector,});
-              // 添加用户自定义数据
-              Object.defineProperty(customEl.prototype,'option',{
-                get(){
-                  return ${JSON.stringify(config)}
-                },
-                configurable: false,
-                enumerable: false
-              })
               customElements.define('${tagName}',customEl);
            })();
            `,
     };
-  }
-  constructor() {
-    super();
-  }
-
-  ngOnInit(): void {
-    console.log('button', this, this['__ngContext__'][20][0]);
-    this.applyData();
-  }
-  ngAfterViewInit() {
-    console.log('ngAfterViewInit');
-  }
-  // 手动检查
-  check() {
-    this.cd.detectChanges();
-  }
-  normal() {
-    this.loading = false;
-    this.check();
-  }
-  setLoading() {
-    this.loading = true;
-    this.check();
-  }
-  setDisabled() {
-    this.disabled = true;
-    this.check();
-  }
-  public loadingChange() {
-    this.loading = !this.loading;
-    this.check();
-  }
-  public disabledChange() {
-    this.disabled = !this.disabled;
-    this.check();
   }
 }

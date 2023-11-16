@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { customWebComponent, transformValue } from 'src/common';
 import { config } from 'src/decorators/config';
 import { ICON_CONFIG } from './icon-config';
 
@@ -9,16 +8,26 @@ import { ICON_CONFIG } from './icon-config';
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.css'],
 })
-export class IconComponent extends customWebComponent implements OnInit {
+export class IconComponent implements OnInit {
   static tagNamePrefix: string = 'my-icon';
   fontSize = '32px';
   color = 'black';
-  icon = '#icon-tubiao';
-  constructor() {
-    super();
-  }
+  iconUrl = '//at.alicdn.com/t/c/font_4017486_q0zvblu8kt.js';
+  icon = 'icon-tubiao';
+  constructor() {}
   ngOnInit(): void {
-    this.applyData();
+    this.fetchIcon();
+  }
+  fetchIcon() {
+    fetch(this.iconUrl, {
+      cache: 'force-cache',
+    }).then((res) => {
+      let newStyle = document.createElement('style');
+      res.text().then((str) => {
+        newStyle.innerHTML = str;
+        document.head.appendChild(newStyle);
+      });
+    });
   }
   // 导出渲染数据
   /**
@@ -33,10 +42,7 @@ export class IconComponent extends customWebComponent implements OnInit {
     const index = String(Math.random()).substring(2),
       tagName = `${IconComponent.tagNamePrefix}-${index}`;
     const { html, css, className } = option;
-    let config = {};
-    Object.keys(html).map((key) => {
-      config[key] = transformValue(html[key]);
-    });
+    const { fontSize, iconUrl, icon } = html;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" 
@@ -44,19 +50,14 @@ export class IconComponent extends customWebComponent implements OnInit {
       js: `class MyIcon${index} extends ${className}{
              constructor(){
                  super();
+                 this.fontSize = '${fontSize.value}';
+                 this.iconUrl = '${iconUrl.value}';
+                 this.icon = '${icon.value}';
              }
          }
          MyIcon${index}.ɵcmp.factory = () => { return new MyIcon${index}()};
          (()=>{
             let customEl = createCustomElement(MyIcon${index}, {  injector: injector,});
-            // 添加用户自定义数据
-            Object.defineProperty(customEl.prototype,'option',{
-              get(){
-                return ${JSON.stringify(config)}
-              },
-              configurable: false,
-              enumerable: false
-            })
             customElements.define('${tagName}',customEl);
         })();
          `,

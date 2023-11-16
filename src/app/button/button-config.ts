@@ -63,7 +63,7 @@ const BUTTON_CONFIG = {
     event: [{ label: 'click', value: 'click' }],
     methods: [
       { label: 'setLoading', value: 'setLoading' },
-      { label: 'normal', value: 'normal' },
+      { label: 'setNormal', value: 'setNormal' },
       { label: 'setDisabled', value: 'setDisabled' },
     ],
     data: [],

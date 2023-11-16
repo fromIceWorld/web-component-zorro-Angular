@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { transformValue } from 'src/common';
 import { config } from 'src/decorators/config';
 import { HOOK_CONFIG } from './hook-config';
@@ -8,19 +8,17 @@ import { HOOK_CONFIG } from './hook-config';
   templateUrl: './hook.component.html',
   styleUrls: ['./hook.component.css'],
 })
-export class HookComponent implements OnInit {
+export class HookComponent {
   static tagNamePrefix: string = 'my-hook';
   @Output() connectedCallback = new EventEmitter();
   delay = 0;
   count = 1;
   interval = 10000;
   constructor() {}
-  ngOnInit(): void {}
   runAndEmit() {
     let initInterval = this.interval;
     this.interval = 0;
     let time = setInterval(() => {
-      this.connectedCallback.emit();
       this.count--;
       if (this.count <= 0) {
         clearInterval(time);
@@ -55,7 +53,7 @@ export class HookComponent implements OnInit {
                     }
                }
                connectedCallback(){
-                console.log('connectedCallback')
+                this.connectedCallback.emit();
                }
            }
            MyHook${index}.ɵcmp.factory = () => { return new MyHook${index}()};

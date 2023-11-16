@@ -1,11 +1,7 @@
-import {
-  HttpClient,
-  HttpClientModule,
-  HttpHandler,
-} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconDefinition } from '@ant-design/icons-angular';
@@ -21,9 +17,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { ButtonComponent } from './button/button.component';
-import { ContainerComponent } from './container/container.component';
 import { DialogComponent } from './dialog/dialog.component';
-import { FormComponent } from './form/form.component';
 import { HookComponent } from './hook/hook.component';
 import { IconComponent } from './icon/icon.component';
 import { ImageComponent } from './image/image.component';
@@ -34,11 +28,11 @@ import { RequestComponent } from './request/request.component';
 import { SelectComponent } from './select/select.component';
 import { TableComponent } from './table/table.component';
 import { TagComponent } from './tag/tag.component';
-import { TestService } from './test.service';
 import { TextComponent } from './text/text.component';
 
 // 引入全部的图标，不推荐 ❌
 import * as AllIcons from '@ant-design/icons-angular/icons';
+import { AppComponent } from './app.component';
 import { TabsComponent } from './tabs/tabs.component';
 
 const antDesignIcons = AllIcons as {
@@ -49,18 +43,14 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
 );
 // 暴露出源组件class 创建web component的API
 window['createCustomElement'] = createCustomElement;
-window['HttpClient'] = HttpClient;
-window['HttpHandler'] = HttpHandler;
 
 @NgModule({
   declarations: [
     ButtonComponent,
     DialogComponent,
-    ContainerComponent,
     InputComponent,
     RadioComponent,
     TextComponent,
-    FormComponent,
     TableComponent,
     RequestComponent,
     IconComponent,
@@ -70,6 +60,7 @@ window['HttpHandler'] = HttpHandler;
     PaginationComponent,
     TagComponent,
     TabsComponent,
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,40 +80,16 @@ window['HttpHandler'] = HttpHandler;
     NzPaginationModule,
     NzTabsModule,
   ],
-  providers: [HttpClient, TestService],
+  providers: [],
   bootstrap: [],
   schemas: [],
-  entryComponents: [
-    ButtonComponent,
-    DialogComponent,
-    ContainerComponent,
-    InputComponent,
-    RadioComponent,
-    TextComponent,
-    FormComponent,
-    TableComponent,
-    RequestComponent,
-  ],
+  entryComponents: [AppComponent],
 })
 export class AppModule {
-  injector;
-  constructor(
-    private parentInjector: Injector,
-    private http: HttpClient,
-    private formBuilder: FormBuilder //
-  ) {
-    this.injector = Injector.create({
-      providers: [
-        { provide: TestService, deps: [] },
-        { provide: 'http', useValue: this.http, deps: [] },
-        // { provide: 'cd', useValue: this.cd, deps: [] },
-        { provide: 'formBuilder', useValue: this.formBuilder, deps: [] },
-      ],
-      parent: this.parentInjector,
-    });
-    window['injector'] = this.injector; // 暴露出依赖
-    console.log(this.http, this.injector.get(TestService));
-  }
+  constructor(private injector: Injector) {}
+  //   //@ts-ignore
+  //   window.injector = this.injector;
+  // }
   registerEl(tagName, cla) {
     // 解决 extends 的组件无依赖问题
     const oldIframe = document.querySelector('iframe');
@@ -148,104 +115,92 @@ export class AppModule {
   // TODO:依赖注入只会注入到源组件上，在extends的组件上无依赖注入能力。
   // 因此如果想要有依赖注入能力，需要手动将源组件的依赖在实例化子组件时注入到源组件super中。
   ngDoBootstrap() {
-    // 注册组件到全局
-    console.log(this.injector);
     // 按钮
-    window['ButtonComponent'] = ButtonComponent;
-    const buttonEle = createCustomElement(ButtonComponent, {
+    const appRoot = createCustomElement(AppComponent, {
       injector: this.injector,
     });
-    this.registerEl('my-button', buttonEle);
-    // 文本
-    window['TextComponent'] = TextComponent;
-    const textEle = createCustomElement(TextComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-text', textEle);
-    // // layout
-    // window['ContainerComponent'] = ContainerComponent;
-    // const containerEle = createCustomElement(ContainerComponent, {
-    //   injector: this.injector,
-    // });
-    // this.registerEl('my-container', containerEle);
+    // 将 AppComponent挂载到html中以初始化当前应用
+    this.registerEl('my-angular', appRoot);
 
-    // dialog
-    window['DialogComponent'] = DialogComponent;
-    const dialogEl = createCustomElement(DialogComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-dialog', dialogEl);
-    // radio
-    window['RadioComponent'] = RadioComponent;
-    const radioEl = createCustomElement(RadioComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-radio', radioEl);
-    // input
-    window['InputComponent'] = InputComponent;
-    const inputEl = createCustomElement(InputComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-input', inputEl);
-    // form
-    window['FormComponent'] = FormComponent;
-    const formEl = createCustomElement(FormComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-form', formEl);
-    // table
-    window['TableComponent'] = TableComponent;
-    const tableEl = createCustomElement(TableComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-table', tableEl);
-    // api
-    window['RequestComponent'] = RequestComponent;
-    const APIEl = createCustomElement(RequestComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-api', APIEl);
-    // icon
-    window['IconComponent'] = IconComponent;
-    const IconEl = createCustomElement(IconComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-icon', IconEl);
-    // select
-    window['SelectComponent'] = SelectComponent;
-    const SelectEl = createCustomElement(SelectComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-select', SelectEl);
-    // IMAGE
-    window['ImageComponent'] = ImageComponent;
-    const ImageEl = createCustomElement(ImageComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-image', ImageEl);
-    // hook
-    window['HookComponent'] = HookComponent;
-    const HookEl = createCustomElement(HookComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-hook', HookEl);
-    // Pagination
-    window['PaginationComponent'] = PaginationComponent;
-    const PaginationEl = createCustomElement(PaginationComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-pagination', PaginationEl);
-    // tags
-    window['TagComponent'] = TagComponent;
-    const TagEl = createCustomElement(TagComponent, {
-      injector: this.injector,
-    });
-    this.registerEl('my-tag', TagEl);
-    // tabs
-    // window['TabsComponent'] = TabsComponent;
-    // const TabsEl = createCustomElement(TabsComponent, {
-    //   injector: this.injector,
-    // });
-    // this.registerEl('my-tabs', TabsEl);
+    // // 注册组件到全局
+    // console.log(this.injector);
+    // // 按钮
+    // window['ButtonComponent'] = ButtonComponent;
+    // // const buttonEle = createCustomElement(ButtonComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-button', buttonEle);
+    // // 文本
+    // window['TextComponent'] = TextComponent;
+    // // const textEle = createCustomElement(TextComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-text', textEle);
+    // // dialog
+    // window['DialogComponent'] = DialogComponent;
+    // // const dialogEl = createCustomElement(DialogComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-dialog', dialogEl);
+    // // radio
+    // window['RadioComponent'] = RadioComponent;
+    // // const radioEl = createCustomElement(RadioComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-radio', radioEl);
+    // // input
+    // window['InputComponent'] = InputComponent;
+    // // const inputEl = createCustomElement(InputComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-input', inputEl);
+    // // table
+    // window['TableComponent'] = TableComponent;
+    // // const tableEl = createCustomElement(TableComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-table', tableEl);
+    // // api
+    // window['RequestComponent'] = RequestComponent;
+    // // const APIEl = createCustomElement(RequestComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-api', APIEl);
+    // // icon
+    // window['IconComponent'] = IconComponent;
+    // // const IconEl = createCustomElement(IconComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-icon', IconEl);
+    // // select
+    // window['SelectComponent'] = SelectComponent;
+    // // const SelectEl = createCustomElement(SelectComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-select', SelectEl);
+    // // IMAGE
+    // window['ImageComponent'] = ImageComponent;
+    // // const ImageEl = createCustomElement(ImageComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-image', ImageEl);
+    // // hook
+    // window['HookComponent'] = HookComponent;
+    // // const HookEl = createCustomElement(HookComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-hook', HookEl);
+    // // Pagination
+    // window['PaginationComponent'] = PaginationComponent;
+    // // const PaginationEl = createCustomElement(PaginationComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-pagination', PaginationEl);
+    // // tags
+    // window['TagComponent'] = TagComponent;
+    // // const TagEl = createCustomElement(TagComponent, {
+    // //   injector: this.injector,
+    // // });
+    // // this.registerEl('my-tag', TagEl);
   }
 }

@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { config } from 'src/decorators/config';
 
-import { customWebComponent } from 'src/common';
 import { RADIO_CONFIG } from './radio-config';
 @config(RADIO_CONFIG)
 @Component({
@@ -9,9 +13,10 @@ import { RADIO_CONFIG } from './radio-config';
   templateUrl: './radio.component.html',
   styleUrls: ['./radio.component.css'],
 })
-export class RadioComponent extends customWebComponent implements OnInit {
+export class RadioComponent {
   static tagNamePrefix: string = 'my-radio';
-  control = '';
+  @Output('change') change = new EventEmitter();
+  control = '男';
   options = [
     {
       label: '男',
@@ -24,9 +29,9 @@ export class RadioComponent extends customWebComponent implements OnInit {
       disabled: false,
     },
   ];
-  // form 子组件 校验
-  isValid() {
-    return true;
+  constructor(private cd: ChangeDetectorRef) {}
+  changeEvent() {
+    this.change.emit();
   }
   static extends(option) {
     const { html, css, className } = option;
@@ -50,11 +55,22 @@ export class RadioComponent extends customWebComponent implements OnInit {
                 this.options = ${JSON.stringify(items)};
                 this.control = '${options.value}';
             }
+            // extends的class 无法依赖注入cd,只能自己查找
+            get cd(){
+              const dom = document.querySelector('${tagName}');
+              return dom._ngElementStrategy;
+            }
+            set cd(value){}
+            check(){
+              this.cd.detectChanges();
+              setTimeout(()=>this.cd.detectChanges())
+            }
             get value() {
               return {${formcontrol.value}:this.control};
             }
             set value(target) {
               this.control = target;
+              this.check();
             }
         }
         MyRadio${index}.ɵcmp.factory = () => { return new MyRadio${index}()};
@@ -72,8 +88,5 @@ export class RadioComponent extends customWebComponent implements OnInit {
       })();
         `,
     };
-  }
-  ngOnInit(): void {
-    this.applyData();
   }
 }

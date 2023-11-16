@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { customWebComponent, transformValue } from 'src/common';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { IMAGE_CONFIG } from './image-config';
 
@@ -9,10 +8,12 @@ import { IMAGE_CONFIG } from './image-config';
   templateUrl: './image.component.html',
   styleUrls: ['./image.component.css'],
 })
-export class ImageComponent extends customWebComponent implements OnInit {
+export class ImageComponent {
   static tagNamePrefix: string = 'my-image';
   width = 'auto';
   height = 'auto';
+  src = 'https://react.docschina.org/images/home/conf2021/cover.svg';
+  constructor(private cd: ChangeDetectorRef) {}
   // 导出渲染数据
   /**
    *
@@ -26,47 +27,26 @@ export class ImageComponent extends customWebComponent implements OnInit {
     const index = String(Math.random()).substring(2),
       tagName = `${ImageComponent.tagNamePrefix}-${index}`;
     const { html, css, className } = option;
-    let styleStr = '';
-    for (let [key, value] of Object.entries(css)) {
-      // @ts-ignore
-      styleStr += `${key}:${value.value}${value.postfix || ''};`;
-    }
-    let config = {};
-    Object.keys(html).map((key) => {
-      config[key] = transformValue(html[key]);
-    });
+    const { width, height, src } = html;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance"
                         _methods="_ngElementStrategy.componentRef.instance" 
-                       style="${styleStr}"></${tagName}>`,
+                       "></${tagName}>`,
       js: `class MyImage${index} extends ${className}{
              constructor(){
                  super();
+                 this.width = '${width.value}';
+                 this.height = '${height.value}';
+                 this.src = '${src.value}';
              }
          }
          MyImage${index}.ɵcmp.factory = () => { return new MyImage${index}()};
          (()=>{
-          let customEl = createCustomElement(MyImage${index}, {  injector: injector,});
-          // 添加用户自定义数据
-          Object.defineProperty(customEl.prototype,'option',{
-            get(){
-              return ${JSON.stringify(config)}
-            },
-            configurable: false,
-            enumerable: false
-          })
-          customElements.define('${tagName}',customEl);
-       })();
-         `,
+            let customEl = createCustomElement(MyImage${index}, {  injector: injector});
+            customElements.define('${tagName}',customEl);
+          })();
+          `,
     };
   }
-  constructor() {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.applyData();
-  }
-  src = 'https://react.docschina.org/images/home/conf2021/cover.svg';
 }

@@ -1,10 +1,4 @@
-<nz-select
-  [(ngModel)]="selected"
-  (nzScrollToBottom)="loadMore()"
-  [nzPlaceHolder]="placeholder"
-  nzAllowClear
-  [nzDropdownRender]="renderTemplate"
->
+<nz-select [(ngModel)]="selected" nzAllowClear #select>
   <nz-option
     *ngFor="let o of options"
     [nzValue]="o.value"

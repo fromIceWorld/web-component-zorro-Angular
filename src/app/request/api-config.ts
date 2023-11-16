@@ -32,7 +32,7 @@ const API_CONFIG = {
   },
   component: {
     event: [
-      { label: 'init', value: 'init' },
+      { label: 'validateFalse', value: 'validateFalse' },
       { label: 'loading', value: 'loading' },
       { label: 'error', value: 'error' },
       { label: 'success200', value: 'success200' },

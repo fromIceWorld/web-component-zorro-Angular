@@ -4,6 +4,7 @@
     nz-radio
     [nzDisabled]="item.disabled"
     [nzValue]="item.value"
+    (click)="changeEvent($event)"
     >{{ item.label }}</label
   >
 </nz-radio-group>

@@ -1,6 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { customWebComponent } from 'src/common';
 import { config } from 'src/decorators/config';
 import { INPUT_CONFIG } from './input-config';
 @config(INPUT_CONFIG)
@@ -9,7 +13,7 @@ import { INPUT_CONFIG } from './input-config';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css'],
 })
-export class InputComponent extends customWebComponent implements OnInit {
+export class InputComponent {
   static tagNamePrefix: string = 'my-input';
   @Output('validateTrue') validateTrue = new EventEmitter();
   @Output('validateFalse') validateFalse = new EventEmitter();
@@ -18,7 +22,6 @@ export class InputComponent extends customWebComponent implements OnInit {
   Validators = Validators;
   placeholder: string = '请输入姓名';
   isValid() {
-    this.cd.detectChanges();
     return this.control.valid;
   }
   onFocus() {
@@ -26,15 +29,11 @@ export class InputComponent extends customWebComponent implements OnInit {
   }
   onBlur() {
     this.isFocus = false;
-    this.cd.detectChanges();
   }
   clear() {
     this.control.patchValue('');
-    this.cd.detectChanges();
   }
-  constructor() {
-    super();
-  }
+  constructor(private cd: ChangeDetectorRef) {}
   borderColorShdow() {
     let obj = {
       'border-color': '#d9d9d9',
@@ -92,11 +91,29 @@ export class InputComponent extends customWebComponent implements OnInit {
                   }
                 });
              }
+             // extends的class 无法依赖注入cd,只能自己查找
+              get cd(){
+                const dom = document.querySelector('${tagName}');
+                return dom._ngElementStrategy;
+              }
+              set cd(value){}
+              check(){
+                this.cd.detectChanges();
+                setTimeout(()=>this.cd.detectChanges())
+              }
+             validate(){
+               this.control.updateValueAndValidity();
+             }
+             clear(){
+               this.value = '';
+               this.check();
+             }
              get value() {
                return {${formcontrol.value}:this.control.value};
              }
              set value(target) {
                this.control.setValue(target);
+               this.check();
              }
              get validateValue() {
                return {
@@ -112,8 +129,5 @@ export class InputComponent extends customWebComponent implements OnInit {
         })();`,
     };
     return config;
-  }
-  ngOnInit(): void {
-    this.applyData();
   }
 }

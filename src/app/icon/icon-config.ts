@@ -5,6 +5,10 @@ const ICON_CONFIG = {
       type: 'string',
       value: '32px',
     },
+    iconUrl: {
+      type: 'iconLink',
+      value: '//at.alicdn.com/t/c/font_4017486_q0zvblu8kt.js',
+    },
     icon: {
       type: 'icon',
       options: [

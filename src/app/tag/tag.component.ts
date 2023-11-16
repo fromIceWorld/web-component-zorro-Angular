@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { customWebComponent, transformValue } from 'src/common';
+import { Component } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { TAG_CONFIG } from './tag-config';
 @config(TAG_CONFIG)
@@ -8,7 +7,7 @@ import { TAG_CONFIG } from './tag-config';
   templateUrl: './tag.component.html',
   styleUrls: ['./tag.component.css'],
 })
-export class TagComponent extends customWebComponent implements OnInit {
+export class TagComponent {
   static tagNamePrefix: string = 'my-tag';
   tags = [
     {
@@ -41,12 +40,6 @@ export class TagComponent extends customWebComponent implements OnInit {
   checkChange(tag) {
     tag.checked = !tag.checked;
   }
-  check() {
-    this.cd.detectChanges();
-  }
-  constructor() {
-    super();
-  }
   /**
    *
    * @param option 参数配置
@@ -59,15 +52,24 @@ export class TagComponent extends customWebComponent implements OnInit {
     const index = String(Math.random()).substring(2),
       tagName = `${TagComponent.tagNamePrefix}-${index}`;
     const { html, css, className } = option;
-    let config = {};
-    Object.keys(html).map((key) => {
-      config[key] = transformValue(html[key]);
-    });
+    const { mode, tags } = html;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyTag${index} extends ${className}{
              constructor(){
                  super();
+                 this.mode = '${mode.value}';
+                 this.tags = ${tags.value};
+              }
+              // extends的class 无法依赖注入cd,只能自己查找
+              get cd(){
+                const dom = document.querySelector('${tagName}');
+                return dom._ngElementStrategy;
+              }
+              set cd(value){}
+              check(){
+                this.cd.detectChanges();
+                setTimeout(()=>this.cd.detectChanges())
               }
               set tagList(value){
                 this.tags = value || [];
@@ -77,20 +79,9 @@ export class TagComponent extends customWebComponent implements OnInit {
          MyTag${index}.ɵcmp.factory = () => { return new MyTag${index}()};
          (()=>{
           let customEl = createCustomElement(MyTag${index}, {  injector: injector,});
-          // 添加用户自定义数据
-          Object.defineProperty(customEl.prototype,'option',{
-            get(){
-              return ${JSON.stringify(config)}
-            },
-            configurable: false,
-            enumerable: false
-          })
           customElements.define('${tagName}',customEl);
          })();  
          `,
     };
-  }
-  ngOnInit(): void {
-    this.applyData();
   }
 }
