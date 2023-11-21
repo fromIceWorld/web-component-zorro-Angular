@@ -41,8 +41,8 @@ export class IconComponent implements OnInit {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${IconComponent.tagNamePrefix}-${index}`;
-    const { html, css, className } = option;
-    const { fontSize, iconUrl, icon } = html;
+    const { html, className } = option;
+    const { fontSize, iconUrl, icon } = html[0].config;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" 
@@ -58,7 +58,7 @@ export class IconComponent implements OnInit {
          MyIcon${index}.ɵcmp.factory = () => { return new MyIcon${index}()};
          (()=>{
             let customEl = createCustomElement(MyIcon${index}, {  injector: injector,});
-            customElements.define('${tagName}',customEl);
+            customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
         })();
          `,
     };

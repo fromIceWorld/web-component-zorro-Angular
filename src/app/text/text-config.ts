@@ -1,32 +1,25 @@
 const TEXT_CONFIG = {
   className: 'TextComponent',
-  html: {
-    value: {
-      type: 'string',
-      value: '姓名',
+  html: [
+    {
+      name: '组件配置',
+      config: {
+        value: {
+          type: 'string',
+          value: '姓名',
+        },
+        fontSize: {
+          type: 'string',
+          value: '14',
+          postfix: 'px',
+        },
+        color: {
+          type: 'color',
+          value: 'black',
+        },
+      },
     },
-    fontSize: {
-      type: 'string',
-      value: '14',
-      postfix: 'px',
-    },
-    color: {
-      type: 'color',
-      value: 'black',
-    },
-  },
-  css: {
-    width: {
-      type: 'number',
-      value: 0,
-      postfix: 'px',
-    },
-    height: {
-      type: 'number',
-      value: 0,
-      postfix: 'px',
-    },
-  },
+  ],
   component: {
     event: [],
     methods: [

@@ -87,8 +87,8 @@ export class RequestComponent {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${RequestComponent.tagNamePrefix}-${index}`;
-    const { html, css, className } = option;
-    const { method, api } = html;
+    const { html, className } = option;
+    const { method, api } = html[0].config;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyAPI${index} extends ${className}{
@@ -101,7 +101,7 @@ export class RequestComponent {
            MyAPI${index}.ɵcmp.factory = () => { return new MyAPI${index}()};
            (()=>{
               let customEl = createCustomElement(MyAPI${index}, {  injector: injector,});
-              customElements.define('${tagName}',customEl);
+              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
           })();
            `,
     };

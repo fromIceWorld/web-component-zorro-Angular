@@ -1,29 +1,24 @@
 const RADIO_CONFIG = {
   className: 'RadioComponent',
-  html: {
-    formcontrol: {
-      type: 'string',
-      value: 'sex',
+  html: [
+    {
+      name: '数据配置',
+      config: {
+        formcontrol: {
+          type: 'string',
+          value: 'sex',
+        },
+        options: {
+          type: 'tags',
+          options: [
+            { label: '男', value: '男' },
+            { label: '女', value: '女' },
+          ],
+          value: '男',
+        },
+      },
     },
-    options: {
-      type: 'list',
-      options: ['男', '女'],
-      value: '男',
-    },
-  },
-  css: {
-    width: {
-      type: 'number',
-      value: 0,
-      postfix: 'px',
-    },
-    height: {
-      type: 'number',
-      value: 0,
-      postfix: 'px',
-    },
-    style: {},
-  },
+  ],
   component: {
     event: [{ label: 'change', value: 'change' }],
     methods: [],

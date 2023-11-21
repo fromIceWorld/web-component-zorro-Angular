@@ -2,7 +2,7 @@ const TABS_CONFIG = {
   className: 'TabsComponent', // 暴露出的组件class名称【组件可以注册到window上，并把配置同时暴露】
   html: {
     position: {
-      type: 'array',
+      type: 'select',
       options: [
         { value: 'top', label: 'top' },
         { value: 'left', label: 'left' },
@@ -12,8 +12,11 @@ const TABS_CONFIG = {
       value: 'top',
     },
     tabs: {
-      type: 'list',
-      options: ['tab1', 'tab2'],
+      type: 'tags',
+      options: [
+        { label: 'tab1', value: 'tab1' },
+        { label: 'tab2', value: 'tab2' },
+      ],
       value: 'tab1',
     },
   },

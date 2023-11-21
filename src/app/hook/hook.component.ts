@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { transformValue } from 'src/common';
 import { config } from 'src/decorators/config';
 import { HOOK_CONFIG } from './hook-config';
 @config(HOOK_CONFIG)
@@ -31,17 +30,15 @@ export class HookComponent {
     const index = String(Math.random()).substring(2),
       tagName = `${HookComponent.tagNamePrefix}-${index}`;
     const { html: config, className } = option;
-    const init = Object.keys(config)
-      .map((key) => {
-        return `this.${key} = ${transformValue(config[key])}`;
-      })
-      .join('\n');
+    const { delay, count, interval } = config[0].config;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyHook${index} extends ${className}{
                constructor(){
                    super();
-                   ${init};
+                   this.delay = '${delay.value}';
+                   this.count = '${count.value}';
+                   this.interval = '${interval.value}';
                    if (this.delay) {
                       setTimeout(() => {
                         this.count--;
@@ -57,7 +54,7 @@ export class HookComponent {
                }
            }
            MyHook${index}.ɵcmp.factory = () => { return new MyHook${index}()};
-           customElements.define('${tagName}',createCustomElement(MyHook${index}, {  injector: injector,}));
+           customElements.get('${tagName}') || customElements.define('${tagName}',createCustomElement(MyHook${index}, {  injector: injector,}));
            `,
     };
   }

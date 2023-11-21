@@ -32,18 +32,13 @@ export class TextComponent implements OnInit {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${TextComponent.tagNamePrefix}-${index}`;
-    const { html, css, className } = option;
-    let styleStr = '';
-    for (let [key, value] of Object.entries(css)) {
-      // @ts-ignore
-      styleStr += `${key}:${value.value}${value.postfix || ''};`;
-    }
-    const { value, fontSize, color } = html;
+    const { html, className } = option;
+    const { value, fontSize, color } = html[0].config;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance"
                          _methods="_ngElementStrategy.componentRef.instance" 
-                        style="${styleStr}"></${tagName}>`,
+                        "></${tagName}>`,
       js: `class MyText${index} extends ${className}{
               constructor(undefined){
                   super();
@@ -74,7 +69,7 @@ export class TextComponent implements OnInit {
           MyText${index}.ɵcmp.factory = () => { return new MyText${index}()};
           (()=>{
             let customEl = createCustomElement(MyText${index}, {  injector: injector,});
-            customElements.define('${tagName}',customEl);
+            customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
          })();
           `,
     };

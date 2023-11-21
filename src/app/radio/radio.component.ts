@@ -38,9 +38,9 @@ export class RadioComponent {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${RadioComponent.tagNamePrefix}-${index}`;
-    const { options, formcontrol } = html;
+    const { options, formcontrol } = html[0].config;
     let items = options.options.map((item) => {
-      let [label, value] = item.split(':');
+      let { label, value } = item;
       return {
         label: label,
         value: value || label,
@@ -84,7 +84,7 @@ export class RadioComponent {
             configurable: false,
             enumerable: false
           })
-          customElements.define('${tagName}',customEl);
+          customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
       })();
         `,
     };

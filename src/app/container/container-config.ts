@@ -23,7 +23,7 @@ const CONTAINER_CONFIG = {
       postfix: 'px',
     },
     'border-style': {
-      type: 'array',
+      type: 'select',
       options: [
         { label: 'none', value: 'none' },
         { label: 'solid', value: 'solid' },

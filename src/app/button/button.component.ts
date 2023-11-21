@@ -49,19 +49,17 @@ export class ButtonComponent {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${ButtonComponent.tagNamePrefix}-${index}`;
-    const { html, css, className } = option;
+    const { html, className } = option;
+    const { name } = html[0].config,
+      { shape, size, type, block, icon } = html[1].config;
+
     const {
       disabled,
       ghost,
       loading,
-      shape,
-      size,
-      type,
-      block,
+
       danger,
-      icon,
-      name,
-    } = html;
+    } = html[2].config;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyButton${index} extends ${className}{
@@ -105,7 +103,7 @@ export class ButtonComponent {
            MyButton${index}.ɵcmp.factory = () => { return new MyButton${index}()};
            (()=>{
               let customEl = createCustomElement(MyButton${index}, {  injector: injector,});
-              customElements.define('${tagName}',customEl);
+              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
            })();
            `,
     };

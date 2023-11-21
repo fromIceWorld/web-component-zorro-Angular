@@ -59,11 +59,12 @@ export class InputComponent {
     return obj;
   }
   static extends(option) {
-    const { html, css, className } = option;
+    const { html, className } = option;
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${InputComponent.tagNamePrefix}-${index}`;
-    const { placeholder, formcontrol, value, updateOn, regexp } = html;
+    const { placeholder, value } = html[0].config,
+      { formcontrol, regexp, updateOn } = html[1].config;
     let config = {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"
                     type="text" 
@@ -125,7 +126,7 @@ export class InputComponent {
         MyInput${index}.ɵcmp.factory = () => { return new MyInput${index}()};
         (()=>{
             let customEl = createCustomElement(MyInput${index}, {  injector: injector,});
-            customElements.define('${tagName}',customEl);
+            customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
         })();`,
     };
     return config;

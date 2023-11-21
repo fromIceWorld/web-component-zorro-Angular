@@ -174,7 +174,7 @@ export class TableComponent {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${TableComponent.tagNamePrefix}-${index}`;
-    const { html, css, className } = option;
+    const { html, className } = option;
     const {
       title,
       titleValue,
@@ -191,7 +191,7 @@ export class TableComponent {
       viewBtn,
       editBtn,
       deleteBtn,
-    } = html;
+    } = html[0].config;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
@@ -207,7 +207,7 @@ export class TableComponent {
                  this.checkbox = ${checkbox.value};
                  this.ellipsis = ${ellipsis.value};
                  this.size = '${size.value}';
-                 this.headers = ${JSON.stringify(headers.options)};
+                 this.headers = ${JSON.stringify(headers.value)};
                  this.row = ${row.value};
                  this.listOfData = ${listOfData.value};
                  this.viewBtn = ${viewBtn.value};
@@ -246,7 +246,7 @@ export class TableComponent {
          MyTable${index}.ɵcmp.factory = () => { return new MyTable${index}()};
          (()=>{
             let customEl = createCustomElement(MyTable${index}, {  injector: injector,});
-            customElements.define('${tagName}',customEl);
+            customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
         })();
          `,
     };

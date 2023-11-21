@@ -50,9 +50,9 @@ export class SelectComponent implements OnInit {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${SelectComponent.tagNamePrefix}-${index}`;
-    const { placeholder, options, formcontrol, api } = html;
+    const { placeholder, options, formcontrol, api } = html[0].config;
     let items = options.options.map((item) => {
-      let [label, value] = item.split(':');
+      let { label, value } = item;
       return {
         label: label,
         value: value || label,
@@ -94,7 +94,7 @@ export class SelectComponent implements OnInit {
         MySelect${index}.ɵcmp.factory = () => { return new MySelect${index}()};
         (()=>{
           let customEl = createCustomElement(MySelect${index}, {  injector: injector});
-          customElements.define('${tagName}',customEl);
+          customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
        })();
         `,
     };

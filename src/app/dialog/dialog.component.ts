@@ -54,11 +54,11 @@ export class DialogComponent {
     this.onVisibleChange.emit();
   }
   static extends(option) {
-    const { html, css, className } = option;
+    const { html, className } = option;
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${DialogComponent.tagNamePrefix}-${index}`;
-    const { title, width, height } = html;
+    const { title, width, height } = html[0].config;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" 
                          _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
@@ -102,7 +102,7 @@ export class DialogComponent {
            MyDialogModel${index}.ɵcmp.factory = () => { return new MyDialogModel${index}()};
            (()=>{
               let customEl = createCustomElement(MyDialogModel${index}, {  injector: injector,});
-              customElements.define('${tagName}',customEl);
+              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
           })();
                  `,
     };
