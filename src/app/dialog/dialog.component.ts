@@ -26,6 +26,8 @@ export class DialogComponent {
   @ViewChild('content') content;
   static tagNamePrefix: string = 'my-dialog';
   title: string = '对话框';
+  width = 800;
+  height = 800;
   display: boolean = false;
   constructor(private cd: ChangeDetectorRef) {}
   close(e) {
@@ -66,8 +68,8 @@ export class DialogComponent {
              constructor(){
                 super();
                 this.title = '${title.value}';
-                this.width = '${width.value}';
-                this.height = '${height.value}';
+                this.width = '${width.value}${width.postfix}';
+                this.height = '${height.value}${height.postfix}';
              }
              // extends的class 无法依赖注入cd,只能自己查找
              get cd(){
@@ -99,7 +101,10 @@ export class DialogComponent {
               this.check();
             }
            }
-           MyDialogModel${index}.ɵcmp.factory = () => { return new MyDialogModel${index}()};
+           MyDialogModel${index}.ɵcmp = {
+            ...MyDialogModel${index}.ɵcmp,
+            factory:() => { return new MyDialogModel${index}()},
+           };
            (()=>{
               let customEl = createCustomElement(MyDialogModel${index}, {  injector: injector,});
               customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

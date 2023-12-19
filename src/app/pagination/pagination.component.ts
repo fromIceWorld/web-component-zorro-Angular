@@ -75,7 +75,10 @@ export class PaginationComponent {
                 this.check();
                }
           }
-          MyPagination${index}.ɵcmp.factory = () => { return new MyPagination${index}()};
+          MyPagination${index}.ɵcmp = {
+            ...MyPagination${index}.ɵcmp,
+            factory:() => { return new MyPagination${index}()},
+          };
           (()=>{
               let customEl = createCustomElement(MyPagination${index}, {  injector: injector,});
               // 添加用户自定义数据

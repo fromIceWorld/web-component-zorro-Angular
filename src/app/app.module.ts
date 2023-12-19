@@ -86,9 +86,10 @@ window['createCustomElement'] = createCustomElement;
   entryComponents: [AppComponent],
 })
 export class AppModule {
-  constructor(private injector: Injector) {}
-  //   //@ts-ignore
-  //   window.injector = this.injector;
+  constructor(private injector: Injector) {
+    //@ts-ignore
+    window.injector = this.injector;
+  }
   // }
   registerEl(tagName, cla) {
     // 解决 extends 的组件无依赖问题

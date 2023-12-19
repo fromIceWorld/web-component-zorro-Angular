@@ -11,8 +11,13 @@ export class TextComponent implements OnInit {
   static tagNamePrefix: string = 'my-text';
   value: string = '姓名';
   fontSize: string = '14px';
+  fontWeight: number = 400;
   color: string = 'black';
   isSHow: boolean = true;
+  left = '0px';
+  top = '0px';
+  right = '0px';
+  bottom = '0px';
   constructor(private cd: ChangeDetectorRef) {}
   show() {
     this.isSHow = true;
@@ -33,17 +38,25 @@ export class TextComponent implements OnInit {
     const index = String(Math.random()).substring(2),
       tagName = `${TextComponent.tagNamePrefix}-${index}`;
     const { html, className } = option;
-    const { value, fontSize, color } = html[0].config;
+    const { value, fontSize, fontWeight, color, left, top, right, bottom } =
+      html[0].config;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance"
                          _methods="_ngElementStrategy.componentRef.instance" 
                         "></${tagName}>`,
-      js: `class MyText${index} extends ${className}{
+      js: `
+          (()=>{
+            class MyText${index} extends ${className}{
               constructor(undefined){
                   super();
                   this.value = '${value.value}';
+                  this.fontWeight = ${fontWeight.value};
                   this.fontSize = '${fontSize.value}${fontSize.postfix}';
+                  this.left = '${left.value}${left.postfix}';
+                  this.top = '${top.value}${top.postfix}';
+                  this.right = '${right.value}${right.postfix}';
+                  this.bottom = '${bottom.value}${bottom.postfix}';
                   this.color = '${color.value}';
               }
               // extends的class 无法依赖注入cd,只能自己查找
@@ -66,8 +79,10 @@ export class TextComponent implements OnInit {
                 this.check();
               }
           }
-          MyText${index}.ɵcmp.factory = () => { return new MyText${index}()};
-          (()=>{
+          MyText${index}.ɵcmp = {
+            ...MyText${index}.ɵcmp,
+            factory : () => { return new MyText${index}() }
+          };
             let customEl = createCustomElement(MyText${index}, {  injector: injector,});
             customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
          })();

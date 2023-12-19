@@ -53,7 +53,10 @@ export class HookComponent {
                 this.connectedCallback.emit();
                }
            }
-           MyHook${index}.ɵcmp.factory = () => { return new MyHook${index}()};
+           MyHook${index}.ɵcmp = {
+            ...MyHook${index}.ɵcmp,
+            factory:() => { return new MyHook${index}()},
+           };
            customElements.get('${tagName}') || customElements.define('${tagName}',createCustomElement(MyHook${index}, {  injector: injector,}));
            `,
     };

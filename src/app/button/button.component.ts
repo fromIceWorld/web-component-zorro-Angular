@@ -100,7 +100,10 @@ export class ButtonComponent {
                   this.check();
                 }
            }
-           MyButton${index}.ɵcmp.factory = () => { return new MyButton${index}()};
+           MyButton${index}.ɵcmp = {
+            ...MyButton${index}.ɵcmp,
+            factory:() => { return new MyButton${index}()},
+           };
            (()=>{
               let customEl = createCustomElement(MyButton${index}, {  injector: injector,});
               customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

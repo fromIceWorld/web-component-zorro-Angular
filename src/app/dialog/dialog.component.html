@@ -4,7 +4,11 @@
       <span class="dialog-header-title">{{ title }}</span>
       <span (click)="close($event)" class="close-btn">x</span>
     </div>
-    <div class="dialog-body" #content>
+    <div
+      class="dialog-body"
+      #content
+      [ngStyle]="{ width: width, height: height }"
+    >
       <ng-content></ng-content>
     </div>
     <div class="dialog-foot">

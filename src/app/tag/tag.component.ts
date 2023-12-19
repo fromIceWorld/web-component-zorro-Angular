@@ -76,7 +76,10 @@ export class TagComponent {
                 this.check();
               }
          }
-         MyTag${index}.ɵcmp.factory = () => { return new MyTag${index}()};
+         MyTag${index}.ɵcmp = {
+          ...MyTag${index}.ɵcmp,
+          factory:() => { return new MyTag${index}()},
+         };
          (()=>{
           let customEl = createCustomElement(MyTag${index}, {  injector: injector,});
           customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

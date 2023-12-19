@@ -23,7 +23,6 @@ export class TabsComponent extends customWebComponent implements OnInit {
   }
   change(e) {
     const { index } = e;
-    console.log(this.temps);
     //@ts-ignore
     this.liveTemplate = this.temps._results[index];
   }
@@ -54,7 +53,10 @@ export class TabsComponent extends customWebComponent implements OnInit {
                  super();
               }
          }
-         MyTabs${index}.ɵcmp.factory = () => { return new MyTabs${index}()};
+         MyTabs${index}.ɵcmp = {
+          ...MyTabs${index}.ɵcmp,
+          factory:() => { return new MyTabs${index}()},
+         };
          (()=>{
           let customEl = createCustomElement(MyButton${index}, {  injector: injector,});
               // 添加用户自定义数据

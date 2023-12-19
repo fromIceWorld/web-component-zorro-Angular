@@ -22,7 +22,6 @@ const API_CONFIG = {
       },
     },
   ],
-
   component: {
     event: [
       { label: 'validateFalse', value: 'validateFalse' },

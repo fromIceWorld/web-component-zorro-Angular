@@ -1,12 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-  ViewRef,
-  ɵɵgetCurrentView,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { ButtonComponent } from './button/button.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { HookComponent } from './hook/hook.component';
@@ -43,7 +36,6 @@ export class AppComponent implements OnInit {
     });
     //@ts-ignore
     window.injector = this.injector;
-    console.log(ɵɵgetCurrentView(), ViewRef);
   }
   ngOnInit(): void {
     // 注册组件到全局

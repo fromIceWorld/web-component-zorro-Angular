@@ -42,7 +42,10 @@ export class ImageComponent {
                  this.src = '${src.value}';
              }
          }
-         MyImage${index}.ɵcmp.factory = () => { return new MyImage${index}()};
+         MyImage${index}.ɵcmp = {
+          ...MyImage${index}.ɵcmp,
+          factory:() => { return new MyImage${index}()},
+         };
          (()=>{
             let customEl = createCustomElement(MyImage${index}, {  injector: injector});
             customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

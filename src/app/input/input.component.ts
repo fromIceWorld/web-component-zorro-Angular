@@ -123,7 +123,10 @@ export class InputComponent {
               };
              }
         };
-        MyInput${index}.ɵcmp.factory = () => { return new MyInput${index}()};
+        MyInput${index}.ɵcmp = {
+          ...MyInput${index}.ɵcmp,
+          factory:() => { return new MyInput${index}()},
+        };
         (()=>{
             let customEl = createCustomElement(MyInput${index}, {  injector: injector,});
             customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

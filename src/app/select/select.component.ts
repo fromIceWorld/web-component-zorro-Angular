@@ -46,7 +46,7 @@ export class SelectComponent implements OnInit {
     });
   }
   static extends(option) {
-    const { html, css, className } = option;
+    const { html, className } = option;
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${SelectComponent.tagNamePrefix}-${index}`;
@@ -91,7 +91,10 @@ export class SelectComponent implements OnInit {
               this.selected = target;
             }
         }
-        MySelect${index}.ɵcmp.factory = () => { return new MySelect${index}()};
+        MySelect${index}.ɵcmp = {
+          ...MySelect${index}.ɵcmp,
+          factory:() => { return new MySelect${index}()},
+        };
         (()=>{
           let customEl = createCustomElement(MySelect${index}, {  injector: injector});
           customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

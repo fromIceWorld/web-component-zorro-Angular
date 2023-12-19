@@ -98,7 +98,10 @@ export class RequestComponent {
                    this.api = '${api.value}';
                }
            }
-           MyAPI${index}.ɵcmp.factory = () => { return new MyAPI${index}()};
+           MyAPI${index}.ɵcmp = {
+            ...MyAPI${index}.ɵcmp,
+            factory:() => { return new MyAPI${index}()},
+           };
            (()=>{
               let customEl = createCustomElement(MyAPI${index}, {  injector: injector,});
               customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

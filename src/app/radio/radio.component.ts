@@ -73,7 +73,10 @@ export class RadioComponent {
               this.check();
             }
         }
-        MyRadio${index}.ɵcmp.factory = () => { return new MyRadio${index}()};
+        MyRadio${index}.ɵcmp = {
+          ...MyRadio${index}.ɵcmp,
+          factory:() => { return new MyRadio${index}()},
+        };
         (()=>{
           let customEl = createCustomElement(MyRadio${index}, {  injector: injector,});
           // 添加用户自定义数据

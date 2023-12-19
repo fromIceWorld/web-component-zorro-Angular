@@ -7,7 +7,7 @@ const components = [
     {
       id: 'text',
       type: 'node',
-      icon: 'font-size',
+      icon: '#icon-wenben',
       title: `文本:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -19,7 +19,7 @@ const components = [
     {
       id: 'icon',
       type: 'node',
-      icon: 'sketch',
+      icon: '#icon-tubiao',
       title: `图标:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -31,7 +31,7 @@ const components = [
     {
       id: 'button',
       type: 'node',
-      icon: 'tool',
+      icon: '#icon-anniu1',
       title: `按钮:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -43,7 +43,7 @@ const components = [
     {
       id: 'image',
       type: 'node',
-      icon: 'picture',
+      icon: '#icon-tupian',
       title: `图片:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -52,25 +52,13 @@ const components = [
       des: '图片组件',
       component: 'ImageComponent',
     },
-    // {
-    //   id: 'container',
-    //   type: 'combo',
-    //   icon: 'border-outer',
-    //   title: `布局容器:
-    //               Angular@10+ng-zorro-antd`,
-    //   color: '#dd0031',
-    //   view: 0,
-    //   family: 'layout',
-    //   des: '基础的布局组件',
-    //   component: 'ContainerComponent',
-    // },
     {
       id: 'input',
       type: 'node',
       title: `输入框:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      icon: 'edit',
+      icon: '#icon-wenbenshurukuang',
       view: 0,
       family: 'form',
       des: '基础的输入框组件',
@@ -82,7 +70,7 @@ const components = [
       title: `单选框:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      icon: 'aim',
+      icon: '#icon-radioBoxList',
       view: 0,
       family: 'form',
       des: '基础的单选框组件',
@@ -94,7 +82,7 @@ const components = [
       title: `选择列:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
-      icon: 'down',
+      icon: '#icon-xialakuang',
       view: 0,
       family: 'form',
       des: '基础的下拉选择组件',
@@ -103,7 +91,7 @@ const components = [
     {
       id: 'table',
       type: 'node',
-      icon: 'table',
+      icon: '#icon-biaoge',
       title: `表格:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -115,7 +103,7 @@ const components = [
     {
       id: 'pagination',
       type: 'node',
-      icon: 'delivered-procedure',
+      icon: '#icon-fenyeqi',
       title: `分页:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -127,7 +115,7 @@ const components = [
     {
       id: 'tag',
       type: 'node',
-      icon: 'tags',
+      icon: '#icon-Tag',
       title: `标签:
                  Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -141,7 +129,7 @@ const components = [
       type: 'combo',
       node: 'dialog', // 当前节点在视图上对应的图形
       color: '#dd0031',
-      icon: 'switcher',
+      icon: '#icon-danchuang',
       title: `弹窗:
                 Angular@10+ng-zorro-antd`,
       view: 2,
@@ -152,7 +140,7 @@ const components = [
     {
       id: 'api',
       type: 'node',
-      icon: 'radar-chart',
+      icon: '#icon-jiekou',
       title: `接口:
                 Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -165,7 +153,7 @@ const components = [
     {
       id: 'hook',
       type: 'node',
-      icon: 'field-time',
+      icon: '#icon-hook',
       title: `hook:
                 Angular@10+ng-zorro-antd`,
       color: '#dd0031',
@@ -176,8 +164,9 @@ const components = [
       component: 'HookComponent',
     },
   ],
-  file = 'dist/';
-const http = require('http'),
+  folderPath = './dist';
+const fs = require('fs'),
+  path = require('path'),
   request = require('request');
 const filesName = [
   { name: 'main.js', decorator: { defer: true } },
@@ -186,59 +175,58 @@ const filesName = [
   { name: 'vendor.js', decorator: { defer: true } },
   'styles.css',
 ];
+const area = 'base';
+components.map((item) => {
+  item['filesName'] = filesName;
+  item['area'] = area;
+});
+//@ts-ignore
 let options = {
   url: 'http://127.0.0.1:3000/upload',
   method: 'POST',
-  json: true,
   headers: {
-    'content-type': 'application/json',
+    'content-type': 'multipart/form-data',
   },
-  body: {},
-};
-let files = [],
-  area = 'base';
-filesName.forEach((fileName) => {
-  let name = typeof fileName == 'string' ? fileName : fileName.name;
-  let content = require('fs').readFileSync(file + name);
-  let buffer = Buffer.from(content);
-  files.push({
-    name,
-    content: buffer.toString(),
-  });
-});
-// 引入 图标js文件
-let iconJS = Buffer.from(
-  require('fs').readFileSync('./iconfont/iconfont.js')
-).toString();
-files.push({
-  name: 'iconfont.js',
-  content: iconJS,
-});
-
-let componentsConfig = components.map((item) => {
-  return {
-    ...item,
-    filesName: [...filesName, { name: 'iconfont.js', decorator: {} }],
+  formData: {
+    files: [],
     area,
-  };
-});
-request(
-  {
-    ...options,
-    body: {
-      code: 200,
-      data: {
-        components: componentsConfig,
-        content: files,
-        area,
-      },
-    },
+    components: JSON.stringify(components),
   },
-  (err, res, body) => {
-    if (res.statusCode === 200) {
-      console.log(filesName, res.statusCode, '上传完成');
+};
+// 递归遍历文件夹中的所有文件
+function uploadFolder(folderPath, dir) {
+  const files = fs.readdirSync(folderPath);
+  files.forEach((file) => {
+    const filePath = folderPath + '/' + file;
+    // 判断是否为文件夹
+    if (fs.statSync(filePath).isDirectory()) {
+      // 递归上传子文件夹
+      uploadFolder(filePath, dir + '/' + file);
     } else {
-      console.log(body);
+      // 上传文件
+      uploadFile(filePath, dir, file);
     }
+  });
+}
+
+// 缓存上传文件
+function uploadFile(filePath, dir, fileName) {
+  const content = fs.readFileSync(path.resolve(__dirname, filePath));
+  options.formData.files.push({
+    content: Buffer.from(content).toString(),
+    dir,
+    fileName,
+  });
+}
+// 将文件缓存
+uploadFolder(folderPath, '');
+console.log('共上传文件数：', options.formData.files.length);
+//@ts-ignore
+options.formData.files = JSON.stringify(options.formData.files);
+request(options, (err, res, body) => {
+  if (res.statusCode === 200) {
+    console.log('上传完成');
+  } else {
+    console.log(body);
   }
-);
+});

@@ -243,7 +243,10 @@ export class TableComponent {
               this.check();
             }
          }
-         MyTable${index}.ɵcmp.factory = () => { return new MyTable${index}()};
+         MyTable${index}.ɵcmp = {
+          ...MyTable${index}.ɵcmp,
+          factory:() => { return new MyTable${index}()},
+         };
          (()=>{
             let customEl = createCustomElement(MyTable${index}, {  injector: injector,});
             customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

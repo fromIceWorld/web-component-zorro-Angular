@@ -55,7 +55,10 @@ export class IconComponent implements OnInit {
                  this.icon = '${icon.value}';
              }
          }
-         MyIcon${index}.ɵcmp.factory = () => { return new MyIcon${index}()};
+         MyIcon${index}.ɵcmp = {
+          ...MyIcon${index}.ɵcmp,
+          factory:() => { return new MyIcon${index}()}
+         };
          (()=>{
             let customEl = createCustomElement(MyIcon${index}, {  injector: injector,});
             customElements.get('${tagName}') || customElements.define('${tagName}',customEl);

@@ -13,9 +13,33 @@ const TEXT_CONFIG = {
           value: '14',
           postfix: 'px',
         },
+        fontWeight: {
+          type: 'number',
+          value: 400,
+        },
         color: {
           type: 'color',
           value: 'black',
+        },
+        left: {
+          type: 'number',
+          value: 0,
+          postfix: 'px',
+        },
+        top: {
+          type: 'number',
+          value: 0,
+          postfix: 'px',
+        },
+        right: {
+          type: 'number',
+          value: 0,
+          postfix: 'px',
+        },
+        bottom: {
+          type: 'number',
+          value: 0,
+          postfix: 'px',
         },
       },
     },
