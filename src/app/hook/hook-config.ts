@@ -4,27 +4,25 @@ const HOOK_CONFIG = {
     {
       name: '组件配置',
       config: {
+        type: {
+          type: 'select',
+          options: [
+            { label: 'setTimeout', value: 'setTimeout' },
+            { label: 'setInterval', value: 'setInterval' },
+          ],
+          value: 'setTimeout',
+        },
         delay: {
           type: 'number',
-          value: 0,
-        },
-        count: {
-          type: 'number',
-          value: 1,
-        },
-        interval: {
-          type: 'number',
-          value: 10000,
-          postfix: 'ms',
+          value: 1000,
         },
       },
     },
   ],
   component: {
-    event: [{ label: 'connectedCallback', value: 'connectedCallback' }],
-    methods: [],
+    event: [{ label: 'run', value: 'run' }],
+    methods: [{ label: 'start', value: 'start' }],
     data: [],
-    params: [],
   },
 };
 export { HOOK_CONFIG };

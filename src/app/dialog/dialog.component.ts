@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { TextService } from '../text.service';
 import { DIALOG_CONFIG } from './dialog-config';
@@ -37,6 +38,12 @@ export class DialogComponent {
   handleOk() {}
   private changeState(target: boolean) {
     this.display = target;
+    if (target) {
+      this.onVisible.emit();
+    } else {
+      this.onHiden.emit();
+    }
+    this.onVisibleChange.emit();
   }
   public visibleChange() {
     if (this.display) {
@@ -71,43 +78,49 @@ export class DialogComponent {
                 this.width = '${width.value}${width.postfix}';
                 this.height = '${height.value}${height.postfix}';
              }
-             // extends的class 无法依赖注入cd,只能自己查找
-             get cd(){
-               const dom = document.querySelector('${tagName}');
-               return dom._ngElementStrategy;
-             }
-             set cd(value){}
-             check(){
-               this.cd.detectChanges();
-               setTimeout(()=>this.cd.detectChanges())
-             }
-             visibleChange() {
-              if (this.display) {
-                this.hiden();
-              } else {
-                this.visible();
-              }
-            }
-            visible() {
-              this.changeState(true);   
-              this.onVisible.emit();
-              this.onVisibleChange.emit();
-              this.check();
-            }
-            hiden() {
-              this.changeState(false);
-              this.onHiden.emit();
-              this.onVisibleChange.emit();
-              this.check();
-            }
            }
            MyDialogModel${index}.ɵcmp = {
             ...MyDialogModel${index}.ɵcmp,
             factory:() => { return new MyDialogModel${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyDialogModel${index}, {  injector: injector,});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = ${createCustomElementHsh}(MyDialogModel${index}, {  injector: injector,});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                visibleChange() {
+                  if (this.instance.display) {
+                    this.hiden();
+                  } else {
+                    this.visible();
+                  }
+                }
+                visible() {
+                  this.instance.changeState(true);   
+                  this.check();
+                }
+                hiden() {
+                  this.instance.changeState(false);
+                  this.check();
+                }
+                get title() {
+                  return this.instance.title;
+                }
+                set title(value) {
+                  this.instance.title = value;
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
           })();
                  `,
     };

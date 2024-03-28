@@ -28,8 +28,8 @@ const PAGINATION_CONFIG = {
   ],
   component: {
     event: [{ label: 'change', value: 'change' }],
-    methods: [{ label: 'init', value: 'init' }],
-    data: ['total', 'value'],
+    methods: [],
+    data: ['total', 'pageIndex', 'pageSize'],
     params: [],
   },
 };

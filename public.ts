@@ -6,6 +6,7 @@
 const components = [
     {
       id: 'text',
+      name: '文本',
       type: 'node',
       icon: '#icon-wenben',
       title: `文本:
@@ -18,6 +19,7 @@ const components = [
     },
     {
       id: 'icon',
+      name: '图标',
       type: 'node',
       icon: '#icon-tubiao',
       title: `图标:
@@ -30,6 +32,7 @@ const components = [
     },
     {
       id: 'button',
+      name: '按钮',
       type: 'node',
       icon: '#icon-anniu1',
       title: `按钮:
@@ -42,6 +45,7 @@ const components = [
     },
     {
       id: 'image',
+      name: '图片',
       type: 'node',
       icon: '#icon-tupian',
       title: `图片:
@@ -54,6 +58,7 @@ const components = [
     },
     {
       id: 'input',
+      name: '输入框',
       type: 'node',
       title: `输入框:
                   Angular@10+ng-zorro-antd`,
@@ -66,6 +71,7 @@ const components = [
     },
     {
       id: 'radio',
+      name: '单选框',
       type: 'node',
       title: `单选框:
                   Angular@10+ng-zorro-antd`,
@@ -78,8 +84,9 @@ const components = [
     },
     {
       id: 'select',
+      name: '下拉框',
       type: 'node',
-      title: `选择列:
+      title: `下拉框:
                   Angular@10+ng-zorro-antd`,
       color: '#dd0031',
       icon: '#icon-xialakuang',
@@ -90,6 +97,7 @@ const components = [
     },
     {
       id: 'table',
+      name: '表格',
       type: 'node',
       icon: '#icon-biaoge',
       title: `表格:
@@ -102,6 +110,7 @@ const components = [
     },
     {
       id: 'pagination',
+      name: '分页器',
       type: 'node',
       icon: '#icon-fenyeqi',
       title: `分页:
@@ -114,6 +123,7 @@ const components = [
     },
     {
       id: 'tag',
+      name: '标签',
       type: 'node',
       icon: '#icon-Tag',
       title: `标签:
@@ -126,6 +136,7 @@ const components = [
     },
     {
       id: 'dialog',
+      name: '弹窗',
       type: 'combo',
       node: 'dialog', // 当前节点在视图上对应的图形
       color: '#dd0031',
@@ -139,6 +150,7 @@ const components = [
     },
     {
       id: 'api',
+      name: 'API接口',
       type: 'node',
       icon: '#icon-jiekou',
       title: `接口:
@@ -151,7 +163,22 @@ const components = [
       component: 'RequestComponent',
     },
     {
+      id: 'router',
+      name: '路由接口',
+      type: 'node',
+      icon: '#icon-jiekou',
+      title: `路由:
+                Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      node: 'router',
+      view: 3,
+      family: 'router',
+      des: '基础的路由组件',
+      component: 'RouterComponent',
+    },
+    {
       id: 'hook',
+      name: 'hook',
       type: 'node',
       icon: '#icon-hook',
       title: `hook:

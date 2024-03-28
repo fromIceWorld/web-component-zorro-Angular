@@ -10,5 +10,5 @@
   [nzDanger]="danger"
 >
   <span *ngIf="icon" nz-icon [nzType]="icon"></span>
-  {{ name }}
+  <span *ngIf="name !== ''">{{ name }}</span>
 </button>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { BUTTON_CONFIG } from './button-config';
-
 @config(BUTTON_CONFIG)
 @Component({
   selector: 'app-button',
@@ -53,13 +53,7 @@ export class ButtonComponent {
     const { name } = html[0].config,
       { shape, size, type, block, icon } = html[1].config;
 
-    const {
-      disabled,
-      ghost,
-      loading,
-
-      danger,
-    } = html[2].config;
+    const { disabled, ghost, loading, danger } = html[2].config;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyButton${index} extends ${className}{
@@ -76,37 +70,40 @@ export class ButtonComponent {
                   this.icon = '${icon.value}';
                   this.name = '${name.value}';
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
-                setLoading(){
-                  this.loading = true;
-                  this.check();
-                }
-                setNormal(){
-                  this.loading = false;
-                  this.disabled = false;
-                  this.check();
-                }
-                setDisabled(){
-                  this.disabled = true;
-                  this.check();
-                }
            }
            MyButton${index}.ɵcmp = {
             ...MyButton${index}.ɵcmp,
             factory:() => { return new MyButton${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyButton${index}, {  injector: injector,});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = ${createCustomElementHsh}(MyButton${index}, {  injector: injector,});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                setLoading(){
+                  this.instance.loading = true;
+                  this.check();
+                }
+                setNormal(){
+                  this.instance.loading = false;
+                  this.instance.disabled = false;
+                  this.check();
+                }
+                setDisabled(){
+                  this.instance.disabled = true;
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

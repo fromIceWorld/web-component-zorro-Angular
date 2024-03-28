@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChildren } from '@angular/core';
 import { customWebComponent, transformValue } from 'src/common';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { TABS_CONFIG } from './tabs-config';
 
@@ -58,16 +59,21 @@ export class TabsComponent extends customWebComponent implements OnInit {
           factory:() => { return new MyTabs${index}()},
          };
          (()=>{
-          let customEl = createCustomElement(MyButton${index}, {  injector: injector,});
-              // 添加用户自定义数据
-              Object.defineProperty(customEl.prototype,'option',{
-                get(){
-                  return ${JSON.stringify(config)}
-                },
-                configurable: false,
-                enumerable: false
-              })
-              customElements.define('${tagName}',customEl);
+          let angularClass = ${createCustomElementHsh}(MyTabs${index}, {  injector: injector,});
+          class customClass extends angularClass{
+            constructor(){
+              super();
+            }
+            check(){
+              // extends的class 无法依赖注入cd,只能自己查找
+              let cd = this._ngElementStrategy;
+              cd.detectChanges();
+            }
+            get instance(){
+              return this._ngElementStrategy.componentRef.instance
+            }
+          }  
+          customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
           })();
          `,
     };

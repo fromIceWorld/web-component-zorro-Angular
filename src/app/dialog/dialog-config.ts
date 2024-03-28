@@ -2,7 +2,7 @@ const DIALOG_CONFIG = {
   className: 'DialogComponent',
   html: [
     {
-      name: '组件配置',
+      name: '对话框配置',
       config: {
         title: {
           type: 'string',
@@ -33,6 +33,7 @@ const DIALOG_CONFIG = {
       { label: 'hiden', value: 'hiden' },
       { label: 'visibleChange', value: 'visibleChange' },
     ],
+    data: ['title'],
   },
 };
 export { DIALOG_CONFIG };

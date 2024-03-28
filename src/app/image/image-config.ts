@@ -39,7 +39,7 @@ const IMAGE_CONFIG = {
     style: {},
   },
   component: {
-    event: [],
+    event: [{ label: 'click', value: 'click' }],
     methods: [],
     data: [],
     params: [],

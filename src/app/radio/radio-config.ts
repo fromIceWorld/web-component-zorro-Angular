@@ -23,7 +23,6 @@ const RADIO_CONFIG = {
     event: [{ label: 'change', value: 'change' }],
     methods: [],
     data: ['value'],
-    params: [{ label: 'value', value: 'value' }],
   },
 };
 export { RADIO_CONFIG };

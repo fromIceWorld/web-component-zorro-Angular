@@ -49,10 +49,9 @@ const INPUT_CONFIG = {
     ],
     methods: [
       { label: 'validate', value: 'validate' },
-      { label: 'clear', value: 'clear' },
+      { label: 'clearInput', value: 'clearInput' },
     ],
-    data: ['value', 'validateValue'],
-    params: ['value'],
+    data: ['value'],
   },
 };
 export { INPUT_CONFIG };

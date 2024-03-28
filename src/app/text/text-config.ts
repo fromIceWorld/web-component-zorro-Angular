@@ -41,6 +41,34 @@ const TEXT_CONFIG = {
           value: 0,
           postfix: 'px',
         },
+        fontFamily: {
+          type: 'font-family',
+          options: [
+            { label: '无', value: '' },
+            { label: 'HanYiLingXinTiJian-1', value: 'HanYiLingXinTiJian-1' },
+            {
+              label: 'REEJI-HonghuangLiGB-Medium-2',
+              value: 'REEJI-HonghuangLiGB-Medium-2',
+            },
+            {
+              label: 'DS-DIGI-1',
+              value: 'DS-DIGI-1',
+            },
+            {
+              label: 'DS-DIGIB-2',
+              value: 'DS-DIGIB-2',
+            },
+            {
+              label: 'DS-DIGII-3',
+              value: 'DS-DIGII-3',
+            },
+            {
+              label: 'DS-DIGIT-4',
+              value: 'DS-DIGIT-4',
+            },
+          ],
+          value: '',
+        },
       },
     },
   ],

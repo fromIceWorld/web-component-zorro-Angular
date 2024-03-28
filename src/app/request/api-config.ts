@@ -24,17 +24,13 @@ const API_CONFIG = {
   ],
   component: {
     event: [
-      { label: 'validateFalse', value: 'validateFalse' },
       { label: 'loading', value: 'loading' },
       { label: 'error', value: 'error' },
       { label: 'success200', value: 'success200' },
       { label: 'success500', value: 'success500' },
     ],
-    methods: [
-      { label: 'request', value: 'request' },
-      { label: 'validatorAndRequest', value: 'validatorAndRequest' },
-    ],
-    data: ['list', 'total', 'message'],
+    methods: [{ label: 'request', value: 'request' }],
+    data: ['respond', 'api', 'method'],
     params: [],
   },
 };

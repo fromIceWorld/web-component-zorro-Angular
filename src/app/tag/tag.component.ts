@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { TAG_CONFIG } from './tag-config';
+
 @config(TAG_CONFIG)
 @Component({
   selector: 'app-tag',
@@ -61,28 +63,34 @@ export class TagComponent {
                  this.mode = '${mode.value}';
                  this.tags = ${tags.value};
               }
-              // extends的class 无法依赖注入cd,只能自己查找
-              get cd(){
-                const dom = document.querySelector('${tagName}');
-                return dom._ngElementStrategy;
-              }
-              set cd(value){}
-              check(){
-                this.cd.detectChanges();
-                setTimeout(()=>this.cd.detectChanges())
-              }
-              set tagList(value){
-                this.tags = value || [];
-                this.check();
-              }
          }
          MyTag${index}.ɵcmp = {
           ...MyTag${index}.ɵcmp,
           factory:() => { return new MyTag${index}()},
          };
          (()=>{
-          let customEl = createCustomElement(MyTag${index}, {  injector: injector,});
-          customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+          let angularClass = ${createCustomElementHsh}(MyTag${index}, {  injector: injector,});
+          class customClass extends angularClass{
+            constructor(){
+              super();
+            }
+            check(){
+              // extends的class 无法依赖注入cd,只能自己查找
+              let cd = this._ngElementStrategy;
+              cd.detectChanges();
+            }
+            get instance(){
+              return this._ngElementStrategy.componentRef.instance
+            }
+            set tagList(value){
+              this.instance.tags = value || [];
+              this.check();
+            }
+            get tagList(){
+              return this.instance.tags  || [];
+            }
+          }  
+          customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
          })();  
          `,
     };

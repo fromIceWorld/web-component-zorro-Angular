@@ -9,8 +9,10 @@ import {
   NzTablePaginationPosition,
   NzTableSize,
 } from 'ng-zorro-antd/table';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { TABLE_CONFIG } from './table-config';
+
 interface ItemData {
   name: string;
   age: number | string;
@@ -214,42 +216,47 @@ export class TableComponent {
                  this.editBtn = ${editBtn.value};
                  this.deleteBtn = ${deleteBtn.value};
              }
-             // extends的class 无法依赖注入cd,只能自己查找
-             get cd(){
-               const dom = document.querySelector('${tagName}');
-               return dom._ngElementStrategy;
-            }
-             set cd(value){}
-             check(){
-               this.cd.detectChanges();
-               setTimeout(()=>this.cd.detectChanges())
-             }
-             // 配置项
-             get list() {
-               return this.listOfData;
-             }
-             set list(data) {
-               this.listOfData = data || [];
-               this.check();
-             }
-             get selected() {
-              return {selected:Array.from(this.setOfCheckedId)};
-             }
-             get id() {
-              return {id:this.item && this.item.id};
-             }
-             setLoading() {
-              this.loading = true;
-              this.check();
-            }
          }
          MyTable${index}.ɵcmp = {
           ...MyTable${index}.ɵcmp,
           factory:() => { return new MyTable${index}()},
          };
          (()=>{
-            let customEl = createCustomElement(MyTable${index}, {  injector: injector,});
-            customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+            let angularClass = ${createCustomElementHsh}(MyTable${index}, {  injector: injector,});
+            class customClass extends angularClass{
+              constructor(){
+                super();
+              }
+              check(){
+                // extends的class 无法依赖注入cd,只能自己查找
+                let cd = this._ngElementStrategy;
+                cd.detectChanges();
+              }
+              get instance(){
+                return this._ngElementStrategy.componentRef.instance
+              }
+              get list() {
+                return this.instance.listOfData;
+              }
+              set list(data) {
+                this.instance.listOfData = data || [];
+                this.check();
+              }
+              get selected() {
+               return Array.from(this.instance.setOfCheckedId);
+              }
+              get id() {
+               return this.instance.item && this.instance.item.id;
+              }
+              get row(){
+                return this.instance.item;
+              }
+              setLoading() {
+               this.instance.loading = true;
+               this.check();
+             }
+            }  
+            customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
         })();
          `,
     };

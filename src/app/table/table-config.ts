@@ -138,8 +138,7 @@ const TABLE_CONFIG = {
       { label: 'delete', value: 'delete' },
     ],
     methods: [{ label: 'setLoading', value: 'setLoading' }],
-    data: ['list', 'item', 'id', 'selected'],
-    params: ['selected'],
+    data: ['list', 'row', 'id', 'selected'],
   },
 };
 export { TABLE_CONFIG };

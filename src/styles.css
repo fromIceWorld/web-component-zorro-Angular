@@ -1,4 +1,5 @@
 /* svg 图标样式 */
+@import "./assets/fonts/font.css";
 .icon {
   width: 1em;
   height: 1em;

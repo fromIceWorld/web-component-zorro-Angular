@@ -2,7 +2,13 @@
   <div class="content">
     <div class="dialog-header">
       <span class="dialog-header-title">{{ title }}</span>
-      <span (click)="close($event)" class="close-btn">x</span>
+      <span
+        (click)="close($event)"
+        class="close-btn"
+        nz-icon
+        nzType="close"
+        nzTheme="outline"
+      ></span>
     </div>
     <div
       class="dialog-body"
@@ -10,10 +16,6 @@
       [ngStyle]="{ width: width, height: height }"
     >
       <ng-content></ng-content>
-    </div>
-    <div class="dialog-foot">
-      <button nz-button nzType="primary" (click)="hiden()">取消</button>
-      <button nz-button nzType="primary" (click)="hiden()">确定</button>
     </div>
   </div>
 </div>

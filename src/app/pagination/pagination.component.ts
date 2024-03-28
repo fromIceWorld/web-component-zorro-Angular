@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Output,
 } from '@angular/core';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { PAGINATION_CONFIG } from './pagination-config';
 
@@ -26,10 +27,6 @@ export class PaginationComponent {
   }
   pageSizeChange() {
     this.change.emit();
-  }
-  init() {
-    this.totalCount = 11;
-    this.pageIndex = 1;
   }
   constructor(private cd: ChangeDetectorRef) {}
   /**
@@ -54,42 +51,48 @@ export class PaginationComponent {
                   this.nzShowSizeChanger = ${nzShowSizeChanger.value};
                   this.nzShowQuickJumper = ${nzShowQuickJumper.value};
                }
-               // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
-               get value(){
-                return {
-                  pageIndex:this.pageIndex,
-                  pageSize:this.pageSize,
-                }
-               }
-               set total(value){
-                this.totalCount = value;
-                this.check();
-               }
           }
           MyPagination${index}.ɵcmp = {
             ...MyPagination${index}.ɵcmp,
             factory:() => { return new MyPagination${index}()},
           };
           (()=>{
-              let customEl = createCustomElement(MyPagination${index}, {  injector: injector,});
-              // 添加用户自定义数据
-              Object.defineProperty(customEl.prototype,'option',{
-                get(){
-                  return ${JSON.stringify(config)}
-                },
-                configurable: false,
-                enumerable: false
-              })
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = ${createCustomElementHsh}(MyPagination${index}, {  injector: injector,});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get pageIndex(){
+                  return this.instance.pageIndex;
+                }
+                set pageIndex(value){
+                  this.instance.pageIndex = value;
+                  this.check();
+                }
+                get pageSize(){
+                  return this.instance.pageSize;
+                }
+                set pageSize(value){
+                 this.instance.pageSize = value;
+                 this.check();
+                }
+                get total(){
+                  return this.instance.totalCount;
+                }
+                set total(value){
+                  this.instance.totalCount = value;
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
           })();
           `,
     };

@@ -1,3 +1,4 @@
+declare var require: any;
 const BUTTON_CONFIG = {
   className: 'ButtonComponent', // 暴露出的组件class名称【组件可以注册到window上，并把配置同时暴露】
   html: [
@@ -46,8 +47,9 @@ const BUTTON_CONFIG = {
           value: false,
         },
         icon: {
-          type: 'string',
-          value: 'search',
+          type: 'icon-class',
+          options: require('../../assets/icons.json'),
+          value: '',
         },
       },
     },

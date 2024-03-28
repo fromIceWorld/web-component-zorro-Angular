@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { IMAGE_CONFIG } from './image-config';
 
@@ -9,6 +15,7 @@ import { IMAGE_CONFIG } from './image-config';
   styleUrls: ['./image.component.css'],
 })
 export class ImageComponent {
+  @Output() click = new EventEmitter();
   static tagNamePrefix: string = 'my-image';
   width = 'auto';
   height = 'auto';
@@ -22,6 +29,9 @@ export class ImageComponent {
    *      html, js
    * }
    */
+  imgClick() {
+    this.click.emit();
+  }
   static extends(option): { tagName: string; html: string; js: string } {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
@@ -47,7 +57,7 @@ export class ImageComponent {
           factory:() => { return new MyImage${index}()},
          };
          (()=>{
-            let customEl = createCustomElement(MyImage${index}, {  injector: injector});
+            let customEl = ${createCustomElementHsh}(MyImage${index}, {  injector: injector});
             customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
           })();
           `,

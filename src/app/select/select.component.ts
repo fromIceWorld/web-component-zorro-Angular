@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { SELECT_CONFIG } from './select-config';
 
@@ -43,7 +44,11 @@ export class SelectComponent implements OnInit {
     this.http.get(`${this.api}`).subscribe((e: any) => {
       this.isLoading = false;
       this.options = [...this.options, ...e.data.list];
+      this.check();
     });
+  }
+  check() {
+    this.cd.detectChanges();
   }
   static extends(option) {
     const { html, className } = option;
@@ -70,34 +75,38 @@ export class SelectComponent implements OnInit {
                 this.placeholder = '${placeholder.value}';
                 // this.loadMore();
             }
-            // extends的class 无法依赖注入cd,只能自己查找
-            get cd(){
-              const dom = document.querySelector('${tagName}');
-              return dom._ngElementStrategy;
-            }
-            set cd(value){}
-            check(){
-              this.cd.detectChanges();
-              setTimeout(()=>this.cd.detectChanges())
-            }
-            clear(){
-              this.selected = undefined;
-              this.check();
-            }
-            get value() {
-              return {${formcontrol.value}:this.selected};
-            }
-            set value(target) {
-              this.selected = target;
-            }
         }
         MySelect${index}.ɵcmp = {
           ...MySelect${index}.ɵcmp,
           factory:() => { return new MySelect${index}()},
         };
         (()=>{
-          let customEl = createCustomElement(MySelect${index}, {  injector: injector});
-          customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+          let angularClass = ${createCustomElementHsh}(MySelect${index}, {  injector: injector});
+          class customClass extends angularClass{
+            constructor(){
+              super();
+            }
+            check(){
+              // extends的class 无法依赖注入cd,只能自己查找
+              let cd = this._ngElementStrategy;
+              cd.detectChanges();
+            }
+            get instance(){
+              return this._ngElementStrategy.componentRef.instance
+            }
+            clear(){
+              this.instance.selected = '';
+              this.check();
+            }
+            get value() {
+              return this.instance.selected;
+            }
+            set value(target) {
+              this.instance.selected = target;
+              this.check();
+            }
+          }  
+          customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
        })();
         `,
     };

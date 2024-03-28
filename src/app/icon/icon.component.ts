@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { ICON_CONFIG } from './icon-config';
 
@@ -60,7 +61,7 @@ export class IconComponent implements OnInit {
           factory:() => { return new MyIcon${index}()}
          };
          (()=>{
-            let customEl = createCustomElement(MyIcon${index}, {  injector: injector,});
+            let customEl = ${createCustomElementHsh}(MyIcon${index}, {  injector: injector,});
             customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
         })();
          `,

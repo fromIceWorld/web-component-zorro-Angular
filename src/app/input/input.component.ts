@@ -5,8 +5,10 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { INPUT_CONFIG } from './input-config';
+
 @config(INPUT_CONFIG)
 @Component({
   selector: 'app-input',
@@ -30,7 +32,7 @@ export class InputComponent {
   onBlur() {
     this.isFocus = false;
   }
-  clear() {
+  clearInput() {
     this.control.patchValue('');
   }
   constructor(private cd: ChangeDetectorRef) {}
@@ -92,44 +94,41 @@ export class InputComponent {
                   }
                 });
              }
-             // extends的class 无法依赖注入cd,只能自己查找
-              get cd(){
-                const dom = document.querySelector('${tagName}');
-                return dom._ngElementStrategy;
-              }
-              set cd(value){}
-              check(){
-                this.cd.detectChanges();
-                setTimeout(()=>this.cd.detectChanges())
-              }
-             validate(){
-               this.control.updateValueAndValidity();
-             }
-             clear(){
-               this.value = '';
-               this.check();
-             }
-             get value() {
-               return {${formcontrol.value}:this.control.value};
-             }
-             set value(target) {
-               this.control.setValue(target);
-               this.check();
-             }
-             get validateValue() {
-               return {
-                ${formcontrol.value}:this.control.value,
-                _valid:this.isValid()
-              };
-             }
         };
         MyInput${index}.ɵcmp = {
           ...MyInput${index}.ɵcmp,
           factory:() => { return new MyInput${index}()},
         };
         (()=>{
-            let customEl = createCustomElement(MyInput${index}, {  injector: injector,});
-            customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+            let angularClass = ${createCustomElementHsh}(MyInput${index}, {  injector: injector,});
+            class customClass extends angularClass{
+              constructor(){
+                super();
+              }
+              check(){
+                // extends的class 无法依赖注入cd,只能自己查找
+                let cd = this._ngElementStrategy;
+                cd.detectChanges();
+              }
+              get instance(){
+                return this._ngElementStrategy.componentRef.instance
+              }
+              validate(){
+                this.instance.control.updateValueAndValidity();
+              }
+              clearInput(){
+                this.instance.value = '';
+                this.check();
+              }
+              get value() {
+                return this.instance.control.value;
+              }
+              set value(target) {
+                this.instance.control.setValue(target);
+                this.check();
+              }
+            }  
+            customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
         })();`,
     };
     return config;

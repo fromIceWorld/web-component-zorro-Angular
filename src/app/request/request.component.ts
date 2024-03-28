@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
 import { API_CONFIG } from './api-config';
+
 @config(API_CONFIG)
 @Component({
   selector: 'app-request',
@@ -19,69 +21,65 @@ export class RequestComponent {
   method = 'get';
   data;
   list;
+  respond;
   message;
   total = 0;
   constructor(private http: HttpClient) {}
-  request() {
+  request(params = {}) {
     //  获取接口上附加的 params
-    let params = {}, //@ts-ignore
-      paramsSource = this.request.params || [];
-    paramsSource.forEach((item) => {
-      const [ins, keys] = item;
-      keys.forEach((key) => {
-        if (ins[key] instanceof Error) {
-        }
-        Object.assign(params, ins[key]);
-      });
-    });
-    this.xmlHttp(params);
-  }
-  validatorAndRequest() {
-    //  获取接口上附加的 params, 及校验结果;
-    let params = {},
-      invalid = true, //@ts-ignore
-      paramsSource = this.validatorAndRequest.params || [];
-    paramsSource.forEach((item) => {
-      const [ins, keys] = item;
-      keys.forEach((key) => {
-        let p = ins[key];
-        // 如果_valid 存在，而且是false，证明有参数未通过校验
-        invalid = p['_valid'] === false;
-        delete p['_valid'];
-        Object.assign(params, p);
-      });
-    });
-    if (invalid) {
-      this.validateFalse.emit();
-      return;
-    }
     this.xmlHttp(params);
   }
   xmlHttp(params) {
     this.loading.emit();
-    this.http
-      .get(this.api, {
-        params,
-      })
-      .subscribe(
-        (res: any) => {
-          const { code, data, message } = res;
-          this.message = message;
-          // api返回值是动态可配置的，以各种情况下的组件返回值。
-          Object.keys(data || {}).forEach((key) => {
-            this[key] = data[key];
-          });
-          if (code === 200) {
-            this.success200.emit();
-          } else if (code === 500) {
-            this.success500.emit();
-          }
-        },
-        (err) => {
-          this.message = err;
-          this.error.emit();
+    this[this.method + 'Http'](params).subscribe(
+      (res: any) => {
+        const { code, data, message } = res;
+        this.message = message;
+        // 因为返回值太复杂，api直接存储返回值。
+        this.respond = data;
+        if (code === 200) {
+          this.success200.emit();
+        } else if (code === 500) {
+          this.success500.emit();
         }
-      );
+      },
+      (err) => {
+        this.message = err;
+        this.error.emit();
+      }
+    );
+  }
+  postHttp(params) {
+    return this.http.post(
+      this.api,
+      {
+        ...params,
+      },
+      {
+        params,
+      }
+    );
+  }
+  getHttp(params) {
+    return this.http.get(this.api, {
+      params,
+    });
+  }
+  putHttp(params) {
+    return this.http.put(
+      this.api,
+      {
+        ...params,
+      },
+      {
+        params,
+      }
+    );
+  }
+  deleteHttp(params) {
+    return this.http.delete(this.api, {
+      params,
+    });
   }
   static extends(option): { html: string; js: string } {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
@@ -103,8 +101,39 @@ export class RequestComponent {
             factory:() => { return new MyAPI${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyAPI${index}, {  injector: injector,});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = ${createCustomElementHsh}(MyAPI${index}, {  injector: injector,});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get respond(){
+                  return this._ngElementStrategy.componentRef.instance.respond
+                }
+                get api(){
+                  return this.instance.api
+                }
+                set api(value){
+                 this.instance.api = value
+                }
+                get method(){
+                  return this.instance.method
+                }
+                set method(value){
+                 this.instance.method = value
+                }
+                request(params){
+                  this.instance.request(params);
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
           })();
            `,
     };
