@@ -1,5 +1,5 @@
 <img
-  [src]="src"
+  [src]="inputObject.src || src"
   (click)="imgClick()"
   [ngStyle]="{ width: width || 'auto', height: height || 'auto' }"
 />

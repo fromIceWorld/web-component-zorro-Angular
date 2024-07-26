@@ -1,0 +1,47 @@
+.top-blue {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.top-item {
+  max-width: 97%;
+  min-width: fit-content;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+.top-item span:first-child {
+  z-index: 1;
+  color: #add5ff;
+  position: relative;
+  position: relative;
+  bottom: 2px;
+}
+.top-item span:nth-child(2) {
+  color: #dceeff;
+  z-index: 1;
+  font-size: 13px;
+  position: relative;
+  bottom: 2px;
+  padding-left: 8px;
+}
+.top-item-border {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 6px;
+  background-image: linear-gradient(
+      90deg,
+      #274f9a 0%,
+      #42a2e3 53%,
+      #4bbefb 71%,
+      #ccebf8 100%
+    ),
+    linear-gradient(#6fccf5, #6fccf5);
+}
+.top-item-postfix {
+  position: absolute;
+  right: -8px;
+  bottom: 0px;
+}

@@ -1,0 +1,46 @@
+<div
+  *ngIf="header"
+  class="displaytable-header"
+  [ngStyle]="{ padding: headerPadding, background: headerBackground }"
+>
+  <div
+    *ngFor="let head of headers"
+    [ngStyle]="{
+      width: head.width + 'px',
+      flex: ['', 'auto'].includes(head.width) ? 1 : 'unset'
+    }"
+    class="message-container"
+  >
+    <span class="item-message">{{ head.label }}</span>
+  </div>
+</div>
+<div
+  *ngFor="let item of list"
+  style="display: flex; height: 30px"
+  [ngStyle]="{
+    padding: itemPadding,
+    background: itemBackground,
+    margin: itemMargin
+  }"
+>
+  <div
+    class="table-item message-container"
+    style="display: flex"
+    *ngFor="let head of headers; index as i"
+    [ngStyle]="{
+      width: head.width + 'px',
+      flex: ['', 'auto'].includes(head.width) ? 1 : 'unset'
+    }"
+  >
+    <div
+      *ngIf="slots[i] && slots[i].length"
+      [tagNames]="slots[i]"
+      [input]="item[head.key]"
+      appDynamicComponent
+      style="width: 100%"
+    ></div>
+    <span *ngIf="!slots[i] || !slots[i].length" class="item-message">
+      {{ item[head.key] }}
+    </span>
+  </div>
+</div>

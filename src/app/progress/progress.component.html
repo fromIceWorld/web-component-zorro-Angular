@@ -1,0 +1,12 @@
+<div
+  class="index-progress"
+  [ngStyle]="{ height: inputObject.height || height + 'px' }"
+>
+  <div
+    class="progress-up-health"
+    [ngStyle]="{
+      width: (inputObject.percentage || percentage) + '%',
+      background: inputObject.color || color
+    }"
+  ></div>
+</div>

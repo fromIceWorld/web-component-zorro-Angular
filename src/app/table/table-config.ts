@@ -1,6 +1,5 @@
 const TABLE_CONFIG = {
   className: 'TableComponent',
-  tag: '',
   html: [
     {
       name: '组件配置',
@@ -132,12 +131,8 @@ const TABLE_CONFIG = {
     },
   ],
   component: {
-    event: [
-      { label: 'view', value: 'view' },
-      { label: 'edit', value: 'edit' },
-      { label: 'delete', value: 'delete' },
-    ],
-    methods: [{ label: 'setLoading', value: 'setLoading' }],
+    event: [],
+    methods: [],
     data: ['list', 'row', 'id', 'selected'],
   },
 };

@@ -22,6 +22,7 @@ export class SelectComponent implements OnInit {
     { label: '女', value: '女' },
   ];
   selected;
+  theme = 'dark-night-blue';
   isLoading = false;
   placeholder = '请选择';
   getRandomNameList;
@@ -55,7 +56,7 @@ export class SelectComponent implements OnInit {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${SelectComponent.tagNamePrefix}-${index}`;
-    const { placeholder, options, formcontrol, api } = html[0].config;
+    const { placeholder, options, theme, api } = html[0].config;
     let items = options.options.map((item) => {
       let { label, value } = item;
       return {
@@ -71,6 +72,7 @@ export class SelectComponent implements OnInit {
                 super(undefined,injector.get('http'));
                 this.options = ${JSON.stringify(items)};
                 this.selected = '${options.value}';
+                this.theme = '${theme.value}';
                 this.api = '${api.value}';
                 this.placeholder = '${placeholder.value}';
                 // this.loadMore();

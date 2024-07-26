@@ -1,0 +1,12 @@
+<div class="top-blue">
+  <div
+    *ngFor="let item of list"
+    class="top-item"
+    [ngStyle]="{ width: item.percent + '%' }"
+  >
+    <span>{{ item.name }}</span>
+    <span>{{ item.count }}</span>
+    <div class="top-item-border"></div>
+    <img class="top-item-postfix" src="/store/base/assets/images/tu1_1.png" />
+  </div>
+</div>

@@ -1,4 +1,11 @@
-<nz-select [(ngModel)]="selected" nzAllowClear #select>
+<nz-select
+  [(ngModel)]="selected"
+  nzAllowClear
+  #select
+  [ngClass]="theme"
+  [nzDropdownClassName]="theme"
+  style="width: 100%"
+>
   <nz-option
     *ngFor="let o of options"
     [nzValue]="o.value"

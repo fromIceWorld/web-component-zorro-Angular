@@ -3,12 +3,17 @@ import { createCustomElement } from '@angular/elements';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { ButtonComponent } from './app/button/button.component';
+import { CountryComponent } from './app/country/country.component';
 import { DialogComponent } from './app/dialog/dialog.component';
+import { DisplayTableComponent } from './app/display-table/display-table.component';
+import { DoubleTextComponent } from './app/double-text/text.component';
+import { FullScreenComponent } from './app/full-screen/full-screen.component';
 import { HookComponent } from './app/hook/hook.component';
 import { IconComponent } from './app/icon/icon.component';
 import { ImageComponent } from './app/image/image.component';
 import { InputComponent } from './app/input/input.component';
 import { PaginationComponent } from './app/pagination/pagination.component';
+import { ProgressComponent } from './app/progress/progress.component';
 import { RadioComponent } from './app/radio/radio.component';
 import { RequestComponent } from './app/request/request.component';
 import { RouterComponent } from './app/router/router.component';
@@ -16,6 +21,8 @@ import { SelectComponent } from './app/select/select.component';
 import { TableComponent } from './app/table/table.component';
 import { TagComponent } from './app/tag/tag.component';
 import { TextComponent } from './app/text/text.component';
+import { ToggleButtonComponent } from './app/toggle-button/toggle-button.component';
+import { Top5Component } from './app/top5/top5.component';
 import { createCustomElementHsh } from './common/hash';
 import { environment } from './environments/environment';
 //@ts-ignore
@@ -27,6 +34,7 @@ window.injector = Injector.create({
 // 暴露出源组件class 创建web component的API
 // TODO: createCustomElementHsh 使为了避免在未隔离的环境中运行不同的createCustomElement函数，因为版本导致的冲突
 window[createCustomElementHsh] = createCustomElement;
+window['createCustomElement'] = createCustomElement;
 if (environment.production) {
   enableProdMode();
 }
@@ -34,6 +42,7 @@ if (environment.production) {
 // 注册组件到全局
 // 按钮
 window['ButtonComponent'] = ButtonComponent;
+window['ToggleButtonComponent'] = ToggleButtonComponent;
 // const buttonEle = createCustomElement(ButtonComponent, {
 //   injector: this.injector,
 // });
@@ -107,6 +116,12 @@ window['PaginationComponent'] = PaginationComponent;
 // this.registerEl('my-pagination', PaginationEl);
 // tags
 window['TagComponent'] = TagComponent;
+window['DoubleTextComponent'] = DoubleTextComponent;
+window['CountryComponent'] = CountryComponent;
+window['ProgressComponent'] = ProgressComponent;
+window['DisplayTableComponent'] = DisplayTableComponent;
+window['Top5Component'] = Top5Component;
+window['FullScreenComponent'] = FullScreenComponent;
 // const TagEl = createCustomElement(TagComponent, {
 //   injector: this.injector,
 // });

@@ -39,9 +39,9 @@ const IMAGE_CONFIG = {
     style: {},
   },
   component: {
+    input: ['src'],
     event: [{ label: 'click', value: 'click' }],
     methods: [],
-    data: [],
     params: [],
   },
 };

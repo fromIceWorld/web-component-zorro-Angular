@@ -2,7 +2,7 @@
   *ngIf="isSHow"
   style="padding: 4px; display: inline-block; position: relative"
   [ngStyle]="{
-    color: color,
+    color: inputObj.color || color,
     'font-size': fontSize,
     'font-weight': fontWeight,
     'font-family': fontFamily,
@@ -11,5 +11,5 @@
     right: right,
     bottom: bottom
   }"
-  >{{ value }}</span
+  >{{ inputObj.value || value }}</span
 >

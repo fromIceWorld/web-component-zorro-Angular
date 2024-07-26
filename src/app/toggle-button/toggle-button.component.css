@@ -1,0 +1,61 @@
+/* 文字切换 */
+.text-button {
+  display: flex;
+  font-size: 16px;
+  color: #68c1ff;
+}
+.text-button .btn-item:nth-child(1) span:nth-child(1) {
+  display: none;
+}
+.text-button .btn-item span:nth-child(2) {
+  padding: 0 6px;
+  cursor: pointer;
+}
+.text-button .checked span:last-child {
+  color: #cff8ff;
+}
+/* 卡片切换 */
+.card-button {
+  display: flex;
+  font-size: 14px;
+  color: #9ad1ff;
+}
+.card-button .btn-item:nth-child(n + 2) {
+  position: relative;
+  left: -12px;
+}
+.card-button .btn-item span {
+  cursor: pointer;
+  padding: 7.5px 20px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  font-weight: 600;
+}
+.card-button .checked span:last-child {
+  background-image: url(/store/base/assets/images/tab1.png);
+}
+.card-button .nochecked span:last-child {
+  background-image: url(/store/base/assets/images/tab2.png);
+}
+/* 按钮切换 */
+.btn-button {
+  display: flex;
+  font-size: 14px;
+  color: #e8f1ff;
+}
+.btn-button .btn-item {
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 0px 10px;
+  border: solid 1px #38dfff;
+}
+.btn-button .checked {
+  color: #e8f1ff;
+  background-color: #35599bc9;
+  border: solid 2px #38dfff;
+}
+.btn-button .nochecked {
+  color: #44a0e8;
+  border: solid 1px #006196;
+  background-color: #2d3769;
+}

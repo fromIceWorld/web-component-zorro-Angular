@@ -1,0 +1,20 @@
+<div
+  style="display: flex; align-items: center"
+  [ngStyle]="{ direction: direction }"
+>
+  <img *ngIf="inputObj.src || src" [src]="inputObj.src || src" />
+  <span
+    style="padding: 4px; display: inline-block; position: relative"
+    [ngStyle]="{
+      color: inputObj.color || color,
+      'font-size': fontSize,
+      'font-weight': fontWeight,
+      'font-family': fontFamily,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    }"
+    >{{ inputObj.value || value }}</span
+  >
+</div>

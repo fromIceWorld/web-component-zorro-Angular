@@ -1,17 +1,18 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
-import { TEXT_CONFIG } from './text-config';
+import { COUNTRY_CONFIG } from './country-config';
 
-@config(TEXT_CONFIG)
+@config(COUNTRY_CONFIG)
 @Component({
   selector: 'app-text',
-  templateUrl: './text.component.html',
-  styleUrls: ['./text.component.css'],
+  templateUrl: './country.component.html',
+  styleUrls: ['./country.component.css'],
 })
-export class TextComponent implements OnInit {
-  static tagNamePrefix: string = 'my-text';
+export class CountryComponent implements OnInit {
+  static tagNamePrefix: string = 'my-country';
   inputObj = {
+    src: '',
     color: '',
     value: '',
   };
@@ -24,18 +25,14 @@ export class TextComponent implements OnInit {
   fontFamily: string = '';
   fontWeight: number = 400;
   color: string = 'black';
-  isSHow: boolean = true;
   left = '0px';
   top = '0px';
   right = '0px';
   bottom = '0px';
+  src = '';
+  direction = 'ltr';
   constructor(private cd: ChangeDetectorRef) {}
-  show() {
-    this.isSHow = true;
-  }
-  hide() {
-    this.isSHow = false;
-  }
+
   // 导出渲染数据
   /**
    *
@@ -47,9 +44,10 @@ export class TextComponent implements OnInit {
   static extends(option): { tagName: string; html: string; js: string } {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
-      tagName = `${TextComponent.tagNamePrefix}-${index}`;
+      tagName = `${CountryComponent.tagNamePrefix}-${index}`;
     const { html, className } = option;
     const {
+      src,
       value,
       fontSize,
       fontWeight,
@@ -59,6 +57,7 @@ export class TextComponent implements OnInit {
       right,
       bottom,
       fontFamily,
+      direction,
     } = html[0].config;
     return {
       tagName: `${tagName}`,
@@ -68,6 +67,8 @@ export class TextComponent implements OnInit {
             class MyText${index} extends ${className}{
               constructor(){
                   super();
+                  this.src = '${src.value}';
+                  this.direction = '${direction.value}';
                   this.value = '${value.value}';
                   this.fontWeight = ${fontWeight.value};
                   this.fontFamily = '${fontFamily ? fontFamily.value : ''}';
@@ -95,18 +96,6 @@ export class TextComponent implements OnInit {
               }
               get instance(){
                 return this._ngElementStrategy.componentRef.instance
-              }
-              showChange(){
-                this.instance.isSHow = !this.instance.isSHow;
-                this.check();
-              }
-              show(){
-                this.instance.isSHow = true;
-                this.check();
-              }
-              hide(){
-                this.instance.isSHow = false;
-                this.check();              
               }
               get text(){
                 return this.instance.value;

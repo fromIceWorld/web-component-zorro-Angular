@@ -5,12 +5,12 @@ import { TEXT_CONFIG } from './text-config';
 
 @config(TEXT_CONFIG)
 @Component({
-  selector: 'app-text',
+  selector: 'app-double-text',
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.css'],
 })
-export class TextComponent implements OnInit {
-  static tagNamePrefix: string = 'my-text';
+export class DoubleTextComponent implements OnInit {
+  static tagNamePrefix: string = 'my-double-text';
   inputObj = {
     color: '',
     value: '',
@@ -24,11 +24,21 @@ export class TextComponent implements OnInit {
   fontFamily: string = '';
   fontWeight: number = 400;
   color: string = 'black';
+  value2: string = '姓名';
+  fontSize2: string = '14px';
+  fontFamily2: string = '';
+  fontWeight2: number = 400;
+  color2: string = 'black';
   isSHow: boolean = true;
+  splitter: string = '';
   left = '0px';
   top = '0px';
   right = '0px';
   bottom = '0px';
+  left2 = '0px';
+  top2 = '0px';
+  right2 = '0px';
+  bottom2 = '0px';
   constructor(private cd: ChangeDetectorRef) {}
   show() {
     this.isSHow = true;
@@ -47,7 +57,7 @@ export class TextComponent implements OnInit {
   static extends(option): { tagName: string; html: string; js: string } {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
-      tagName = `${TextComponent.tagNamePrefix}-${index}`;
+      tagName = `${DoubleTextComponent.tagNamePrefix}-${index}`;
     const { html, className } = option;
     const {
       value,
@@ -60,6 +70,18 @@ export class TextComponent implements OnInit {
       bottom,
       fontFamily,
     } = html[0].config;
+    const { splitter } = html[1].config;
+    const {
+      value2,
+      fontSize2,
+      fontWeight2,
+      color2,
+      left2,
+      top2,
+      right2,
+      bottom2,
+      fontFamily2,
+    } = html[2].config;
     return {
       tagName: `${tagName}`,
       html: `<${tagName}></${tagName}>`,
@@ -77,6 +99,16 @@ export class TextComponent implements OnInit {
                   this.right = '${right.value}${right.postfix}';
                   this.bottom = '${bottom.value}${bottom.postfix}';
                   this.color = '${color.value}';
+                  this.splitter = '${splitter.value}';
+                  this.value2 = '${value2.value}';
+                  this.fontWeight2= ${fontWeight2.value};
+                  this.fontFamily2 = '${fontFamily2 ? fontFamily2.value : ''}';
+                  this.fontSize2 = '${fontSize2.value}${fontSize2.postfix}';
+                  this.left2 = '${left2.value}${left2.postfix}';
+                  this.top2 = '${top2.value}${top2.postfix}';
+                  this.right2 = '${right2.value}${right2.postfix}';
+                  this.bottom2 = '${bottom2.value}${bottom2.postfix}';
+                  this.color2 = '${color2.value}';
               }
           }
           MyText${index}.ɵcmp = {
@@ -113,6 +145,10 @@ export class TextComponent implements OnInit {
               }
               set text(value){
                 this.instance.value = value;
+                this.check();
+              }
+              set suffix(value){
+                this.instance.value2 = value;
                 this.check();
               }
             }

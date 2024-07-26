@@ -1,35 +1,35 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { createCustomElementHsh } from 'src/common/hash';
 import { config } from 'src/decorators/config';
-import { IMAGE_CONFIG } from './image-config';
+import { PROGRESS_CONFIG } from './progress-config';
 
-@config(IMAGE_CONFIG)
+@config(PROGRESS_CONFIG)
 @Component({
-  selector: 'app-image',
-  templateUrl: './image.component.html',
-  styleUrls: ['./image.component.css'],
+  selector: 'app-progress',
+  templateUrl: './progress.component.html',
+  styleUrls: ['./progress.component.css'],
 })
-export class ImageComponent {
-  static tagNamePrefix: string = 'my-image';
+export class ProgressComponent {
+  static tagNamePrefix: string = 'my-progress';
   @Input('input')
   set inputConfig(value) {
-    console.log('value', value);
     this.inputObject = { ...this.inputObject, ...JSON.parse(value) };
   }
-  @Output() click = new EventEmitter();
   inputObject = {
-    src: '',
+    percentage: 0,
+    height: 0,
+    color: '',
   };
-  width = 'auto';
-  height = 'auto';
-  src = 'https://react.docschina.org/images/home/conf2021/cover.svg';
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor() {}
+  percentage = 50;
+  height = 50;
+  color = `linear-gradient(-90deg, 
+		#2999f7 8%, 
+		rgba(41, 153, 247, 0.65) 54%, 
+		rgba(41, 153, 247, 0.3) 100%), 
+	linear-gradient(
+		#253d50, 
+		#253d50)`;
   // 导出渲染数据
   /**
    *
@@ -38,16 +38,13 @@ export class ImageComponent {
    *      html, js
    * }
    */
-  imgClick() {
-    this.click.emit();
-  }
+
   static extends(option): { tagName: string; html: string; js: string } {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
-      tagName = `${ImageComponent.tagNamePrefix}-${index}`;
+      tagName = `${ProgressComponent.tagNamePrefix}-${index}`;
     const { html, className } = option;
-    const { width, height } = html[0].config,
-      { src } = html[1].config;
+    const { percentage, height, color } = html[0].config;
     return {
       tagName: `${tagName}`,
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance"
@@ -56,9 +53,9 @@ export class ImageComponent {
       js: `class MyImage${index} extends ${className}{
              constructor(){
                  super();
-                 this.width = '${width.value}';
+                 this.percentage = '${percentage.value}';
                  this.height = '${height.value}';
-                 this.src = '${src.value}';
+                 this.color = '${color.value}';
              }
          }
          MyImage${index}.ɵcmp = {

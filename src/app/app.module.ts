@@ -33,8 +33,16 @@ import { TextComponent } from './text/text.component';
 // 引入全部的图标，不推荐 ❌
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import { AppComponent } from './app.component';
-import { TabsComponent } from './tabs/tabs.component';
+import { CountryComponent } from './country/country.component';
+import { DisplayTableComponent } from './display-table/display-table.component';
+import { DoubleTextComponent } from './double-text/text.component';
+import { DynamicComponentDirective } from './dynamic-component/dynamic-component.directive';
+import { ProgressComponent } from './progress/progress.component';
 import { RouterComponent } from './router/router.component';
+import { TabsComponent } from './tabs/tabs.component';
+import { ToggleButtonComponent } from './toggle-button/toggle-button.component';
+import { Top5Component } from './top5/top5.component';
+import { FullScreenComponent } from './full-screen/full-screen.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -61,6 +69,14 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     TabsComponent,
     AppComponent,
     RouterComponent,
+    DoubleTextComponent,
+    CountryComponent,
+    ProgressComponent,
+    DisplayTableComponent,
+    DynamicComponentDirective,
+    ToggleButtonComponent,
+    Top5Component,
+    FullScreenComponent,
   ],
   imports: [
     BrowserModule,

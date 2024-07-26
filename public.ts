@@ -18,6 +18,42 @@ const components = [
       component: 'TextComponent',
     },
     {
+      id: 'double-text',
+      name: '双文本',
+      icon: '#icon-wenben',
+      title: `双文本:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 0,
+      family: 'base',
+      des: '双文本组合',
+      component: 'DoubleTextComponent',
+    },
+    {
+      id: 'icon-text',
+      name: '文本图标',
+      icon: '#icon-wenben',
+      title: `文本图标:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 0,
+      family: 'base',
+      des: '文本+图标',
+      component: 'CountryComponent',
+    },
+    {
+      id: 'icon-progress',
+      name: '进度条',
+      icon: '#percentage',
+      title: `进度条:
+                  Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 0,
+      family: 'base',
+      des: '进度条',
+      component: 'ProgressComponent',
+    },
+    {
       id: 'icon',
       name: '图标',
       type: 'node',
@@ -42,6 +78,32 @@ const components = [
       family: 'base',
       des: '基础的按钮组件',
       component: 'ButtonComponent',
+    },
+    {
+      id: 'button',
+      name: '全屏切换',
+      type: 'node',
+      icon: '#icon-anniu1',
+      title: `全屏切换按钮:
+                 Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 0,
+      family: 'base',
+      des: '全屏切换按钮',
+      component: 'FullScreenComponent',
+    },
+    {
+      id: 'BlueToggleButton',
+      name: '蓝色切换按钮',
+      type: 'node',
+      icon: '#icon-radioBoxList',
+      title: `蓝色切换按钮:
+                 Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 0,
+      family: 'base',
+      des: '蓝色切换按钮组件',
+      component: 'ToggleButtonComponent',
     },
     {
       id: 'image',
@@ -107,6 +169,32 @@ const components = [
       family: 'table',
       des: '基础的table组件',
       component: 'TableComponent',
+    },
+    {
+      id: 'display-table',
+      name: '展示类表格',
+      type: 'node',
+      icon: '#icon-biaoge',
+      title: `展示类表格:
+                 Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 0,
+      family: 'table',
+      des: '展示类表格',
+      component: 'DisplayTableComponent',
+    },
+    {
+      id: 'blue-topn',
+      name: '蓝色topN图',
+      type: 'node',
+      icon: '#icon-top',
+      title: `蓝色topN图:
+                Angular@10+ng-zorro-antd`,
+      color: '#dd0031',
+      view: 0,
+      family: 'base',
+      des: 'topN',
+      component: 'Top5Component',
     },
     {
       id: 'pagination',
@@ -203,7 +291,7 @@ const filesName = [
   'styles.css',
 ];
 const area = 'base';
-components.map((item) => {
+components.forEach((item) => {
   item['filesName'] = filesName;
   item['area'] = area;
 });

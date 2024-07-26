@@ -38,6 +38,20 @@ const SELECT_CONFIG = {
           type: 'string',
           value: 'https://api.randomuser.me/?results=10',
         },
+        theme: {
+          type: 'select',
+          options: [
+            {
+              label: '默认',
+              value: '',
+            },
+            {
+              label: '暗夜蓝',
+              value: 'dark-night-blue',
+            },
+          ],
+          value: '',
+        },
       },
     },
   ],

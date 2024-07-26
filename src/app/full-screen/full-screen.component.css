@@ -1,0 +1,5 @@
+.full-screen-btn {
+  position: relative;
+  width: fit-content;
+  cursor: pointer;
+}

@@ -1,0 +1,13 @@
+<div class="toggle-btn" [ngClass]="type">
+  <div
+    *ngFor="let item of list; index as i"
+    class="btn-item"
+    (click)="checked(i)"
+    [ngClass]="{ checked: item.checked, nochecked: !item.checked }"
+  >
+    <span *ngIf="type == 'text-button'">|</span>
+    <span>
+      {{ item.lable }}
+    </span>
+  </div>
+</div>

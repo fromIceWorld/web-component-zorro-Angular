@@ -1,12 +1,17 @@
-const TEXT_CONFIG = {
-  className: 'TextComponent',
+const COUNTRY_CONFIG = {
+  className: 'CountryComponent',
   html: [
     {
       name: '组件配置',
       config: {
+        src: {
+          type: 'string',
+          value:
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAMAAABcOc2zAAAAt1BMVEW9FyDLJjHKKjCwDxa/FR27GR+6HiS7FR67GR+uDRSwDhTBJCqvDhOxFRqrDRKtDhPIIi3KJTDLJzHtGSHrFR3uGiPuHCXsFx/sGCDvHSfpExrvISvwJC7vHyixDhXAExrwKDDYEhnGHyjIExu5EhnwIyvGGiPXICrxOS3qKDPyUh/LGiLSFx/CFyCrCxH0bx/JJC7xYSf80grfExriExnhEhjwMynKDhT2hh3pSy/fLDfNKTXLJzOYq9JTAAAAE3RSTlNxk8+5yz46IEyT1THhMcjgueHgRqUxcQAAAJFJREFUCNclzNEOwiAMheFDKTCNCToTX8b3fxcvjBpdYI5CHfPyy39a6xudhiV+MQRiamyuqi8McwO4wJkPm2TiLceUQFIVkaaMLBISdTcLBh7AYdpycwp+N9E9PVd214UhShOk02pdX0P/a6zzCg/mIrKxZw9Q6HZb7j4yzln6ZcNozP2SDYsj+DLvlkBWS/0B7KFVHvCyRgEAAAAASUVORK5CYII=',
+        },
         value: {
           type: 'string',
-          value: '姓名',
+          value: '中国',
         },
         fontSize: {
           type: 'string',
@@ -41,6 +46,14 @@ const TEXT_CONFIG = {
           value: 0,
           postfix: 'px',
         },
+        direction: {
+          type: 'select',
+          options: [
+            { label: 'ltr', value: 'ltr' },
+            { label: 'rtl', value: 'rtl' },
+          ],
+          value: 'ltr',
+        },
         fontFamily: {
           type: 'font-family',
           options: [
@@ -73,14 +86,10 @@ const TEXT_CONFIG = {
     },
   ],
   component: {
-    input: ['color', 'value'],
+    input: ['src', 'color', 'value'],
     event: [],
-    methods: [
-      { label: 'showChange', value: 'showChange' },
-      { label: 'show', value: 'show' },
-      { label: 'hide', value: 'hide' },
-    ],
+    methods: [],
     data: ['text'],
   },
 };
-export { TEXT_CONFIG };
+export { COUNTRY_CONFIG };
